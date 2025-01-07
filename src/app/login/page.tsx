@@ -1,37 +1,33 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+import KakaoIcon from '../../../public/kakao.svg';
+
 const Login = () => {
+  const router = useRouter();
+
   return (
-    <div className="w-full h-screen bg-black flex flex-col justify-center items-center text-white">
-      {/* 로고 */}
-      <div className="mb-6">
-        <img
-          src="/logo.png" // 로고 이미지 경로 (임시시)
-          alt="CAKEWAY 로고"
-          className="w-40 h-auto"
-        />
-      </div>
+    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
+      <section className="mt-[277px]">
+        <span>로고 자리</span>
+      </section>
 
-      {/* 텍스트 */}
-      <div className="mb-10 text-center font-sans">
-        <p className="mt-2 text-sm font-sans">
-          쉽고 빠른 케이크 주문은 케이크 웨이로
-        </p>
-      </div>
+      <section className="mb-[275px] text-center text-sm">
+        <p className="mt-[17px]">쉽고 빠른 케이크 주문은 케이크 웨이로</p>
+      </section>
 
-      {/* 카카오 로그인 버튼 */}
       <button
-        className="flex items-center justify-center w-72 h-12 bg-yellow-400 text-black rounded-lg shadow-md hover:bg-yellow-500 transition"
-        onClick={() => alert('카카오로 시작하기')}
+        className="flex items-center justify-start gap-[42px] w-[282px] h-[44px] bg-[#F7E409] text-black rounded-sm px-[20px]"
+        onClick={() => {
+          router.push('/'); // 임시 라우팅
+        }}
       >
-        <img
-          src="/kakao-icon.png" // 카카오 로고 이미지 경로
-          alt="카카오 로고"
-          className="w-6 h-6 mr-3"
-        />
-        카카오 계정으로 로그인
+        <Image src={KakaoIcon} alt="카카오 아이콘" />
+        <span className="text-body2">카카오로 시작하기</span>
       </button>
-    </div>
+    </main>
   );
 };
 
