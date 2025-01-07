@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import KakaoIcon from '../../../public/kakao.svg';
+import KakaoIcon from '../../../public/Login/kakao.svg';
 
 const Login = () => {
   const router = useRouter();
