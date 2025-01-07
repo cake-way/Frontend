@@ -21,9 +21,15 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans scrollbar-hidden">{children}</body>
-      {/* BottomNavBar 컴포넌트 */}
-      <BottomNavBar />
+      <body className="font-sans scrollbar-hidden">
+        <div className="w-full h-full relative">
+          <main className="overflow-y-scroll w-full h-full flex flex-col">
+            {children}
+            {/* BottomNavBar 컴포넌트 */}
+          </main>
+          <BottomNavBar />
+        </div>
+      </body>
     </html>
   );
 }

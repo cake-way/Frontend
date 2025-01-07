@@ -9,7 +9,7 @@ import CakeRecommend from './components/home/\bCakeRecommend';
 
 export default function Home() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <Header
         leftButtonImage={
           <Image src={CakeWay} alt="Cake Way" width={24} height={24} />
@@ -21,11 +21,9 @@ export default function Home() {
           <Image src={Alarm} alt="Alarm" width={24} height={24} />
         }
       />
-      <main className="overscroll-y-auto h-full">
-        <CakePick />
-        <CategoryCake />
-        <CakeRecommend />
-      </main>
+      <CakePick />
+      <CategoryCake />
+      <CakeRecommend />
     </div>
   );
 }

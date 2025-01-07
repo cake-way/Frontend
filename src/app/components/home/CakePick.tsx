@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const CakePick = () => {
   return (
-    <section className="pt-8 pl-5  mb-7 ">
+    <section className="pt-8 pl-5  mb-7 mt-[56px] ">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link href="#" className="text-sm text-[#3E3F45] text-xs ">
@@ -38,7 +38,7 @@ const CakePick = () => {
             <img
               src="/images/cake-pick-cake2.svg"
               alt="케이크 이미지 2"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover "
             />
             <div className="absolute bottom-2 left-2 text-white p-2 rounded-md">
               <p className="heading-1">연말 모임에 주문하기</p>
@@ -53,7 +53,7 @@ const CakePick = () => {
             <img
               src="/images/cake-pick-cake1.svg"
               alt="케이크 이미지 1"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover "
             />
             <div className="absolute bottom-2 left-2 text-white p-2 rounded-md">
               <p className="text-sm font-bold">연말 모임에 주문하기</p>
@@ -68,7 +68,7 @@ const CakePick = () => {
             <img
               src="/images/cake-pick-cake2.svg"
               alt="케이크 이미지 2"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover "
             />
             <div className="absolute bottom-2 left-2 text-white p-2 rounded-md">
               <p className="text-sm font-bold">가족 모임에 주문하기</p>
