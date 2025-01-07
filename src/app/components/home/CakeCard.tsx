@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface CakeCardProps {
   image: string;
   title: string;

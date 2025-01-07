@@ -5,7 +5,7 @@ import Image from 'next/image';
 import InputField from './components/InputField';
 import CakePick from './components/home/CakePick';
 import CategoryCake from './components/home/CategoryCake';
-import CakeRecommend from './components/home/\bCakeRecommend';
+import CakeRecommend from './components/home/CakeRecommend';
 
 export default function Home() {
   return (

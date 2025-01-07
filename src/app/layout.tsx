@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import BottomNavBar from './components/BottomNavBar';
+import ClientWrapper from './clientLayout';
 
 export const metadata: Metadata = {
   title: 'CAKEWAY',
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="ko">
       <head>
@@ -23,11 +23,8 @@ export default function RootLayout({
       </head>
       <body className="font-sans scrollbar-hidden">
         <div className="w-full h-full relative">
-          <main className="overflow-y-scroll w-full h-full flex flex-col">
-            {children}
-            {/* BottomNavBar 컴포넌트 */}
-          </main>
-          <BottomNavBar />
+          {/* 클라이언트 컴포넌트로 분리된 ClientWrapper 사용 */}
+          <ClientWrapper>{children}</ClientWrapper>
         </div>
       </body>
     </html>
