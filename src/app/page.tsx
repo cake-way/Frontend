@@ -3,10 +3,13 @@ import CakeWay from '../../public/cake-way.svg';
 import Alarm from '../../public/alarm.svg';
 import Image from 'next/image';
 import InputField from './components/InputField';
+import CakePick from './components/home/CakePick';
+import CategoryCake from './components/home/CategoryCake';
+import CakeRecommend from './components/home/\bCakeRecommend';
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full h-full">
       <Header
         leftButtonImage={
           <Image src={CakeWay} alt="Cake Way" width={24} height={24} />
@@ -18,6 +21,11 @@ export default function Home() {
           <Image src={Alarm} alt="Alarm" width={24} height={24} />
         }
       />
+      <main className="overscroll-y-auto h-full">
+        <CakePick />
+        <CategoryCake />
+        <CakeRecommend />
+      </main>
     </div>
   );
 }

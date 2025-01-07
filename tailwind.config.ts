@@ -89,6 +89,12 @@ export default {
           { lineHeight: '18px', fontWeight: 'medium', letterSpacing: '-1%' },
         ], // Body 2 (Medium)
       },
+      scrollbar: {
+        hidden: {
+          'scrollbar-width': 'none' /* Firefox */,
+          '-ms-overflow-style': 'none' /* IE, Edge */,
+        },
+      },
     },
   },
   plugins: [

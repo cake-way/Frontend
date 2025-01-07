@@ -1,0 +1,14 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.1809 4.93054L31 31.3484L5 35.0001L14.1809 4.93054Z" fill="#FA2840"/>
+<rect width="6.0471" height="2.335" transform="matrix(0.284518 0.958671 -0.955625 0.294585 13.1299 0)" fill="#DCDA75"/>
+<rect width="5.98317" height="2.36021" transform="matrix(0.798804 0.601592 -0.587004 0.809584 9.95312 2.37573)" fill="#FF4B4B"/>
+<mask id="mask0_1644_8472" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="4" width="26" height="32">
+<path d="M14.1809 4.93054L31 31.3484L5 35.0001L14.1809 4.93054Z" fill="#FA2840"/>
+</mask>
+<g mask="url(#mask0_1644_8472)">
+<rect width="21.0543" height="3.55181" transform="matrix(0.901897 -0.431951 0.418729 0.908111 3.90527 18.5975)" fill="#FFA9B6"/>
+<rect width="21.0543" height="3.55181" transform="matrix(0.901897 -0.431951 0.418729 0.908111 1.57324 11.4698)" fill="#FFA9B6"/>
+<rect width="24.3482" height="3.55181" transform="matrix(0.901897 -0.431951 0.418729 0.908111 3.26562 27.1473)" fill="#FFA9B6"/>
+<rect width="31.498" height="3.55181" transform="matrix(0.901897 -0.431951 0.418729 0.908111 3.90527 34.9886)" fill="#FFA9B6"/>
+</g>
+</svg>

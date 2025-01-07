@@ -13,14 +13,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        {/* 페이지 콘텐츠 */}
-        <main>{children}</main>
-
-        {/* BottomNavBar 컴포넌트 */}
-        <BottomNavBar />
-      </body>
+    <html lang="ko">
+      <head>
+        {/* Google Fonts에서 Pretendard 폰트 추가 */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans scrollbar-hidden">{children}</body>
     </html>
   );
 }
