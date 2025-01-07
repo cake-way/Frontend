@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import BottomNavBar from './components/BottomNavBar';
 
 export const metadata: Metadata = {
   title: 'CAKEWAY',
@@ -12,15 +13,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <head>
-        {/* Google Fonts에서 Pretendard 폰트 추가 */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-sans">{children}</body>
+    <html lang="en">
+      <body>
+        {/* 페이지 콘텐츠 */}
+        <main>{children}</main>
+
+        {/* BottomNavBar 컴포넌트 */}
+        <BottomNavBar />
+      </body>
     </html>
   );
 }
