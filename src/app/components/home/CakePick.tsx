@@ -36,8 +36,8 @@ const CakePick = () => {
         <SwiperSlide>
           <div className="bg-gradient-to-b from-[rgba(255,251,251,0)] to-[rgba(15,15,15,0.58)] bg-blend-multiply mix-blend-multiply relative w-full h-auto aspect-[270/373] object-cover">
             <img
-              src="/images/cake-pick-cake1.svg"
-              alt="케이크 이미지 1"
+              src="/images/cake-pick-cake2.svg"
+              alt="케이크 이미지 2"
               className="w-full h-full object-cover rounded-lg"
             />
             <div className="absolute bottom-2 left-2 text-white p-2 rounded-md">
@@ -49,7 +49,7 @@ const CakePick = () => {
 
         {/* 세 번째 슬라이드 */}
         <SwiperSlide>
-          <div className="relative w-full h-auto aspect-[270/373] object-cover">
+          <div className="bg-gradient-to-b from-[rgba(255,251,251,0)] to-[rgba(15,15,15,0.58)] bg-blend-multiply mix-blend-multiply relative w-full h-auto aspect-[270/373] object-cover">
             <img
               src="/images/cake-pick-cake1.svg"
               alt="케이크 이미지 1"
@@ -64,9 +64,9 @@ const CakePick = () => {
 
         {/* 네 번째 슬라이드 */}
         <SwiperSlide>
-          <div className="relative w-full h-[200px]">
+          <div className="bg-gradient-to-b from-[rgba(255,251,251,0)] to-[rgba(15,15,15,0.58)] bg-blend-multiply mix-blend-multiply relative w-full h-auto aspect-[270/373] object-cover">
             <img
-              src="/images/cake-2.jpg"
+              src="/images/cake-pick-cake2.svg"
               alt="케이크 이미지 2"
               className="w-full h-full object-cover rounded-lg"
             />
