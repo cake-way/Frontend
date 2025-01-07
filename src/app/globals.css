@@ -21,4 +21,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Pretendard;
+  width: 100%;
+  min-width: 360px;
+  max-width: 480px;
+  /* height: 100dvh; */
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
 }

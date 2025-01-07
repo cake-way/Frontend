@@ -1,0 +1,17 @@
+<svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 18V4H16V12.5C16 13.0523 16.4477 13.5 17 13.5H18.25C20.8734 13.5 23 15.6266 23 18.25C23 20.8734 20.8734 23 18.25 23H8C5.23858 23 3 20.7614 3 18Z" fill="#DCDA75"/>
+<mask id="mask0_1644_8544" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="4" width="20" height="19">
+<path d="M3 23V4H16V12.5C16 13.0523 16.4477 13.5 17 13.5H18.25C20.8734 13.5 23 15.6266 23 18.25C23 20.8734 20.8734 23 18.25 23H3Z" fill="#FFA9B6"/>
+</mask>
+<g mask="url(#mask0_1644_8544)">
+<rect x="2" y="4" width="14" height="3" fill="#FA2840"/>
+<path d="M3.5 9L2 7L5 7L3.5 9Z" fill="#FA2840"/>
+<path d="M6.5 9L5 7L8 7L6.5 9Z" fill="#FA2840"/>
+<path d="M9.5 9L8 7L11 7L9.5 9Z" fill="#FA2840"/>
+<path d="M12.5 9L11 7L14 7L12.5 9Z" fill="#FA2840"/>
+<path d="M15.5 9L14 7L17 7L15.5 9Z" fill="#FA2840"/>
+<circle cx="5" cy="21" r="5" fill="#FA2840"/>
+<circle cx="22" cy="18" r="5" fill="#FA2840"/>
+</g>
+<rect width="19" height="5" fill="#DCDA75"/>
+</svg>
