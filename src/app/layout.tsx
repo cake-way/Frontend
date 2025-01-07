@@ -22,6 +22,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans scrollbar-hidden">{children}</body>
+      {/* BottomNavBar 컴포넌트 */}
+      <BottomNavBar />
     </html>
   );
 }
