@@ -13,7 +13,7 @@ export default function Home() {
       <Header
         leftButtonImage={<Image src={CakeWay} alt="Cake Way" />}
         centerComponent={
-          <InputField placeholder=" 원하는 케이크를 찾으러 가기" />
+          <InputField placeholder=" 원하는 케이크 찾으러 가기" />
         }
         rightButtonImage={<Image src={Alarm} alt="Alarm" />}
       />
