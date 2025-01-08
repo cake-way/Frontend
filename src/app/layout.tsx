@@ -17,8 +17,8 @@ export default function RootLayout({
       <head>
         {/* Google Fonts에서 Pretendard 폰트 추가 */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap"
           rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
         />
       </head>
       <body className="font-sans scrollbar-hidden">

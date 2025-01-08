@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({
   borderBottom = false, // 기본값은 false
 }) => {
   return (
-    <header className="bg-[#FFF] text-[#131313] flex justify-between items-center absolute top-0  z-50 w-full h-[56px]">
+    <header className="bg-[#FFF] text-[#131313] flex justify-between px-8 items-center absolute top-0  z-50 w-full h-[75px]">
       {/* 좌측 버튼 (이미지) */}
       <button
         onClick={onLeftButtonClick}
