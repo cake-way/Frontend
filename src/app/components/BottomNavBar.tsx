@@ -14,17 +14,17 @@ const BottomNavBar = () => {
   const router = useRouter(); // 라우터 훅을 사용하여 페이지 전환
 
   const navItems = [
-    { path: '/', icon: <HomeIcon className="w-6 h-6" />, label: '홈' },
-    { path: '/log', icon: <LogIcon className="w-6 h-6" />, label: '로그작성' },
-    { path: '/map', icon: <MapIcon className="w-6 h-6" />, label: '지도' },
+    { path: '/', icon: <HomeIcon />, label: '홈' },
+    { path: '/log', icon: <LogIcon />, label: '로그작성' },
+    { path: '/map', icon: <MapIcon />, label: '지도' },
     {
       path: '/order',
-      icon: <OrderIcon className="w-6 h-6" />,
+      icon: <OrderIcon />,
       label: '주문내역',
     },
     {
       path: '/my-log',
-      icon: <MyLogIcon className="w-6 h-6" />,
+      icon: <MyLogIcon />,
       label: '마이로그',
     },
   ];
@@ -35,16 +35,16 @@ const BottomNavBar = () => {
   };
 
   return (
-    <nav className="absolute bottom-0  w-full h-[80px] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 border border-gray-300 space-x-9">
+    <nav className="absolute bottom-0  w-full h-[80px] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
       {navItems.map(({ path, icon, label }) => {
         const isActive = currentPath === path;
         return (
           <button
             key={path}
             onClick={() => navigateToPath(path)} // 버튼 클릭 시 해당 경로로 이동
-            className={`flex flex-col items-center justify-center w-14 h-16 ${isActive ? 'text-black' : 'text-[#949494]'}`}
+            className={`flex flex-col items-center justify-center w-14 h-16 ${isActive ? 'text-black' : 'text-grayscale600'}`}
           >
-            <div className="w-6 h-6">{icon}</div>
+            <div>{icon}</div>
             <p className="text-[10px] mt-1 w-full text-center whitespace-nowrap">
               {label}
             </p>

@@ -20,8 +20,7 @@ const Header: React.FC<HeaderProps> = ({
   borderBottom = false, // 기본값은 false
 }) => {
   return (
-    <header className="bg-[#FFF] text-[#131313] flex justify-between items-center absolute top-0  z-50 w-full h-[56px]">
-      {/* 좌측 버튼 (이미지) */}
+    <header className="bg-[#FFF] text-[#131313] flex justify-between px-8 items-center absolute top-0  z-50 w-full h-[75px]">
       <button
         onClick={onLeftButtonClick}
         className="py-2 rounded-md flex items-center"
@@ -29,18 +28,14 @@ const Header: React.FC<HeaderProps> = ({
         {leftButtonImage}
       </button>
 
-      {/* 중간 텍스트 또는 컴포넌트 */}
       <div className="flex-1 text-center">
         {centerComponent ? (
           centerComponent // centerComponent가 있으면 렌더링
         ) : (
-          <h1 className="text-[20px] font-bold font-Pretendard">
-            {centerText}
-          </h1>
+          <h1 className="text-title2 font-Pretendard">{centerText}</h1>
         )}
       </div>
 
-      {/* 우측 버튼 (이미지) */}
       {rightButtonImage && (
         <button
           onClick={onRightButtonClick}
@@ -49,8 +44,6 @@ const Header: React.FC<HeaderProps> = ({
           {rightButtonImage}
         </button>
       )}
-
-      {/* borderBottom 적용 */}
       {borderBottom && (
         <div className="absolute bottom-0 w-full border-b border-gray-300" />
       )}
