@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import KakaoIcon from '../../../public/Login/kakao.svg';
-import CakeWayLogo from '../../../public/Login/cake-way.svg';
+import KakaoIcon from '../../../public/login-images/kakao.svg';
+import CakeWayLogo from '../../../public/login-images/cake-way.svg';
 
 const Login = () => {
   const router = useRouter();

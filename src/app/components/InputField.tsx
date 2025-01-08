@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import SearchIcon from '../../../public/Header/search.svg';
+import SearchIcon from '../../../public/header-images/search.svg';
 
 interface InputFieldProps {
   placeholder?: string;
