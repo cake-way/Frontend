@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({
   borderBottom = false, // 기본값은 false
 }) => {
   return (
-    <header className="bg-[#FFF] text-[#131313] flex justify-between px-8 items-center absolute top-0  z-50 w-full h-[75px]">
+    <header className="bg-[#FFF] text-[#131313] flex justify-between px-8 items-center sticky top-0  z-50 w-full h-[75px]">
       <button
         onClick={onLeftButtonClick}
         className="py-2 rounded-md flex items-center"

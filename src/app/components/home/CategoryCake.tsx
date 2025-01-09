@@ -1,6 +1,6 @@
 const CategoryCake = () => {
   return (
-    <div className="grid grid-cols-5 gap-4 mt-8">
+    <div className="grid grid-cols-5 gap-4 mt-8 h-[40%]">
       {[
         { label: '생일', icon: 'images/icons/birthday.svg' },
         { label: '졸업', icon: 'images/icons/graduate.svg' },
