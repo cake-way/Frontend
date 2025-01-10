@@ -15,7 +15,7 @@ export default function Home() {
         centerComponent={
           <InputField placeholder=" 원하는 케이크 찾으러 가기" />
         }
-        rightButtonImage={<Image src={Alarm} alt="Alarm" />}
+        rightButtonImage={[<Image key="Alarm" src={Alarm} alt="Alarm" />]}
       />
       <CakePick />
       <CategoryCake />
