@@ -34,10 +34,14 @@ const BottomNavBar = () => {
     router.push(path); // 버튼 클릭 시 해당 경로로 이동
   };
 
+  // my-log 관련 페이지들이 활성화된 경우를 체크
+  const isMyLogActive = currentPath.startsWith('/my-log');
+
   return (
     <nav className="absolute bottom-0  w-full h-[80px] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
       {navItems.map(({ path, icon, label }) => {
-        const isActive = currentPath === path;
+        const isActive =
+          path === '/my-log' ? isMyLogActive : currentPath === path;
         return (
           <button
             key={path}
