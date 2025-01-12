@@ -9,8 +9,8 @@ import CakeRecommend from './components/home/CakeRecommend';
 
 export default function Home() {
   return (
-    <div className="w-full ">
-      <div className="h-[calc(100dvh-var(--bottom-nav-height))] flex flex-col">
+    <>
+      <div className="h-[calc(100dvh-var(--bottom-nav-height))] flex flex-col ]">
         <Header
           leftButtonImage={<Image src={CakeWay} alt="Cake Way" />}
           centerComponent={
@@ -23,6 +23,6 @@ export default function Home() {
         <CategoryCake />
       </div>
       <CakeRecommend />
-    </div>
+    </>
   );
 }

@@ -25,28 +25,50 @@ const cakes = [
     status: '오늘 휴무',
     location: '서울/강남',
   },
+  {
+    image: '/images/cake-4.svg',
+    title: 'TAND CAKE',
+    status: '오늘 휴무',
+    location: '서울/강남',
+  },
 ];
 
 const CakeRecommend: React.FC = () => {
   return (
-    <section className="py-8 bg-lightGray">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="title-2">특별한 날, 특별한 케이크</h2>
-          <a href="#" className="text-grayscale800 text-xs">
-            전체보기 &gt;
-          </a>
+    <section className="py-8 bg-lightGray w-full">
+      <div className=" mx-auto px-4 w-full flex flex-col gap-16">
+        {/* 1번 슬라이드 */}
+        <div>
+          <h2 className="title-2 mb-4">특별한 날, 특별한 케이크</h2>
+
+          <div className="flex overflow-x-auto gap-4 w-full  ">
+            {cakes.map((cake, index) => (
+              <CakeCard
+                key={index}
+                image={cake.image}
+                title={cake.title}
+                status={cake.status}
+                location={cake.location}
+              />
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 ">
-          {cakes.map((cake, index) => (
-            <CakeCard
-              key={index}
-              image={cake.image}
-              title={cake.title}
-              status={cake.status}
-              location={cake.location}
-            />
-          ))}
+
+        {/* 2번슬라이드 */}
+        <div>
+          <h2 className="title-2 mb-4">특별한 날, 특별한 케이크</h2>
+
+          <div className="flex overflow-x-auto gap-4 w-full  ">
+            {cakes.map((cake, index) => (
+              <CakeCard
+                key={index}
+                image={cake.image}
+                title={cake.title}
+                status={cake.status}
+                location={cake.location}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ export default function ClientWrapper({
 
   return (
     <>
-      <main className="overflow-y-scroll w-full h-full flex flex-col">
+      <main className="overflow-y-scroll w-full h-full flex flex-col pb-[var(--bottom-nav-height)]">
         {children}
       </main>
       {shouldShowBottomNavBar && <BottomNavBar />}
