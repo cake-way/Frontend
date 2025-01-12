@@ -35,7 +35,7 @@ const BottomNavBar = () => {
   };
 
   return (
-    <nav className="absolute bottom-0  w-full h-[80px] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
+    <nav className="absolute bottom-0  w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
       {navItems.map(({ path, icon, label }) => {
         const isActive = currentPath === path;
         return (
