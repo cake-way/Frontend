@@ -21,7 +21,11 @@ const Header: React.FC<HeaderProps> = ({
   borderBottom = false,
 }) => {
   return (
-    <header className="bg-[#FFF] text-[#131313] flex justify-between px-8 items-center absolute top-0 z-50 w-full h-[75px]">
+    <header
+      className={`bg-[#FFF] text-[#131313] flex justify-between px-8 items-center absolute top-0 z-50 w-full h-[75px] ${
+        borderBottom ? 'border-b border-gray-300' : ''
+      }`}
+    >
       <button
         onClick={onLeftButtonClick}
         className="py-2 rounded-md flex items-center"
@@ -52,10 +56,6 @@ const Header: React.FC<HeaderProps> = ({
           </button>
         ))}
       </div>
-
-      {borderBottom && (
-        <div className="absolute bottom-0 w-full border-b border-gray-300" />
-      )}
     </header>
   );
 };

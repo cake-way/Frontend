@@ -31,6 +31,10 @@ const MyLog = () => {
     router.back();
   };
 
+  const handleAlarmIconClick = () => {
+    router.push('/notice');
+  };
+
   // 케이크 이미지 배열
   const cakeData = [
     { src: Cake1, alt: 'Cake 1' },
@@ -71,6 +75,7 @@ const MyLog = () => {
           <Image key="Alarm" src={AlarmIcon} alt="Alarm" />,
           <Image key="setting" src={SettingIcon} alt="setting" />,
         ]}
+        onRightButtonClick={[handleAlarmIconClick]}
       />
 
       <UserInfo
