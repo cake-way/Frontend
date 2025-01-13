@@ -49,7 +49,7 @@ const CakeStores = () => {
       />
 
       {/* 저장된 가게 리스트 */}
-      <div className="flex w-full mt-[105px] px-8 flex-col gap-[23px]">
+      <div className="flex w-full mt-7 px-5 flex-col gap-[23px]">
         {storeData.map((store, index) => (
           <section key={index} className="flex items-center gap-4 relative">
             {/* 왼쪽: 가게 케이크 사진 */}

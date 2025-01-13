@@ -66,7 +66,7 @@ const MyLog = () => {
   ];
 
   return (
-    <main className="w-full mb-[85px]">
+    <main className="w-full">
       <Header
         leftButtonImage={<Image src={BackIcon} alt="back" />}
         onLeftButtonClick={handleLeftButtonClick}
@@ -84,7 +84,7 @@ const MyLog = () => {
         introduction="사진 찍었을 때 잘 나오고 조금 힙한 케이크를 좋아해요!! "
       />
 
-      <section className="px-8 mt-[20px]">
+      <section className="px-5 mt-[20px]">
         <button
           onClick={() => {
             router.push('/profileEdit');

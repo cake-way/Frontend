@@ -22,7 +22,7 @@ const CakeDesigns = () => {
   const images = [Design1, Design2, Design3, Design1];
 
   return (
-    <main className="mt-[105px] h-screen flex flex-col items-center">
+    <main className="mt-7 h-screen flex flex-col items-center">
       <Header
         leftButtonImage={<Image src={BackIcon} alt="back" />}
         onLeftButtonClick={() => {

@@ -14,13 +14,13 @@ interface SavedLogProps {
 
 const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
   return (
-    <main className="mt-[35px] px-8 flex flex-col items-center">
+    <main className="mt-[35px] px-5 flex flex-col items-center">
       <Title title="저장한 케이크로그" link="/my-log/cake-logs" />
 
       {/* 저장된 디자인 미리보기 */}
       <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">
         {savedLog.map((cake, index) => (
-          <div key={index} className="relative w-full h-[215px]">
+          <div key={index} className="relative w-full h-[250px]">
             {/* 이미지 */}
             <Image
               src={cake.src}
