@@ -15,11 +15,11 @@ interface SavedCakeProps {
 
 const SavedCake: React.FC<SavedCakeProps> = ({ cakes }) => {
   return (
-    <main className="mt-[35px] px-[32px] flex flex-col items-center">
-      <Title title="저장한 디자인" />
+    <main className="mt-[35px] px-8 flex flex-col items-center">
+      <Title title="저장한 디자인" link="/my-log/designs" />
 
       {/* 저장된 디자인 미리보기 */}
-      <section className="mt-4 w-[400px] h-[400px] grid grid-cols-2 grid-rows-2 rounded-lg overflow-hidden">
+      <section className="mt-4 w-full h-[360px] grid grid-cols-2 grid-rows-2 rounded-lg overflow-hidden">
         {cakes.map((cake, index) => (
           <div key={index} className="relative w-full h-full">
             <Image
