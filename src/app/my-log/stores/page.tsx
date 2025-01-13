@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import Header from '@/app/components/Header';
 import BackIcon from '../../../../public/header-images/back.svg';
@@ -9,7 +10,6 @@ import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import Store1 from '../../../../public/my-log-images/store-1.svg';
 import Status from '../../../../public/my-log-images/status.svg';
 import MarkIcon from '@/app/components/Icons/MarkIcon';
-import { useRouter } from 'next/navigation';
 
 const storeData = [
   {
@@ -30,6 +30,11 @@ const storeData = [
 
 const CakeStores = () => {
   const router = useRouter();
+
+  const handleAlarmIconClick = () => {
+    router.push('/notice');
+  };
+
   return (
     <main className="w-full h-screen flex flex-col items-center text-white font-sans">
       <Header
@@ -39,6 +44,7 @@ const CakeStores = () => {
         }}
         centerText="저장한 가게"
         rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
+        onRightButtonClick={[handleAlarmIconClick]}
         borderBottom={true}
       />
 

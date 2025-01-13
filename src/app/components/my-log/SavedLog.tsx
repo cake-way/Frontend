@@ -14,7 +14,7 @@ interface SavedLogProps {
 
 const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
   return (
-    <main className="mt-[35px] px-[32px] flex flex-col items-center">
+    <main className="mt-[35px] px-8 flex flex-col items-center">
       <Title title="저장한 케이크로그" link="/my-log/cake-logs" />
 
       {/* 저장된 디자인 미리보기 */}

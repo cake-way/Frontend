@@ -18,7 +18,7 @@ interface SavedStoreProps {
 
 const SavedStore: React.FC<SavedStoreProps> = ({ stores }) => {
   return (
-    <main className="mt-[35px] px-[32px] flex flex-col items-center">
+    <main className="mt-[35px] px-8 flex flex-col items-center">
       <Title title="저장한 가게" link="/my-log/stores" />
 
       {/* 저장된 가게 리스트 */}

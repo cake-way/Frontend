@@ -43,6 +43,10 @@ const CakeLogs = () => {
     );
   };
 
+  const handleAlarmIconClick = () => {
+    router.push('/notice');
+  };
+
   return (
     <main className="w-full h-screen flex flex-col items-center text-white font-sans">
       <Header
@@ -52,6 +56,7 @@ const CakeLogs = () => {
         }}
         centerText="저장한 케이크로그"
         rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
+        onRightButtonClick={[handleAlarmIconClick]}
         borderBottom={true}
       />
 
