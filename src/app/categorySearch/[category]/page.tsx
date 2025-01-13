@@ -18,23 +18,22 @@ const CategorySearch = () => {
   const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const todayRef = useRef(true);
-  const { selectedDateNumber, selectedDate, selectedPeriod } =
-    useCalenderStore();
+  const { filteringDate } = useCalenderStore();
 
   const onOrder = (cake_id: number) => {
     router.push(`/order/${cake_id}`);
   };
 
   const isSameDay = (date1: Date, date2: Date) => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
+    if (date1) {
+      return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+      );
+    }
   };
-
-  console.log(calendarOpen);
-
+  console.log(filteringDate);
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -51,7 +50,7 @@ const CategorySearch = () => {
         <div>
           <Image src={calendar} alt="calendar"></Image>
         </div>
-        {isSameDay(selectedDate, new Date()) ? <div>오늘</div> : ''}
+        {isSameDay(filteringDate, new Date()) ? <div>오늘</div> : ''}
       </div>
       {/* Category Tabs */}
       <div className="flex gap-4 p-4 bg-white">

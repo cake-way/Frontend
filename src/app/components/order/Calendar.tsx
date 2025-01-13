@@ -1,29 +1,50 @@
 'use client';
 import useCalenderStore from '@/app/store/calendarStore';
 import { useState } from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
-// import Header from '../Header';
-// import back from '../../../../public/header-images/back.svg';
-// import Image from 'next/image';
-
-interface ICalendar {
-  setCalendarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Calendar: React.FC<ICalendar> = ({ setCalendarOpen }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const CalendarComponent = ({ setCalendarOpen }) => {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedPeriod, setSelectedPeriod] = useState('');
-  const [selectedDateNumber, setSelectedDateNumber] = useState(0);
+  const [selectedPeriod, setSelectedPeriod] = useState('오후');
 
-  const { setDateNumber, setDate, setTime, setPeriod } = useCalenderStore();
+  const { setFilteringDate, setTime, setPeriod, filteringDate } =
+    useCalenderStore();
 
-  const dates = Array.from({ length: 30 }, (_, i) => i + 1); // 1일부터 30일까지
-  const times = ['12:00', '1:00', '2:00', '3:00', '4:00']; // 시간대
+  const pmTimes = [
+    '12:00',
+    '12:30',
+    '1:00',
+    '1:30',
+    '2:00',
+    '2:30',
+    '3:00',
+    '3:30',
+    '4:00',
+    '4:30',
+    '5:00',
+    '5:30',
+    '6:00',
+  ]; // 시간대
+  const amTimes = ['11:00', '11:30'];
+
+  const getHoursMinutes = (selectedPeriod: string, selectedTime: string) => {
+    let [hours, minutes] = selectedTime.split(':').map(Number);
+    if (selectedPeriod === '오후' && hours !== 12) {
+      hours = hours + 12;
+    }
+    return [hours, minutes];
+  };
 
   const onResult = () => {
-    setDateNumber(selectedDateNumber);
-    setDate(selectedDate);
+    const newDate = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate(),
+      ...getHoursMinutes(selectedPeriod, selectedTime)
+    );
+    setFilteringDate(newDate);
     setTime(selectedTime);
     setPeriod(selectedPeriod);
 
@@ -31,65 +52,57 @@ const Calendar: React.FC<ICalendar> = ({ setCalendarOpen }) => {
       setCalendarOpen(false);
     }
   };
+  console.log(filteringDate);
 
   return (
-    <div className="p-4 w-full mx-auto bg-[#ffffff]  rounded-lg">
-      {/* Date and Time */}
+    <div className="p-4 w-full bg-[#ffffff] rounded-lg shadow-lg overflow-hidden max-w-[480px]">
       <section className="mb-6">
-        <h3 className="text-base font-bold mb-4">날짜 · 시간</h3>
-        {/* Month Navigation */}
-        <div className="flex items-center justify-between mb-4">
-          <button
-            className="text-gray-600"
-            onClick={() =>
-              setSelectedDate(
-                new Date(
-                  selectedDate.getFullYear(),
-                  selectedDate.getMonth() - 1,
-                  selectedDateNumber
-                )
-              )
-            }
-          >
-            &lt;
-          </button>
-          <span className="font-medium text-gray-800">{`${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월`}</span>
-          <button
-            className="text-gray-600"
-            onClick={() =>
-              setSelectedDate(
-                new Date(
-                  selectedDate.getFullYear(),
-                  selectedDate.getMonth() + 1,
-                  selectedDateNumber
-                )
-              )
-            }
-          >
-            &gt;
-          </button>
-        </div>
+        <h3 className="text-lg font-bold mb-4">날짜 · 시간</h3>
 
         {/* Calendar */}
-        <div className="grid grid-cols-7 text-center mb-4">
-          {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
-            <span key={day} className="text-sm font-medium text-gray-500">
-              {day}
-            </span>
-          ))}
-          {dates.map((date) => (
-            <button
-              key={date}
-              className={`p-2 text-sm font-medium rounded-full ${
-                selectedDateNumber === Number(date)
-                  ? 'bg-red-500 text-white'
-                  : 'text-gray-800 hover:bg-gray-200'
-              }`}
-              onClick={() => setSelectedDateNumber(Number(date))}
-            >
-              {date}
-            </button>
-          ))}
+        <div
+          className={`
+  [&_.react-calendar]:border-none 
+  [&_.react-calendar]:w-full
+
+  [&_.react-calendar__month-view__weekdays]:uppercase
+  [&_.react-calendar__month-view__weekdays]:font-bold
+  [&_.react-calendar__month-view__weekdays__weekday]:text-center
+  [&_.react-calendar__month-view__days__day--weekend]:text-red-500
+  [&_.react-calendar__tile]:p-2
+  [&_.react-calendar__tile]:text-center
+  [&_.react-calendar__tile:enabled:hover]:bg-gray-100
+  [&_.react-calendar__tile--active]:!bg-[#FA2840]
+  
+          [&_.react-calendar__navigation button:disabled]:!bg-transparent
+          [&_.react-calendar__tile--active]:!text-black
+          [&_.react-calendar__tile:disabled]:!bg-transparent
+          [&_.react-calendar__tile:disabled]:!text-black
+           [&_.react-calendar__navigation__label__labelText]:font-pretendard
+  [&_.react-calendar__navigation__label__labelText]:text-[16px]
+  [&_.react-calendar__navigation__label__labelText]:font-bold
+  [&_.react-calendar__navigation__label__labelText]:text-[#2D2D2D]
+  [&_.react-calendar__navigation__label__labelText]:leading-5
+          [&_.react-calendar__tile--now]:bg-transparent
+          [&_.react-calendar__navigation__label]:!flex-grow-0
+       
+`}
+        >
+          <Calendar
+            value={selectedDate}
+            onChange={setSelectedDate}
+            locale="ko-KR"
+            formatDay={(locale, date) => date.getDate().toString()}
+            maxDetail="month" // 월간 뷰만 사용
+            minDetail="month" // 월간 뷰만 사용
+            minDate={new Date()}
+            maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
+            className="mb-4"
+            next2Label={null} // 더블 화살표 제거
+            prev2Label={null} // 더블 화살표 제거
+            // Tailwind classes for calendar
+            tileClassName="rounded"
+          />
         </div>
 
         {/* Time Selection */}
@@ -113,34 +126,38 @@ const Calendar: React.FC<ICalendar> = ({ setCalendarOpen }) => {
             오후
           </span>
         </div>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {times.map((time) => (
+        <div className="flex  X$ max-w-full overflow-x-auto gap-2 mt-2">
+          {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
             <button
               key={time}
-              className={`px-3 py-2 text-sm rounded-lg ${
+              className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
                 selectedTime === time
-                  ? 'bg-red-500 text-white'
+                  ? 'bg-primaryRed1 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
               onClick={() => setSelectedTime(time)}
             >
-              오후 {time}
+              {selectedPeriod}&nbsp;
+              {time}
             </button>
           ))}
         </div>
       </section>
+
       {/* Footer */}
       {setCalendarOpen && (
-        <footer className="flex justify-between p-4">
+        <footer className="flex gap-3 justify-between mt-6">
           <button
-            className="px-4 py-2 border border-gray-400 text-gray-700 rounded-lg"
             onClick={() => setCalendarOpen(false)}
+            className="flex-1 p-2.5 border border-gray-300 rounded
+              text-gray-700 hover:bg-gray-50 transition-colors text-xs"
           >
             닫기
           </button>
           <button
-            className="px-4 py-2 bg-black text-white rounded-lg"
             onClick={onResult}
+            className="flex-1 p-2.5 bg-black text-white rounded text-xs
+              hover:bg-gray-900 transition-colors"
           >
             결과 보기
           </button>
@@ -150,4 +167,4 @@ const Calendar: React.FC<ICalendar> = ({ setCalendarOpen }) => {
   );
 };
 
-export default Calendar;
+export default CalendarComponent;
