@@ -7,6 +7,13 @@ export default {
     './src/app/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'translate-y-0', // Bottom Sheet가 화면에 보이는 위치
+    'translate-y-full', // Bottom Sheet가 화면 아래로 숨겨지는 위치
+    'opacity-0', // Overlay가 숨겨진 상태
+    'opacity-100', // Overlay가 보이는 상태
+    'pointer-events-none', // 클릭 이벤트 비활성화 상태
+  ],
   theme: {
     extend: {
       colors: {

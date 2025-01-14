@@ -20,6 +20,7 @@ export default [
     // `react/react-in-jsx-scope` 규칙을 비활성화
     rules: {
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
     },
   },
 ];
