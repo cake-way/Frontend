@@ -1,6 +1,6 @@
 'use client';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 import { useParams, useRouter } from 'next/navigation';
 import back from '../../../../public/header-images/back.svg';
 import alarm from '@/../public/header-images/alarm.svg';
@@ -10,9 +10,9 @@ import Image from 'next/image';
 import { cakes, getCategoryParam } from '../../../../constants/constants';
 import { getCategoryName } from '../../../../utils/utils';
 import { useState } from 'react';
-import Calendar from '@/app/components/order/Calendar';
+import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
-import BottomSheet from '@/app/components/categoryCake/BottomSheet';
+import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 import useFilteringStore from '@/app/store/filteringStore';
 
 const CategorySearch = () => {

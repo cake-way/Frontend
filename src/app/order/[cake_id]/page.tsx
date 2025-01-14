@@ -1,13 +1,13 @@
 'use client';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 
 import back from '@/../public/header-images/back.svg';
 import cakeIcon from '@/../public/order/cakeIcon.svg';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import Calendar from '@/app/components/order/Calendar';
+import Calendar from '@/app/_components/order/Calendar';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -137,7 +137,10 @@ const Order: React.FC = () => {
 
       {/* Next Button */}
       <div className="p-5">
-        <button className="w-full bg-black text-white py-2 rounded-md text-lg font-medium">
+        <button
+          className="w-full bg-black text-white py-2 rounded-md text-lg font-medium"
+          onClick={() => router.push('/orderList')}
+        >
           다음
         </button>
       </div>

@@ -3,14 +3,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 
 import BackIcon from '../../../../public/header-images/back.svg';
 import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import Design1 from '../../../../public/my-log-images/cake-1.svg';
 import Design2 from '../../../../public/my-log-images/cake-2.svg';
 import Design3 from '../../../../public/my-log-images/cake-3.svg';
-import MarkIcon from '@/app/components/Icons/MarkIcon';
+import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
 const CakeDesigns = () => {
   const router = useRouter();

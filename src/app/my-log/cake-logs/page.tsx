@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 
 import BackIcon from '../../../../public/header-images/back.svg';
 import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import LogImg from '../../../../public/my-log-images/log.jpg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
-import MarkIcon from '@/app/components/Icons/MarkIcon';
+import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import { useRouter } from 'next/navigation';
 
 const savedLog = [

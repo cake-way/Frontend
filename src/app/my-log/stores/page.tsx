@@ -3,13 +3,13 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 import BackIcon from '../../../../public/header-images/back.svg';
 import AlarmIcon from '../../../../public/header-images/alarm.svg';
 
 import Store1 from '../../../../public/my-log-images/store-1.svg';
 import Status from '../../../../public/my-log-images/status.svg';
-import MarkIcon from '@/app/components/Icons/MarkIcon';
+import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
 const storeData = [
   {

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import Header from '../components/Header';
+import Header from '../_components/Header';
 import BackIcon from '../../../public/header-images/back.svg';
 import SettingIcon from '../../../public/header-images/setting.svg';
 import LogImg from '../../../public/my-log-images/cake-1.svg';

@@ -1,11 +1,11 @@
-import Header from './components/Header';
+import Header from './_components/Header';
 import CakeWay from '../../public/header-images/cake-way.svg';
 import Alarm from '../../public/header-images/alarm.svg';
 import Image from 'next/image';
-import InputField from './components/InputField';
-import CakePick from './components/home/CakePick';
-import CategoryCake from './components/home/CategoryCake';
-import CakeRecommend from './components/home/CakeRecommend';
+import InputField from './_components/InputField';
+import CakePick from './_components/home/CakePick';
+import CategoryCake from './_components/home/CategoryCake';
+import CakeRecommend from './_components/home/CakeRecommend';
 
 export default function Home() {
   return (

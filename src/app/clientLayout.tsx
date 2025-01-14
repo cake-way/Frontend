@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import BottomNavBar from './components/BottomNavBar';
+import BottomNavBar from './_components/BottomNavBar';
 
 export default function ClientWrapper({
   children,
