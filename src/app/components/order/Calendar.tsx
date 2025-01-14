@@ -4,13 +4,18 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const CalendarComponent = ({ setCalendarOpen }) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+interface CalendarComponentProps {
+  setCalendarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CalendarComponent: React.FC<CalendarComponentProps> = ({
+  setCalendarOpen,
+}) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
 
-  const { setFilteringDate, setTime, setPeriod, filteringDate } =
-    useCalenderStore();
+  const { setFilteringDate, setTime, setPeriod } = useCalenderStore();
 
   const pmTimes = [
     '12:00',
@@ -30,6 +35,7 @@ const CalendarComponent = ({ setCalendarOpen }) => {
   const amTimes = ['11:00', '11:30'];
 
   const getHoursMinutes = (selectedPeriod: string, selectedTime: string) => {
+    // eslint-disable-next-line prefer-const
     let [hours, minutes] = selectedTime.split(':').map(Number);
     if (selectedPeriod === '오후' && hours !== 12) {
       hours = hours + 12;
@@ -38,21 +44,25 @@ const CalendarComponent = ({ setCalendarOpen }) => {
   };
 
   const onResult = () => {
-    const newDate = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate(),
-      ...getHoursMinutes(selectedPeriod, selectedTime)
-    );
-    setFilteringDate(newDate);
-    setTime(selectedTime);
-    setPeriod(selectedPeriod);
+    if (selectedDate && selectedPeriod && selectedTime) {
+      const newDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        ...getHoursMinutes(selectedPeriod, selectedTime)
+      );
+      setFilteringDate(newDate);
+      setTime(selectedTime);
+      setPeriod(selectedPeriod);
+    } else {
+      alert('선택부탁드립니다');
+      return;
+    }
 
     if (setCalendarOpen) {
       setCalendarOpen(false);
     }
   };
-  console.log(filteringDate);
 
   return (
     <div className="p-4 w-full bg-[#ffffff] rounded-lg shadow-lg overflow-hidden max-w-[480px]">
@@ -90,7 +100,7 @@ const CalendarComponent = ({ setCalendarOpen }) => {
         >
           <Calendar
             value={selectedDate}
-            onChange={setSelectedDate}
+            onChange={(value) => setSelectedDate(value as Date | null)}
             locale="ko-KR"
             formatDay={(locale, date) => date.getDate().toString()}
             maxDetail="month" // 월간 뷰만 사용

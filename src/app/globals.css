@@ -8,6 +8,7 @@
     --foreground: #171717;
     --radius: 0.5rem;
     --bottom-nav-height: 80px;
+    --header-height: 75px;
   }
 }
 @layer components {

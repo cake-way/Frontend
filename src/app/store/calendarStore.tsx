@@ -4,7 +4,7 @@ interface CalendarStore {
   DateNumber: number | undefined;
   Time: string | null;
   Period: string | null;
-  filteringDate: Date;
+  filteringDate: Date | null;
   setDateNumber: (DateNumber: number) => void;
   setTime: (Time: string) => void;
   setPeriod: (Period: string) => void;
@@ -15,7 +15,7 @@ const useCalenderStore = create<CalendarStore>((set) => ({
   DateNumber: undefined,
   Time: null,
   Period: null,
-  filteringDate: new Date(),
+  filteringDate: null,
   setDateNumber: (DateNumber) => set({ DateNumber }),
   setTime: (Time) => set({ Time }),
   setPeriod: (Period) => set({ Period }),
