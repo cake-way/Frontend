@@ -60,7 +60,7 @@ const CakeLogs = () => {
         borderBottom={true}
       />
 
-      <section className="w-full mt-7 px-[20px] grid grid-cols-2 gap-2 items-center">
+      <section className="w-full pt-[75px] mt-7 px-[20px] grid grid-cols-2 gap-2 items-center">
         {savedLog.map((cake, index) => (
           <div key={index} className="relative w-full h-[250px]">
             {/* 이미지 */}

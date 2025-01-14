@@ -31,7 +31,7 @@ const MyLog = () => {
     router.back();
   };
 
-  const handleAlarmIconClick = () => {
+  const handleRightButtonClick = () => {
     router.push('/notice');
   };
 
@@ -75,7 +75,7 @@ const MyLog = () => {
           <Image key="Alarm" src={AlarmIcon} alt="Alarm" />,
           <Image key="setting" src={SettingIcon} alt="setting" />,
         ]}
-        onRightButtonClick={[handleAlarmIconClick]}
+        onRightButtonClick={[handleRightButtonClick]}
       />
 
       <UserInfo

@@ -22,7 +22,7 @@ const CakeDesigns = () => {
   const images = [Design1, Design2, Design3, Design1];
 
   return (
-    <main className="mt-7 h-screen flex flex-col items-center">
+    <main className="mt-7 flex flex-col items-center">
       <Header
         leftButtonImage={<Image src={BackIcon} alt="back" />}
         onLeftButtonClick={() => {
@@ -35,7 +35,7 @@ const CakeDesigns = () => {
       />
 
       {/* 그리드 레이아웃을 이용한 이미지 배치 */}
-      <div className="grid grid-cols-2 gap-2 w-full p-4">
+      <div className="pt-[75px] grid grid-cols-2 gap-2 w-full p-4">
         {images.map((image, index) => (
           <div
             key={index}

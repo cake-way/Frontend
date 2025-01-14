@@ -26,6 +26,13 @@ const storeData = [
     openingHours: '09:00 ~ 21:00',
     address: '서울특별시 서초구 카페로 456',
   },
+  {
+    storeImage: Store1,
+    isSameDayReservation: true,
+    storename: '카페 세잔',
+    openingHours: '06:00 ~ 21:00',
+    address: '서울특별시 서초구 카페로 789',
+  },
 ];
 
 const CakeStores = () => {
@@ -36,7 +43,7 @@ const CakeStores = () => {
   };
 
   return (
-    <main className="w-full h-screen flex flex-col items-center text-white font-sans">
+    <main className="w-full flex flex-col items-center text-white font-sans">
       <Header
         leftButtonImage={<Image src={BackIcon} alt="back" />}
         onLeftButtonClick={() => {
@@ -49,7 +56,7 @@ const CakeStores = () => {
       />
 
       {/* 저장된 가게 리스트 */}
-      <div className="flex w-full mt-7 px-5 flex-col gap-[23px]">
+      <div className="flex w-full pt-[75px] mt-7 px-5 flex-col gap-[23px]">
         {storeData.map((store, index) => (
           <section key={index} className="flex items-center gap-4 relative">
             {/* 왼쪽: 가게 케이크 사진 */}

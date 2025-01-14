@@ -15,7 +15,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
 }) => {
   return (
     <section
-      className="flex px-5 items-center"
+      className="flex px-5 pt-[75px] items-center"
       aria-labelledby="user-info-heading"
     >
       {/* 왼쪽 프로필 사진 */}

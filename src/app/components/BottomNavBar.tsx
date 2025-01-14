@@ -15,7 +15,7 @@ const BottomNavBar = () => {
 
   const navItems = [
     { path: '/', icon: <HomeIcon />, label: '홈' },
-    { path: '/log', icon: <LogIcon />, label: '로그작성' },
+    { path: '/log-entry', icon: <LogIcon />, label: '로그작성' },
     { path: '/map', icon: <MapIcon />, label: '지도' },
     {
       path: '/order',
@@ -36,12 +36,18 @@ const BottomNavBar = () => {
 
   // my-log 관련 페이지들이 활성화된 경우를 체크
   const isMyLogActive = currentPath.startsWith('/my-log');
+  // log 관련 페이지들이 활성화된 경우를 체크
+  const isLogActive = currentPath.startsWith('/log');
 
   return (
-    <nav className="absolute bottom-0  w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
+    <nav className="absolute bottom-0 w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
       {navItems.map(({ path, icon, label }) => {
+        // isActive 조건: /my-log 또는 /log와 관련된 페이지도 활성화 상태로 인식
         const isActive =
-          path === '/my-log' ? isMyLogActive : currentPath === path;
+          (path === '/my-log' && isMyLogActive) ||
+          (path === '/log-entry' && isLogActive) ||
+          currentPath === path;
+
         return (
           <button
             key={path}
