@@ -26,7 +26,7 @@ const CategorySearch = () => {
   const { confirmDesgin, confirmPrice, confirmReigon } = useFilteringStore();
 
   const onOrder = (cake_id: number) => {
-    router.push(`/order/${cake_id}`);
+    router.push(`/cakeDetail/${cake_id}`);
   };
 
   const isSameDay = (date1: Date, date2: Date) => {
@@ -48,7 +48,13 @@ const CategorySearch = () => {
     setIsOpen(true);
   };
 
-  console.log(confirmDesgin, confirmPrice, confirmReigon);
+  const onclickedBack = () => {
+    router.back();
+  };
+  const onCickedAlarm = () => {
+    router.push('/notice');
+  };
+
   return (
     <>
       {isOpen && (
@@ -65,10 +71,12 @@ const CategorySearch = () => {
           leftButtonImage={<Image src={back} alt="back" />}
           centerText={getCategoryName(category) || '카테고리 없음'}
           rightButtonImage={[<Image key="Alarm" src={alarm} alt="alrm" />]}
+          onLeftButtonClick={onclickedBack}
+          onRightButtonClick={[onCickedAlarm]}
         ></Header>
 
         <div
-          className=" bg-[#ffffff] mx-5 border-solid py-2.5 text-sm flex items-center border-b border-t border-[#E9E9E9]"
+          className="cursor-pointer relative bg-[#ffffff] mx-5 border-solid py-2.5 text-sm flex items-center border-b border-t border-[#E9E9E9]"
           onClick={() => setCalendarOpen(true)}
         >
           <div className="mr-0.5">
@@ -84,6 +92,7 @@ const CategorySearch = () => {
               ? ''
               : `${filteredDate.getHours()}:${filteredDate.getMinutes() === 0 ? '00' : filteredDate.getMinutes()}`}
           </div>
+          <Image src={down} alt="arrow_down" className="right-1 absolute" />
         </div>
         {/* Category Tabs */}
         <div className="flex gap-2 p-4">
@@ -112,11 +121,11 @@ const CategorySearch = () => {
         </div>
 
         {/* Cake Grid */}
-        <div className="grid grid-cols-2 gap-4 p-5">
+        <div className="grid grid-cols-2 gap-4 p-5 ">
           {cakes.map((cake, index) => (
             <div
               key={index}
-              className="relative bg-white rounded-lg overflow-hidden"
+              className="relative cursor-pointer bg-white rounded-lg overflow-hidden"
               onClick={() => onOrder(cake.cake_id)}
             >
               <img
@@ -140,6 +149,7 @@ const CategorySearch = () => {
             <Header
               leftButtonImage={<Image src={back} alt="back" />}
               centerText={'예약하기'}
+              onLeftButtonClick={() => setCalendarOpen(false)}
             ></Header>
             <Calendar setCalendarOpen={setCalendarOpen} />
           </div>

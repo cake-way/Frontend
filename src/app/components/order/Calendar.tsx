@@ -5,7 +5,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
 interface CalendarComponentProps {
-  setCalendarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setCalendarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CalendarComponent: React.FC<CalendarComponentProps> = ({
@@ -65,8 +65,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   };
 
   return (
-    <div className="p-4 w-full bg-[#ffffff] rounded-lg shadow-lg overflow-hidden max-w-[480px]">
-      <section className="mb-6">
+    <div className=" w-full  relative bg-[#ffffff] rounded-lg  overflow-hidden max-w-[480px]">
+      <section className="mb-6 p-4">
         <h3 className="text-lg font-bold mb-4">날짜 · 시간</h3>
 
         {/* Calendar */}
@@ -118,14 +118,14 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         {/* Time Selection */}
         <div className="flex items-center gap-4">
           <span
-            className={`text-sm font-medium text-gray-500
+            className={` cursor-pointer text-sm font-medium text-gray-500
               ${selectedPeriod === '오전' ? 'text-[#292929]' : 'text-grayscale500'}`}
             onClick={() => setSelectedPeriod('오전')}
           >
             오전
           </span>
           <span
-            className={`text-sm font-medium text-gray-500
+            className={`cursor-pointer text-sm font-medium text-gray-500
             
 
               ${selectedPeriod === '오후' ? 'text-[#292929]' : 'text-grayscale500'}
@@ -136,7 +136,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             오후
           </span>
         </div>
-        <div className="flex  X$ max-w-full overflow-x-auto gap-2 mt-2">
+        <div className="flex   max-w-full overflow-x-auto gap-2 mt-2">
           {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
             <button
               key={time}
@@ -156,7 +156,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 
       {/* Footer */}
       {setCalendarOpen && (
-        <footer className="flex gap-3 justify-between mt-6">
+        <footer className="px-4 flex gap-3  bottom-0 absolute w-full justify-between mt-6">
           <button
             onClick={() => setCalendarOpen(false)}
             className="flex-1 p-2.5 border border-gray-300 rounded
