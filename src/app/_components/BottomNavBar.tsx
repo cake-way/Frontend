@@ -18,7 +18,7 @@ const BottomNavBar = () => {
     { path: '/log', icon: <LogIcon />, label: '로그작성' },
     { path: '/map', icon: <MapIcon />, label: '지도' },
     {
-      path: '/order',
+      path: '/orderList',
       icon: <OrderIcon />,
       label: '주문내역',
     },
