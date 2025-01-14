@@ -20,10 +20,15 @@ const CategorySearch = () => {
   const category = params?.category as keyof typeof getCategoryParam;
   const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const { filteringDate, Period } = useCalenderStore();
   const [filterName, setFilterName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { confirmDesgin, confirmPrice, confirmReigon } = useFilteringStore();
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedPeriod, setSelectedPeriod] = useState('오후');
+
+  const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
+    useCalenderStore();
 
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
@@ -53,6 +58,36 @@ const CategorySearch = () => {
   };
   const onCickedAlarm = () => {
     router.push('/notice');
+  };
+
+  const getHoursMinutes = (selectedPeriod: string, selectedTime: string) => {
+    // eslint-disable-next-line prefer-const
+    let [hours, minutes] = selectedTime.split(':').map(Number);
+    if (selectedPeriod === '오후' && hours !== 12) {
+      hours = hours + 12;
+    }
+    return [hours, minutes];
+  };
+
+  const onResult = () => {
+    if (selectedDate && selectedPeriod && selectedTime) {
+      const newDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        ...getHoursMinutes(selectedPeriod, selectedTime)
+      );
+      setFilteringDate(newDate);
+      setTime(selectedTime);
+      setPeriod(selectedPeriod);
+    } else {
+      alert('선택부탁드립니다');
+      return;
+    }
+
+    if (setCalendarOpen) {
+      setCalendarOpen(false);
+    }
   };
 
   return (
@@ -145,13 +180,37 @@ const CategorySearch = () => {
         </div>
 
         {calendarOpen && (
-          <div className="absolute p=4 h-dvh bg-[#ffffff]">
+          <div className="absolute p=4 h-[calc(100dvh-var(--bottom-nav-height))]  bg-[#ffffff]">
             <Header
               leftButtonImage={<Image src={back} alt="back" />}
               centerText={'예약하기'}
               onLeftButtonClick={() => setCalendarOpen(false)}
             ></Header>
-            <Calendar setCalendarOpen={setCalendarOpen} />
+            <Calendar
+              selectedPeriod={selectedPeriod}
+              selectedTime={selectedTime}
+              selectedDate={selectedDate}
+              setSelectedTime={setSelectedTime}
+              setSelectedPeriod={setSelectedPeriod}
+              setSelectedDate={setSelectedDate}
+            />
+            {/* Footer */}
+            <footer className="px-4 flex gap-3  bottom-6 absolute w-full justify-between mt-6">
+              <button
+                onClick={() => setCalendarOpen(false)}
+                className="flex-1 p-2.5 border border-gray-300 rounded
+              text-gray-700 hover:bg-gray-50 transition-colors text-xs"
+              >
+                닫기
+              </button>
+              <button
+                onClick={onResult}
+                className="flex-1 p-2.5 bg-black text-white rounded text-xs
+              hover:bg-gray-900 transition-colors"
+              >
+                결과 보기
+              </button>
+            </footer>
           </div>
         )}
       </div>

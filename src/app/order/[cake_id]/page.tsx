@@ -9,19 +9,7 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import Calendar from '@/app/_components/order/Calendar';
 import OrderCard from '@/app/_components/order/OrderCard';
-
-const orders = [
-  {
-    id: 1,
-    image: '/path/to/cake1.jpg',
-    store: '씨에이크 성수점',
-    description: '고양이 케이크 미니 · 초코',
-    date: '12.05 (목)',
-    time: '오후 5:00',
-    price: '30,000원',
-    dDay: 'D-3',
-  },
-];
+import { orders } from '../../../../constants/mockData';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -34,6 +22,9 @@ const Order: React.FC = () => {
   const [message, setMessage] = useState('');
   const [letteringText, setLetteringText] = useState('');
   const [refundPolicy, setRefundPolicy] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedPeriod, setSelectedPeriod] = useState('오후');
 
   const sizes = [
     {
@@ -79,7 +70,14 @@ const Order: React.FC = () => {
           </div>
           {/* Calendar Component */}
           <div>
-            <Calendar />
+            <Calendar
+              selectedDate={selectedDate}
+              selectedPeriod={selectedPeriod}
+              selectedTime={selectedTime}
+              setSelectedDate={setSelectedDate}
+              setSelectedPeriod={setSelectedPeriod}
+              setSelectedTime={setSelectedTime}
+            />
           </div>
           {/* Size Selection */}
           <div className="p-5">

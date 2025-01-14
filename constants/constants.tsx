@@ -11,30 +11,22 @@ export enum getCategoryParam {
   '당일' = 'today',
 }
 
-// 임시 데이터
-export const cakes = [
-  {
-    name: '베니케이크 연남점',
-    price: 30000,
-    image: '/images/cake-pick-cake2.svg',
-    cake_id: 1,
-  },
-  {
-    name: '베니케이크2 연남점',
-    price: 30000,
-    image: '/images/cake-pick-cake2.svg',
-    cake_id: 2,
-  },
-  {
-    name: '베니케이크3 연남점',
-    price: 30000,
-    image: '/images/cake-pick-cake2.svg',
-    cake_id: 3,
-  },
-  {
-    name: '베니케이크4 연남점',
-    price: 30000,
-    image: '/images/cake-pick-cake2.svg',
-    cake_id: 4,
-  },
+//오후 시간대
+export const pmTimes = [
+  '12:00',
+  '12:30',
+  '1:00',
+  '1:30',
+  '2:00',
+  '2:30',
+  '3:00',
+  '3:30',
+  '4:00',
+  '4:30',
+  '5:00',
+  '5:30',
+  '6:00',
 ];
+
+//오전 시간대
+export const amTimes = ['11:00', '11:30'];

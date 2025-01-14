@@ -1,44 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { cakes } from '../../../../constants/constants';
+import { cakeLog, cakes } from '../../../../constants/mockData';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function CakeDetail() {
   const router = useRouter();
   const { cake_id } = useParams();
-  const cakeLog = [
-    {
-      id: 1,
-      image: '/images/cake-pick-cake2.svg',
-      title: '오리미니 케이크',
-      user: '@sarangdungy',
-    },
-    {
-      id: 2,
-      image: '/images/cake-pick-cake2.svg',
-      title: '딸기치즈 케이크',
-      user: '@sarangdungy',
-    },
-    {
-      id: 3,
-      image: '/images/cake-pick-cake2.svg',
-      title: '딸기치즈 케이크',
-      user: '@sarangdungy',
-    },
-    {
-      id: 4,
-      image: '/images/cake-pick-cake2.svg',
-      title: '딸기치즈 케이크',
-      user: '@sarangdungy',
-    },
-    {
-      id: 5,
-      image: '/images/cake-pick-cake2.svg',
-      title: '딸기치즈 케이크',
-      user: '@sarangdungy',
-    },
-  ];
 
   const onClickedOrder = () => {
     router.push(`/order/${cake_id}`);

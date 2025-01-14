@@ -12,10 +12,10 @@ interface CalendarStore {
 }
 
 const useCalenderStore = create<CalendarStore>((set) => ({
-  DateNumber: undefined,
-  Time: null,
-  Period: null,
-  filteringDate: null,
+  DateNumber: undefined, //일
+  Time: null, //시간대
+  Period: null, //오전오후
+  filteringDate: null, //년 월 일 시간대 오전 오후 포함
   setDateNumber: (DateNumber) => set({ DateNumber }),
   setTime: (Time) => set({ Time }),
   setPeriod: (Period) => set({ Period }),

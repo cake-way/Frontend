@@ -1,6 +1,20 @@
 import Image from 'next/image';
+interface OrderType {
+  id: number;
+  image: string;
+  store: string;
+  description: string;
+  date: string;
+  time: string;
+  price: string;
+  dDay: string;
+}
 
-const OrderCard = ({ order }: { order: (typeof orders)[number] }) => (
+interface OrderCardProps {
+  order: OrderType;
+}
+
+const OrderCard = ({ order }: OrderCardProps) => (
   <div className="flex items-center bg-white shadow rounded-lg overflow-hidden">
     <div className="relative w-24 h-24">
       <Image
