@@ -7,13 +7,16 @@ import alarm from '@/../public/header-images/alarm.svg';
 import calendar from '@/../public/order/calendar.svg';
 import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';
-import { cakes, getCategoryParam } from '../../../../constants/constants';
+import mark from '@/../public/my-log-images/mark.svg';
+import { getCategoryParam } from '../../../../constants/constants';
 import { getCategoryName } from '../../../../utils/utils';
 import { useState } from 'react';
 import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 import useFilteringStore from '@/app/store/filteringStore';
+import { cakes } from '../../../../constants/mockData';
+import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
 const CategorySearch = () => {
   const params = useParams();
@@ -168,9 +171,14 @@ const CategorySearch = () => {
                 alt={cake.name}
                 className="w-full aspect-square object-cover"
               />
-              <button className="absolute top-2 right-2 p-1 bg-white/80 rounded-full">
-                아이콘
-              </button>
+              <div className="absolute top-2 right-2 p-1">
+                {cake.scrap_count ? (
+                  <MarkIcon />
+                ) : (
+                  <Image src={mark} alt="mark" />
+                )}
+              </div>
+
               <div className="p-3">
                 <h3 className="font-medium">{cake.name}</h3>
                 <p className="text-sm mt-1">{cake.price.toLocaleString()}원</p>

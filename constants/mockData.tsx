@@ -19,24 +19,28 @@ export const cakes = [
     price: 30000,
     image: '/images/cake-pick-cake2.svg',
     cake_id: 1,
+    scrap_count: 0,
   },
   {
     name: '베니케이크2 연남점',
     price: 30000,
     image: '/images/cake-pick-cake2.svg',
     cake_id: 2,
+    scrap_count: 0,
   },
   {
     name: '베니케이크3 연남점',
     price: 30000,
     image: '/images/cake-pick-cake2.svg',
     cake_id: 3,
+    scrap_count: 1,
   },
   {
     name: '베니케이크4 연남점',
     price: 30000,
     image: '/images/cake-pick-cake2.svg',
     cake_id: 4,
+    scrap_count: 1,
   },
 ];
 
