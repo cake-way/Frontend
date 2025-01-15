@@ -18,11 +18,11 @@ import Store1 from '../../../public/my-log-images/store-1.svg';
 import Log1 from '../../../public/my-log-images/log.jpg';
 import Log2 from '../../../public/my-log-images/log.jpg';
 
-import Header from '../components/Header';
-import UserInfo from '../components/my-log/UserInfo';
-import SavedCake from '../components/my-log/SavedCake';
-import SavedStore from '../components/my-log/SavedStore';
-import SavedLog from '../components/my-log/SavedLog';
+import Header from '../_components/Header';
+import UserInfo from '../_components/my-log/UserInfo';
+import SavedCake from '../_components/my-log/SavedCake';
+import SavedStore from '../_components/my-log/SavedStore';
+import SavedLog from '../_components/my-log/SavedLog';
 
 const MyLog = () => {
   const router = useRouter();

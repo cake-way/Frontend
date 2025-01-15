@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import CakeIcon from '../../../../public/images/icons/cake.svg';
 import ArrowIcon from '../../../../public/my-log-images/arrow-forward.svg';
-import LogIcon from '../Icons/LogIcon';
+import LogIcon from '@/app/_components/Icons/LogIcon';
 
 const CreateLog: React.FC = () => {
   const router = useRouter();

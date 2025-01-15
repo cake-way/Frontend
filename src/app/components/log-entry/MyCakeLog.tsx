@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Title from '../my-log/Title';
+import Title from '@/app/_components/my-log/Title';
 
 import Log1 from '../../../../public/my-log-images/log.jpg';
 import Log2 from '../../../../public/my-log-images/cake-1.svg';

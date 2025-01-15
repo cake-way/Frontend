@@ -1,7 +1,7 @@
 'use client';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
@@ -20,9 +20,9 @@ const CakePick = () => {
       {/* 슬라이드 섹션 */}
       <section className="h-full w-full ">
         <Swiper
-          // modules={[Autoplay]}
+          modules={[Autoplay]}
           autoplay={{
-            delay: 2500,
+            delay: 2000,
             disableOnInteraction: false,
           }}
           spaceBetween={8}

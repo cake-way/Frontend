@@ -3,13 +3,13 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import Header from '@/app/components/Header';
+import Header from '@/app/_components/Header';
 import BackIcon from '../../../../public/header-images/back.svg';
 import AlarmIcon from '../../../../public/header-images/alarm.svg';
 
 import Store1 from '../../../../public/my-log-images/store-1.svg';
 import Status from '../../../../public/my-log-images/status.svg';
-import MarkIcon from '@/app/components/Icons/MarkIcon';
+import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
 const storeData = [
   {
@@ -56,7 +56,7 @@ const CakeStores = () => {
       />
 
       {/* 저장된 가게 리스트 */}
-      <div className="flex w-full pt-[75px] mt-7 px-5 flex-col gap-[23px]">
+      <div className="flex w-full mt-7 px-5 flex-col gap-[23px]">
         {storeData.map((store, index) => (
           <section key={index} className="flex items-center gap-4 relative">
             {/* 왼쪽: 가게 케이크 사진 */}

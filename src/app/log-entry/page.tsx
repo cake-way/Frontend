@@ -6,7 +6,7 @@ import Image from 'next/image';
 import BackIcon from '../../../public/header-images/back.svg';
 import AlarmIcon from '../../../public/header-images/alarm.svg';
 
-import Header from '../components/Header';
+import Header from '../_components/Header';
 import CreatLog from '../components/log-entry/CreateLog';
 import MyCakeLog from '../components/log-entry/MyCakeLog';
 
@@ -22,7 +22,7 @@ const LogEntry = () => {
   };
 
   return (
-    <>
+    <div>
       <Header
         leftButtonImage={<Image src={BackIcon} alt="Back Icon" />}
         onLeftButtonClick={handleLeftButtonClick}
@@ -33,11 +33,11 @@ const LogEntry = () => {
         onRightButtonClick={[handleRightButtonClick]}
         borderBottom={true}
       />
-      <main className="w-full pt-[75px] px-5">
+      <main className="w-full px-5">
         <CreatLog />
         <MyCakeLog />
       </main>
-    </>
+    </div>
   );
 };
 
