@@ -45,7 +45,7 @@ const Notice = () => {
         ]}
       />
 
-      <div className="mt-[75px] px-8">
+      <div className=" px-5">
         {NoticeData.map((notice, index) => (
           <div
             key={index}

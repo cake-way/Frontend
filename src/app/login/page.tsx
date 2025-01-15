@@ -6,12 +6,19 @@ import KakaoIcon from '../../../public/login-images/kakao.svg';
 import CakeWayLogo from '../../../public/login-images/cake-way.svg';
 
 const Login = () => {
-  const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
-  const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI; // login/callback으로 인증 코드 보내기
-
-  const handleKakaoLogin = () => {
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`;
-    window.location.href = kakaoAuthUrl;
+  const handleKakaoLogin = async () => {
+    try {
+      // 서버에서 카카오 인증 URL을 생성한 후 리디렉션
+      const response = await fetch('/api/auth');
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.authUrl; // 서버에서 받은 URL로 리디렉션
+      } else {
+        throw new Error('카카오 인증 URL 생성 실패');
+      }
+    } catch (error) {
+      console.error('카카오 로그인 오류:', error);
+    }
   };
 
   return (

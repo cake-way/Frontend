@@ -15,7 +15,7 @@ interface SavedCakeProps {
 
 const SavedCake: React.FC<SavedCakeProps> = ({ cakes }) => {
   return (
-    <main className="mt-[35px] px-8 flex flex-col items-center">
+    <main className="mt-[35px] px-5 flex flex-col items-center">
       <Title title="저장한 디자인" link="/my-log/designs" />
 
       {/* 저장된 디자인 미리보기 */}
