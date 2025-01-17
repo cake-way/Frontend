@@ -7,7 +7,7 @@ import { cakeShops } from '../../../../constants/mockData';
 const DraggableBottomSheet: React.FC = () => {
   const [position, setPosition] = useState(0); // Bottom Sheet의 Y 위치
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
-  const startYRef = useRef(0); // 상대적인 드래그 시작 위치
+  const startYRef = useRef(0); //  드래그 시작 위치
   const currentYRef = useRef(0); // 상대적인 현재 위치
   const realCurrentRef = useRef(0); //실제 y현재위치
   const dragRef = useRef(false);
@@ -98,7 +98,7 @@ const DraggableBottomSheet: React.FC = () => {
 
   return (
     <div
-      className="absolute inset-x-0 -bottom-1/4 z-50 bg-[#ffffff] rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px] overflow-hidden w-full mx-auto"
+      className=" absolute inset-x-0 -bottom-[25%] z-50 bg-[#ffffff] rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px] overflow-hidden w-full mx-auto"
       style={{
         transform: `translateY(${position}px)`,
         // transition: isDragging ? 'none' : 'transform 0.3s ease-out',
@@ -115,14 +115,17 @@ const DraggableBottomSheet: React.FC = () => {
           <div className=" h-1 w-16 bg-gray-300 rounded-full mx-auto  cursor-pointer" />
         </div>
 
-        <h3 className="text-lg font-semibold text-center">케이크 가게 목록</h3>
-
         {/* Content Section */}
-        <div className="mt-4 space-y-4 overflow-y-auto max-h-[80vh]">
+        <div className="p-5 space-y-4 overflow-y-auto max-h-[80vh]">
           {/* Example items */}
 
           {cakeShops.map((shop, index) => (
-            <CakeShopCard key={index} name={shop.name} time={shop.close_time} />
+            <CakeShopCard
+              key={index}
+              scrap_count={shop.scrap_count}
+              name={shop.name}
+              time={shop.close_time}
+            />
           ))}
         </div>
       </div>

@@ -90,7 +90,7 @@ export const cakeShops = [
     created_at: '2024-01-15T09:00:00',
     max_reserve: 30,
     instagram: '@peony_cake',
-    scrap_count: 2341,
+    scrap_count: 0,
     close_time: '18:30',
   },
   {
@@ -104,7 +104,7 @@ export const cakeShops = [
     max_reserve: 25,
     instagram: '@lepommier_official',
     scrap_count: 1876,
-    close_time: '18:30',
+    close_time: '23:30',
   },
   {
     shop_id: 3,
