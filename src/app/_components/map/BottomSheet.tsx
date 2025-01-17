@@ -104,30 +104,25 @@ const DraggableBottomSheet: React.FC = () => {
         // transition: isDragging ? 'none' : 'transform 0.3s ease-out',
       }}
     >
-      <div className="">
-        {/* Drag Indicator */}
-        <div
-          className="w-full h-full p-4"
-          onTouchStart={handleDragStart}
-          onMouseDown={handleDragStart}
-        >
-          {' '}
-          <div className=" h-1 w-16 bg-gray-300 rounded-full mx-auto  cursor-pointer" />
-        </div>
+      {/* Drag Indicator */}
+      <div
+        className="w-full h-full p-4"
+        onTouchStart={handleDragStart}
+        onMouseDown={handleDragStart}
+      >
+        <div className=" h-1 w-16 bg-gray-300 rounded-full mx-auto  cursor-pointer" />
+      </div>
 
-        {/* Content Section */}
-        <div className="p-5 space-y-4 overflow-y-auto max-h-[80vh]">
-          {/* Example items */}
+      {/* Content Section */}
+      <div
+        className="p-5 space-y-4 pb-80
+         overflow-y-auto max-h-[80vh] "
+      >
+        {/* Example items */}
 
-          {cakeShops.map((shop, index) => (
-            <CakeShopCard
-              key={index}
-              scrap_count={shop.scrap_count}
-              name={shop.name}
-              time={shop.close_time}
-            />
-          ))}
-        </div>
+        {cakeShops.map((shop, index) => (
+          <CakeShopCard key={index} shop={shop} />
+        ))}
       </div>
     </div>
   );

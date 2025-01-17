@@ -3,19 +3,26 @@ import { getHoursMinutes } from '../../../../utils/utils';
 
 import RunTimeIcon from '../Icons/RunTimeIcon';
 import MapMarkIcon from '@/app/_components/map/MapMarkIcon';
+import { useRouter } from 'next/navigation';
 
 interface ICakeShopCard {
-  name: string;
-  time: string;
-  scrap_count: number;
+  shop: {
+    name: string;
+    close_time: string;
+    scrap_count: number;
+    shop_id: number;
+  };
 }
-const CakeShopCard = ({ name, time, scrap_count }: ICakeShopCard) => {
+const CakeShopCard = ({ shop }: ICakeShopCard) => {
+  const router = useRouter();
+
+  //영업중, 마감인지
   const getRunTime = () => {
     const nowHours = new Date().getHours();
     const nowMinutes = new Date().getMinutes();
     const totalNowMinutes = nowHours * 60 + nowMinutes;
 
-    const [hours, minutes] = getHoursMinutes(time);
+    const [hours, minutes] = getHoursMinutes(shop.close_time);
     const totalMinutes = hours * 60 + minutes;
 
     return totalNowMinutes - totalMinutes;
@@ -25,26 +32,32 @@ const CakeShopCard = ({ name, time, scrap_count }: ICakeShopCard) => {
   return (
     <div className="max-w-md mx-auto rounded-xl  overflow-hidden">
       <div className="flex justify-between items-center ">
-        <div>
-          <h2 className="text-sm font-bold">{name}</h2>
+        <div
+          className="cursor-pointer"
+          onClick={() => router.push(`/shop/${shop.shop_id}`)}
+        >
+          <h2 className="text-sm font-bold">{shop.name}</h2>
           <div className="flex items-center gap-[2px]">
             <RunTimeIcon color={getRunTime() < 0 ? undefined : '#FA2840'} />
             <span className="text-xs text-grayscale700 flex gap-[5px]">
               <span className="text-grayscale900">
                 {getRunTime() < 0 ? '영업중' : '마감'}
               </span>
-              {time} 에 라스트 오더
+              {shop.close_time} 에 라스트 오더
             </span>
           </div>
         </div>
-        {scrap_count > 0 ? (
+        {shop.scrap_count > 0 ? (
           <MapMarkIcon />
         ) : (
           <Image src="./map/mark.svg" width="24" height={24} alt="mark" />
         )}
       </div>
 
-      <div className="pt-2 grid grid-cols-4 gap-[2px]">
+      <div
+        className="cursor-pointer pt-2 grid grid-cols-4 gap-[2px]"
+        onClick={() => router.push(`/shop/${shop.shop_id}`)}
+      >
         <img
           src="/map/image.svg"
           alt="분홍색 딸기 케이크"

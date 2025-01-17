@@ -29,8 +29,8 @@ export default function Map() {
           </div>
         </div>
       </div>
-
       <KakaoMap />
+      <div className="absolute bottom-3/4 z-50">이지역에서 검색</div>
       <DraggableBottomSheet />
     </>
   );

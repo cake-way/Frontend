@@ -13,7 +13,7 @@ const KakaoMap = () => {
       >
         <MapMarker
           image={{
-            src: '/header-images/cake-way.svg',
+            src: '/map/mapMark.svg',
             size: { width: 24, height: 35 },
           }}
           position={{ lat: 37.5552, lng: 126.9368 }}
