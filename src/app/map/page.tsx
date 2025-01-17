@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import InputField from '../_components/InputField';
-import KakaoMap from '../_components/kakaoMap/KakaoMap';
+import KakaoMap from '../_components/map/KakaoMap';
+import DraggableBottomSheet from '../_components/map/BottomSheet';
 
 export default function Map() {
   const [todayPickUp, setTodayPick] = useState(false);
@@ -30,6 +31,7 @@ export default function Map() {
       </div>
 
       <KakaoMap />
+      <DraggableBottomSheet />
     </>
   );
 }

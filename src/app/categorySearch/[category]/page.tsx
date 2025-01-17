@@ -9,7 +9,7 @@ import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';
 import mark from '@/../public/my-log-images/mark.svg';
 import { getCategoryParam } from '../../../../constants/constants';
-import { getCategoryName } from '../../../../utils/utils';
+import { getCategoryName, getHoursMinutes } from '../../../../utils/utils';
 import { useState } from 'react';
 import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
@@ -63,22 +63,13 @@ const CategorySearch = () => {
     router.push('/notice');
   };
 
-  const getHoursMinutes = (selectedPeriod: string, selectedTime: string) => {
-    // eslint-disable-next-line prefer-const
-    let [hours, minutes] = selectedTime.split(':').map(Number);
-    if (selectedPeriod === '오후' && hours !== 12) {
-      hours = hours + 12;
-    }
-    return [hours, minutes];
-  };
-
   const onResult = () => {
     if (selectedDate && selectedPeriod && selectedTime) {
       const newDate = new Date(
         selectedDate.getFullYear(),
         selectedDate.getMonth(),
         selectedDate.getDate(),
-        ...getHoursMinutes(selectedPeriod, selectedTime)
+        ...getHoursMinutes(selectedTime, selectedPeriod)
       );
       setFilteringDate(newDate);
       setTime(selectedTime);

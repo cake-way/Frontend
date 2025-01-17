@@ -22,7 +22,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans scrollbar-hidden">
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative overflow-hidden">
           {/* 클라이언트 컴포넌트로 분리된 ClientWrapper 사용 */}
           <ClientWrapper>{children}</ClientWrapper>
         </div>
