@@ -37,3 +37,15 @@ export const getCategoryName = (english: string) => {
 
   return found[0];
 };
+
+export const getHoursMinutes = (
+  selectedTime: string,
+  selectedPeriod?: string
+) => {
+  // eslint-disable-next-line prefer-const
+  let [hours, minutes] = selectedTime.split(':').map(Number);
+  if (selectedPeriod === '오후' && hours !== 12) {
+    hours = hours + 12;
+  }
+  return [hours, minutes];
+};
