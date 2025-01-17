@@ -53,7 +53,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         <h1>
           <textarea
             placeholder="케이크 로그 제목을 입력해 주세요."
-            className="w-[243px] font-bold text-[24px] py-3 bg-transparent border-none outline-none resize-none"
+            className="w-[243px] font-bold text-[24px] text-white py-3 bg-transparent border-none outline-none resize-none"
             value={logTitle}
             onChange={(e) => setLogTitle(e.target.value)}
           />
