@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface LogData {
   src: StaticImageData; // Next.js `Image` 컴포넌트에 사용 가능한 타입
   title: string;
-  cakelog_id: string; // 각 로그 항목의 고유한 cakelog_id
+  cakeLogid: string; // 각 로그 항목의 고유한 cakelog_id
 }
 
 interface SavedLogProps {
@@ -17,9 +17,9 @@ interface SavedLogProps {
 const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
   const router = useRouter();
 
-  const handleToLogDetail = (cakelog_id: string) => {
+  const handleToLogDetail = (cakeLogid: string) => {
     // cakelog_id를 URL에 포함시켜서 동적 라우팅
-    router.push(`/log-detail/${cakelog_id}`);
+    router.push(`/log-detail/${cakeLogid}`);
   };
 
   return (
@@ -31,7 +31,7 @@ const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
         {savedLog.map((cake, index) => (
           <div
             key={index}
-            onClick={() => handleToLogDetail(cake.cakelog_id)} // 클릭 시 cakelog_id를 넘겨줌
+            onClick={() => handleToLogDetail(cake.cakeLogid)} // 클릭 시 cakelog_id를 넘겨줌
             className="relative w-full h-[250px] cursor-pointer"
           >
             {/* 이미지 */}
@@ -40,7 +40,7 @@ const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
               alt={cake.title}
               layout="fill"
               objectFit="cover"
-              onClick={() => handleToLogDetail(cake.cakelog_id)} // 이미지 클릭 시에도 동적 라우팅
+              onClick={() => handleToLogDetail(cake.cakeLogid)} // 이미지 클릭 시에도 동적 라우팅
             />
 
             {/* 그라데이션 배경 */}

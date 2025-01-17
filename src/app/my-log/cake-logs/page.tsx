@@ -16,23 +16,33 @@ const savedLog = [
   {
     src: LogImg,
     title: '집들이 파티에 빠질 수 없는 케이크 가게 8곳',
+    cakeLogid: 1,
   },
   {
     src: LogImg,
     title: '저렴하면서 특별한 케이크 여기로!',
+    cakeLogid: 2,
   },
   {
     src: LogImg,
     title: '연말 모임에 주문 제작하기 좋은 가게 10곳',
+    cakeLogid: 1,
   },
   {
     src: LogImg,
     title: '재치 넘치는 멘트의 케이크 디자인 모음',
+    cakeLogid: 3,
   },
 ];
 
 const CakeLogs = () => {
   const router = useRouter();
+
+  const handleToLogDetail = (cakeLogid: number) => {
+    // cakelog_id를 URL에 포함시켜서 동적 라우팅
+    router.push(`/log-detail/${cakeLogid}`);
+  };
+
   const [marked, setMarked] = useState<boolean[]>(
     Array(savedLog.length).fill(false)
   );
@@ -69,6 +79,8 @@ const CakeLogs = () => {
               alt={cake.title}
               layout="fill"
               objectFit="cover"
+              className="cursor-pointer"
+              onClick={() => handleToLogDetail(cake.cakeLogid)}
             />
 
             <button

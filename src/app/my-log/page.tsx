@@ -64,9 +64,9 @@ const MyLog = () => {
     {
       src: Log1,
       title: '집들이 파티에 빠질 수 없는 케이크 가게 8곳',
-      cakelog_id: '0',
+      cakeLogid: '1',
     },
-    { src: Log2, title: '고급스러운\n티아라 케이크 5곳', cakelog_id: '0' },
+    { src: Log2, title: '고급스러운\n티아라 케이크 5곳', cakeLogid: '2' },
   ];
 
   return (

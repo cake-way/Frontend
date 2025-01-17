@@ -37,7 +37,7 @@ const BottomNavBar = () => {
   // my-log 관련 페이지들이 활성화된 경우를 체크
   const isMyLogActive = currentPath.startsWith('/my-log');
   // log 관련 페이지들이 활성화된 경우를 체크
-  const isLogActive = currentPath.startsWith('/log');
+  const isLogActive = currentPath.startsWith('/log-entry');
 
   return (
     <nav className="absolute bottom-0 w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
