@@ -9,14 +9,14 @@ import { motion } from 'framer-motion';
 const LandingPage = () => {
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     router.push('/login');
-  //   }, 3000);
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/login');
+    }, 3000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
