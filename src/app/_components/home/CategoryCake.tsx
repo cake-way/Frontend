@@ -29,7 +29,6 @@ const CategoryCake = () => {
             alt={item.label}
             width={40}
             height={40}
-            layout="intrinsic"
             className="w-10 h-10"
           ></Image>
           <span className="text-sm text-gray-600 mt-2">{item.label}</span>
