@@ -34,6 +34,8 @@ const BottomNavBar = () => {
     router.push(path); // 버튼 클릭 시 해당 경로로 이동
   };
 
+  // home 관련 페이지들이 활성화된 경우를 체크
+  const isHomeActive = currentPath.startsWith('/home');
   // my-log 관련 페이지들이 활성화된 경우를 체크
   const isMyLogActive = currentPath.startsWith('/my-log');
   // log 관련 페이지들이 활성화된 경우를 체크
@@ -44,6 +46,7 @@ const BottomNavBar = () => {
       {navItems.map(({ path, icon, label }) => {
         // isActive 조건: /my-log 또는 /log와 관련된 페이지도 활성화 상태로 인식
         const isActive =
+          (path === '/home' && isHomeActive) ||
           (path === '/my-log' && isMyLogActive) ||
           (path === '/log-entry' && isLogActive) ||
           currentPath === path;

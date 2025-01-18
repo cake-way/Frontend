@@ -123,7 +123,9 @@ const NewLog = () => {
           </div>
         )}
       </header>
+
       <LocationSearch />
+
       {/* 카테고리 선택 영역 */}
       <CategorySelector
         categories={categories}

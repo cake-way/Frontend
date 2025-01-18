@@ -9,6 +9,7 @@ import mockLogData from 'constants/mockLogData';
 import LoadingSpinner from '@/app/_components/Loading';
 import ScrapIcon from '../../../../public/my-log-images/mark.svg'; // 스크랩 아이콘 컴포넌트
 import ScrapIconFilled from '../../../../public/my-log-images/mark-fill.svg'; // 스크랩된 아이콘 컴포넌트
+import BackIcon from '../../../../public/header-images/back.svg';
 import Image from 'next/image';
 
 interface LogData {
@@ -56,6 +57,9 @@ const LogDetail = () => {
   return (
     <div className="max-w-3xl">
       <div className="relative mb-5">
+        <div>
+          <Image src={BackIcon} alt="뒤로 가기" />
+        </div>
         {/* 대표 사진 */}
         <img
           src={log.thumbnailImage}
