@@ -20,9 +20,12 @@ const Header: React.FC<HeaderProps> = ({
   centerComponent,
   borderBottom = false,
 }) => {
+  // 오른쪽 아이콘이 두 개인 경우 확인
+  const isTwoIcons = rightButtonImage.length === 2;
+
   return (
     <header
-      className={`bg-[#FFF] text-[#131313] flex justify-between px-8 items-center sticky top-0 z-50 w-full h-[75px] ${
+      className={`bg-[#FFF] text-[#131313] flex justify-between px-5 items-center sticky top-0 z-50 w-full h-[70px] ${
         borderBottom ? 'border-b border-gray-300' : ''
       }`}
     >
@@ -33,7 +36,11 @@ const Header: React.FC<HeaderProps> = ({
         {leftButtonImage}
       </button>
 
-      <div className="flex-1 text-center">
+      <div
+        className={`flex-1 text-center ${
+          isTwoIcons ? 'translate-x-[20px]' : ''
+        }`}
+      >
         {centerComponent ? (
           centerComponent
         ) : (
@@ -41,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      <div className="flex items-center">
+      <div className="flex">
         {rightButtonImage.map((image, index) => (
           <button
             key={index}
@@ -50,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
                 onRightButtonClick[index](); // index가 유효할 때만 호출
               }
             }}
-            className="py-2 rounded-md flex items-center"
+            className="py-2 rounded-md flex"
           >
             {image}
           </button>

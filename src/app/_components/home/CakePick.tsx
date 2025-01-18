@@ -12,8 +12,16 @@ const CakePick = () => {
   return (
     <section className="pt-8 pl-5  mb-7  h-full">
       <div className="flex justify-between items-center mb-4">
+<<<<<<< HEAD
+        <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
+        <Link
+          href="/home/all-cakeways-picks"
+          className="text-sm text-[#3E3F45]"
+        >
+=======
         <h2 className="text-lg font-semibold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link href="#" className="text-sm text-[#3E3F45] pr-4">
+>>>>>>> feature/CAKE-2
           전체보기 &gt;
         </Link>
       </div>

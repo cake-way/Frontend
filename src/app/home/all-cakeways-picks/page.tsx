@@ -1,25 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
 import Image from 'next/image';
-
+import { useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
-import { savedLog } from 'constants/constants';
 
 import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm.svg';
-
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
+import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
-import { useRouter } from 'next/navigation';
+import { savedLog } from 'constants/constants';
+import { useState } from 'react';
 
-const CakeLogs = () => {
+export default function AllCakewayPicks() {
   const router = useRouter();
-
-  const handleToLogDetail = (cakeLogid: number) => {
-    // cakelog_id를 URL에 포함시켜서 동적 라우팅
-    router.push(`/log-detail/${cakeLogid}`);
-  };
 
   const [marked, setMarked] = useState<boolean[]>(
     Array(savedLog.length).fill(false)
@@ -34,7 +27,6 @@ const CakeLogs = () => {
   const handleAlarmIconClick = () => {
     router.push('/notice');
   };
-
   return (
     <main className="w-full flex flex-col items-center text-white font-sans">
       <Header
@@ -42,7 +34,7 @@ const CakeLogs = () => {
         onLeftButtonClick={() => {
           router.back();
         }}
-        centerText="저장한 케이크로그"
+        centerText="CAKEWAY'S PICK"
         rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
         onRightButtonClick={[handleAlarmIconClick]}
         borderBottom={true}
@@ -58,7 +50,6 @@ const CakeLogs = () => {
               layout="fill"
               objectFit="cover"
               className="cursor-pointer"
-              onClick={() => handleToLogDetail(cake.cakeLogid)}
             />
 
             <button
@@ -89,6 +80,4 @@ const CakeLogs = () => {
       </section>
     </main>
   );
-};
-
-export default CakeLogs;
+}
