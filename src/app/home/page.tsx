@@ -6,7 +6,7 @@ import InputField from '../_components/InputField';
 import CakePick from '../_components/home/CakePick';
 import CategoryCake from '../_components/home/CategoryCake';
 import CakeRecommend from '../_components/home/CakeRecommend';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 export default function Home() {
   // useEffect(() => {
