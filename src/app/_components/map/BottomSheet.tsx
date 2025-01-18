@@ -3,8 +3,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CakeShopCard from './CakeShopCard';
 import { cakeShops } from '../../../../constants/mockData';
+import Image from 'next/image';
 
-const DraggableBottomSheet: React.FC = () => {
+interface IDraggableBottomSheet {
+  getCoordinates: () => void;
+}
+
+const DraggableBottomSheet = ({ getCoordinates }: IDraggableBottomSheet) => {
   const [position, setPosition] = useState(0); // Bottom Sheet의 Y 위치
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
   const startYRef = useRef(0); //  드래그 시작 위치
@@ -98,31 +103,45 @@ const DraggableBottomSheet: React.FC = () => {
 
   return (
     <div
-      className=" absolute inset-x-0 -bottom-[25%] z-50 bg-[#ffffff] rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px] overflow-hidden w-full mx-auto"
+      className=" absolute inset-x-0 -bottom-[25%] z-50  overflow-hidden w-full mx-auto"
       style={{
         transform: `translateY(${position}px)`,
         // transition: isDragging ? 'none' : 'transform 0.3s ease-out',
       }}
     >
-      {/* Drag Indicator */}
       <div
-        className="w-full h-full p-4"
-        onTouchStart={handleDragStart}
-        onMouseDown={handleDragStart}
+        className="cursor-pointer w-[30%] mb-3 mx-auto z-50 flex gap-2.5 bg-[#ffffff] shadow border border-solid border-primaryRed1 rounded-[50px] px-2.5 py-2"
+        onClick={getCoordinates}
       >
-        <div className=" h-1 w-16 bg-gray-300 rounded-full mx-auto  cursor-pointer" />
+        <Image
+          src="/shop/positionIcon.svg"
+          alt="map_icon"
+          width={16}
+          height={16}
+        />
+        <span className="text-sm">이 지역에서 검색</span>
       </div>
+      <div className="bg-[#ffffff] rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px]">
+        {/* Drag Indicator */}
+        <div
+          className="w-full h-full p-4"
+          onTouchStart={handleDragStart}
+          onMouseDown={handleDragStart}
+        >
+          <div className=" h-1 w-16 bg-gray-300 rounded-full mx-auto  cursor-pointer" />
+        </div>
 
-      {/* Content Section */}
-      <div
-        className="p-5 space-y-4 pb-80
+        {/* Content Section */}
+        <div
+          className="p-5 space-y-4 pb-80
          overflow-y-auto max-h-[80vh] "
-      >
-        {/* Example items */}
+        >
+          {/* Example items */}
 
-        {cakeShops.map((shop, index) => (
-          <CakeShopCard key={index} shop={shop} />
-        ))}
+          {cakeShops.map((shop, index) => (
+            <CakeShopCard key={index} shop={shop} />
+          ))}
+        </div>
       </div>
     </div>
   );

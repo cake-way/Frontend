@@ -50,7 +50,7 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
         {shop.scrap_count > 0 ? (
           <MapMarkIcon />
         ) : (
-          <Image src="./map/mark.svg" width="24" height={24} alt="mark" />
+          <Image src="./map/mark.svg" width={24} height={24} alt="mark" />
         )}
       </div>
 
