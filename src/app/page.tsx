@@ -8,6 +8,10 @@ import CategoryCake from './_components/home/CategoryCake';
 import CakeRecommend from './_components/home/CakeRecommend';
 
 export default function Home() {
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
+  }, []);
+
   return (
     <>
       <div className="h-[calc(100dvh-var(--bottom-nav-height))] flex flex-col ]">
@@ -21,7 +25,18 @@ export default function Home() {
 
         <CakePick />
         <CategoryCake />
+        <div className="mt-7 h-2 bg-[#f4f4f4]"></div>
       </div>
+      <div>
+        <Image
+          src={'/shop/positionIcon.svg'}
+          alt="position_icon"
+          width={14}
+          height={14}
+        />
+      </div>
+      <div>{}</div>
+
       <CakeRecommend />
     </>
   );
