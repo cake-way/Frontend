@@ -9,9 +9,9 @@ import CakeRecommend from '../_components/home/CakeRecommend';
 import { useEffect } from 'react';
 
 export default function Home() {
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
-  }, []);
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
+  // }, []);
   return (
     <>
       <div className="h-[calc(100dvh-var(--bottom-nav-height))] flex flex-col ]">
