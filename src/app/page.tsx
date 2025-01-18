@@ -9,14 +9,14 @@ import { motion } from 'framer-motion';
 const LandingPage = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/login');
-    }, 3000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     router.push('/login');
+  //   }, 3000);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, []);
 
   return (
     <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
@@ -25,6 +25,7 @@ const LandingPage = () => {
         initial={{ rotateX: -90 }}
         animate={{ rotateX: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ transformOrigin: 'bottom' }}
       >
         <Image src={CakeWayLogo} alt="cake-way 로고" />
       </motion.section>
