@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import AddButtonIcon from '../../../../../public/log-entry/add.svg';
 
 interface AddPhotosProps {
@@ -36,8 +37,13 @@ const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
         </p>
       </header>
 
-      <Swiper spaceBetween={10} slidesPerView={3}>
-        <SwiperSlide>
+      <Swiper
+        spaceBetween={10} // 각 슬라이드 간 간격
+        slidesPerView="auto" // 슬라이드 수를 동적으로 설정
+        freeMode // 자유로운 스크롤 가능
+      >
+        {/* 사진 추가 버튼 */}
+        <SwiperSlide style={{ width: 'auto' }}>
           <label
             htmlFor="photo-upload"
             className="w-[110px] h-[143px] mt-3 border-2 border-gray-300 flex flex-col items-center justify-center cursor-pointer"
@@ -55,8 +61,9 @@ const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
           </label>
         </SwiperSlide>
 
+        {/* 추가된 사진들 */}
         {photos.map((photo, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} style={{ width: 'auto' }}>
             <div className="relative w-[110px] h-[143px] mt-3">
               <Image
                 src={URL.createObjectURL(photo)}

@@ -40,7 +40,7 @@ const LoginCallback = () => {
         if (token) {
           localStorage.setItem('token', token);
           alert('로그인이 완료되었습니다!');
-          router.push('/'); // 로그인 완료 후 홈으로 이동
+          router.push('/home'); // 로그인 완료 후 홈으로 이동
         }
       } catch (error) {
         console.error('토큰 요청 중 에러 발생:', error);

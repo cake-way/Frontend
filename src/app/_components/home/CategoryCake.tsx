@@ -17,20 +17,22 @@ const CategoryCake = () => {
   ];
 
   return (
-    <div className="grid grid-cols-5 gap-4 mt-8 h-[40%]">
+    <div className="grid grid-cols-5 gap-4 mt-8 h-[40%] ">
       {categories.map((item, index) => (
         <Link
           href={`/categorySearch/${getCategoryParam[item.label]}`}
           key={index}
           className="flex flex-col items-center"
         >
-          <Image
-            src={item.icon}
-            alt={item.label}
-            width={40}
-            height={40}
-            className="w-10 h-10"
-          ></Image>
+          <div className="aspect-square flex item-center">
+            <Image
+              src={item.icon}
+              alt={item.label}
+              width={23}
+              height={23}
+              className="w-9 h-9"
+            ></Image>
+          </div>
           <span className="text-sm text-gray-600 mt-2">{item.label}</span>
         </Link>
       ))}

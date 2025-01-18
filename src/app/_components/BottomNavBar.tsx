@@ -14,7 +14,7 @@ const BottomNavBar = () => {
   const router = useRouter(); // 라우터 훅을 사용하여 페이지 전환
 
   const navItems = [
-    { path: '/', icon: <HomeIcon />, label: '홈' },
+    { path: '/home', icon: <HomeIcon />, label: '홈' },
     { path: '/log-entry', icon: <LogIcon />, label: '로그작성' },
     { path: '/map', icon: <MapIcon />, label: '지도' },
     {
@@ -34,16 +34,19 @@ const BottomNavBar = () => {
     router.push(path); // 버튼 클릭 시 해당 경로로 이동
   };
 
+  // home 관련 페이지들이 활성화된 경우를 체크
+  const isHomeActive = currentPath.startsWith('/home');
   // my-log 관련 페이지들이 활성화된 경우를 체크
   const isMyLogActive = currentPath.startsWith('/my-log');
   // log 관련 페이지들이 활성화된 경우를 체크
-  const isLogActive = currentPath.startsWith('/log');
+  const isLogActive = currentPath.startsWith('/log-entry');
 
   return (
     <nav className="absolute bottom-0 w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
       {navItems.map(({ path, icon, label }) => {
         // isActive 조건: /my-log 또는 /log와 관련된 페이지도 활성화 상태로 인식
         const isActive =
+          (path === '/home' && isHomeActive) ||
           (path === '/my-log' && isMyLogActive) ||
           (path === '/log-entry' && isLogActive) ||
           currentPath === path;

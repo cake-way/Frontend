@@ -1,28 +1,34 @@
-import Header from './_components/Header';
-import CakeWay from '../../public/header-images/cake-way.svg';
-import Alarm from '../../public/header-images/alarm.svg';
+'use client';
+
 import Image from 'next/image';
-import InputField from './_components/InputField';
-import CakePick from './_components/home/CakePick';
-import CategoryCake from './_components/home/CategoryCake';
-import CakeRecommend from './_components/home/CakeRecommend';
 
-export default function Home() {
+import CakeWayLogo from '../../public/login-images/cake-way.svg';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+const LandingPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/login');
+    }, 3000);
+    return () => {
+      clearTimeout(timer);
+    };
+  });
+
   return (
-    <>
-      <div className="h-[calc(100dvh-var(--bottom-nav-height))] flex flex-col ]">
-        <Header
-          leftButtonImage={<Image src={CakeWay} alt="Cake Way" />}
-          centerComponent={
-            <InputField placeholder=" 원하는 케이크 찾으러 가기" />
-          }
-          rightButtonImage={[<Image key="Alarm" src={Alarm} alt="Alarm" />]}
-        />
+    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
+      <section className="mt-[300px]">
+        <Image src={CakeWayLogo} alt="cake-way 로고" />
+      </section>
 
-        <CakePick />
-        <CategoryCake />
-      </div>
-      <CakeRecommend />
-    </>
+      <section className="mb-[275px] text-center text-md">
+        <p className="mt-[17px]">쉽고 빠른 케이크 주문은 케이크 웨이로</p>
+      </section>
+    </main>
   );
-}
+};
+
+export default LandingPage;
