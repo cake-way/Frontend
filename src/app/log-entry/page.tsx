@@ -7,8 +7,8 @@ import BackIcon from '../../../public/header-images/back.svg';
 import AlarmIcon from '../../../public/header-images/alarm.svg';
 
 import Header from '../_components/Header';
-import CreatLog from '../components/log-entry/CreateLog';
-import MyCakeLog from '../components/log-entry/MyCakeLog';
+import CreateLog from '../_components/log-entry/CreateLog';
+import MyCakeLog from '../_components/log-entry/MyCakeLog';
 
 const LogEntry = () => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const LogEntry = () => {
         borderBottom={true}
       />
       <main className="w-full px-5">
-        <CreatLog />
+        <CreateLog />
         <MyCakeLog />
       </main>
     </div>

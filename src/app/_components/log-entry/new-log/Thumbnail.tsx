@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import BackIcon from '../../../../../public/header-images/back.svg';
+import { useRouter } from 'next/navigation';
 
 interface ThumbnailProps {
   thumbnailImage: string | null;
@@ -15,6 +17,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   logTitle,
   setLogTitle,
 }) => {
+  const router = useRouter();
   const today = new Date().toLocaleDateString(); // 오늘 날짜 포맷팅
 
   // 이미지 업로드 핸들러
@@ -27,7 +30,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 
   return (
     <article
-      className={`w-full max-w-lg h-[418px] p-5 flex flex-col justify-end cursor-pointer bg-gray-100 ${
+      className={`w-full max-w-lg h-[418px] p-5 flex flex-col cursor-pointer bg-gray-100 ${
         thumbnailImage ? 'bg-cover bg-center' : ''
       }`}
       style={{
@@ -35,6 +38,16 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       }}
       onClick={() => document.getElementById('imageInput')?.click()}
     >
+      <div className="mb-36">
+        <Image
+          src={BackIcon}
+          alt="뒤로 가기"
+          onClick={(e) => {
+            router.back();
+            e.stopPropagation();
+          }}
+        />
+      </div>
       {!thumbnailImage && (
         <p className="text-gray-400 mx-auto font-bold mb-8">
           대표 사진 추가하기
@@ -47,15 +60,17 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         accept="image/*"
         className="hidden"
         onChange={handleImageUpload}
+        onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 막기
       />
 
-      <header onClick={(e) => e.stopPropagation()}>
+      <header>
         <h1>
           <textarea
             placeholder="케이크 로그 제목을 입력해 주세요."
-            className="w-[243px] font-bold text-[24px] py-3 bg-transparent border-none outline-none resize-none"
+            className="w-[243px] font-bold text-[24px] text-white py-3 bg-transparent border-none outline-none resize-none"
             value={logTitle}
             onChange={(e) => setLogTitle(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
           />
         </h1>
       </header>
