@@ -15,6 +15,7 @@ interface LogData {
   cakeLogid: number;
   username: string;
   cakeShopName: string;
+  createAt: string;
   cakeCategoryName: string;
   title: string;
   thumbnailImage: string;
@@ -22,7 +23,6 @@ interface LogData {
   isPublic: boolean;
   imageList: string[];
 }
-
 const currentUser = 'mimizae'; // 현재 로그인된 사용자 ID
 
 const LogDetail = () => {
@@ -77,10 +77,29 @@ const LogDetail = () => {
         )}
         {/* 그라데이션 배경 */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
+
         {/* 대표 사진 위의 제목 */}
-        <h1 className="absolute bottom-14 left-3 text-white p-2.5 text-[24px] font-semibold">
+        <h1 className="absolute w-4/6 bottom-20 left-3 text-white p-2.5 text-[24px] font-semibold">
           {log.title}
         </h1>
+
+        {/* 프로필 사진, 이름, 날짜 */}
+        <footer
+          className="absolute bottom-4 left-3 flex items-center gap-2 text-white"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Image
+            width={40}
+            height={40}
+            src="/my-log-images/profile-photo.svg"
+            className="rounded-full"
+            alt="프로필 사진"
+          />
+          <div>
+            <p className="font-medium text-sm">mellowy23</p>
+            <time className="text-[12px]">{log.createAt}</time>
+          </div>
+        </footer>
       </div>
       {/* 본문 내용 */}
       <div className="pl-5">

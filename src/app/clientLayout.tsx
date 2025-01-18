@@ -10,8 +10,8 @@ export default function ClientWrapper({
 }) {
   const pathname = usePathname();
 
-  // 로그인 페이지("/")에서는 BottomNavBar를 숨김.
-  const shouldShowBottomNavBar = pathname !== '/login';
+  // 로그인 페이지와 랜딩페이지에서는 BottomNavBar를 숨김.
+  const shouldShowBottomNavBar = pathname !== '/' && pathname !== '/login';
 
   // 로그인 페이지일 때는 pb-[var(--bottom-nav-height)]를 제외
   const mainClass =

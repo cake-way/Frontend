@@ -47,6 +47,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         accept="image/*"
         className="hidden"
         onChange={handleImageUpload}
+        onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 막기
       />
 
       <header onClick={(e) => e.stopPropagation()}>

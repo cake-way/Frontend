@@ -14,7 +14,7 @@ const BottomNavBar = () => {
   const router = useRouter(); // 라우터 훅을 사용하여 페이지 전환
 
   const navItems = [
-    { path: '/', icon: <HomeIcon />, label: '홈' },
+    { path: '/home', icon: <HomeIcon />, label: '홈' },
     { path: '/log-entry', icon: <LogIcon />, label: '로그작성' },
     { path: '/map', icon: <MapIcon />, label: '지도' },
     {
