@@ -39,7 +39,7 @@ const CakePick = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
-                src="/images/cake-pick-cake1.svg"
+                src="/home/cake-pick-cake1.svg"
                 alt="케이크 이미지 1"
                 className="w-full h-full object-cover"
               />
@@ -56,7 +56,7 @@ const CakePick = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
-                src="/images/cake-pick-cake2.svg"
+                src="/home/cake-pick-cake2.svg"
                 alt="케이크 이미지 2"
                 className="w-full h-full object-cover"
               />
@@ -73,7 +73,7 @@ const CakePick = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
-                src="/images/cake-pick-cake1.svg"
+                src="/home/cake-pick-cake1.svg"
                 alt="케이크 이미지 1"
                 className="w-full h-full object-cover"
               />
@@ -90,7 +90,7 @@ const CakePick = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
-                src="/images/cake-pick-cake2.svg"
+                src="/home/cake-pick-cake2.svg"
                 alt="케이크 이미지 2"
                 className="w-full h-full object-cover"
               />

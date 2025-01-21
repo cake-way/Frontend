@@ -2,31 +2,31 @@ import CakeCard from './CakeCard';
 
 const cakes = [
   {
-    image: '/images/cake-1.svg',
+    image: '/home/cake-1.svg',
     title: '베니케이크',
     status: '오늘 휴무',
     location: '서울/마포',
   },
   {
-    image: '/images/cake-2.svg',
+    image: '/home/cake-2.svg',
     title: '커피 벌스데이',
     status: '영업 중',
     location: '서울/마포',
   },
   {
-    image: '/images/cake-3.svg',
+    image: '/home/cake-3.svg',
     title: '씨케이크',
     status: '영업 중',
     location: '서울/마포',
   },
   {
-    image: '/images/cake-4.svg',
+    image: '/home/cake-4.svg',
     title: 'TAND CAKE',
     status: '오늘 휴무',
     location: '서울/강남',
   },
   {
-    image: '/images/cake-4.svg',
+    image: '/home/cake-4.svg',
     title: 'TAND CAKE',
     status: '오늘 휴무',
     location: '서울/강남',

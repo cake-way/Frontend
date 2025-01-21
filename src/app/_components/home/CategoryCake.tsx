@@ -4,20 +4,20 @@ import { getCategoryParam } from '../../../../constants/constants';
 
 const CategoryCake = () => {
   const categories: { label: keyof typeof getCategoryParam; icon: string }[] = [
-    { label: '생일', icon: 'images/icons/birthday.svg' },
-    { label: '졸업', icon: 'images/icons/graduate.svg' },
-    { label: '데이트', icon: 'images/icons/date.svg' },
-    { label: '파티', icon: 'images/icons/party.svg' },
-    { label: '연말', icon: 'images/icons/yearend.svg' },
-    { label: '기념일', icon: 'images/icons/anniversary.svg' },
-    { label: '감사', icon: 'images/icons/thanks.svg' },
-    { label: '결혼', icon: 'images/icons/marry.svg' },
-    { label: '직장', icon: 'images/icons/work.svg' },
-    { label: '당일', icon: 'images/icons/now.svg' },
+    { label: '생일', icon: 'home/icons/birthday.svg' },
+    { label: '졸업', icon: 'home/icons/graduate.svg' },
+    { label: '데이트', icon: 'home/icons/date.svg' },
+    { label: '파티', icon: 'home/icons/party.svg' },
+    { label: '연말', icon: 'home/icons/yearend.svg' },
+    { label: '기념일', icon: 'home/icons/anniversary.svg' },
+    { label: '감사', icon: 'home/icons/thanks.svg' },
+    { label: '결혼', icon: 'home/icons/marry.svg' },
+    { label: '직장', icon: 'home/icons/work.svg' },
+    { label: '당일', icon: 'home/icons/now.svg' },
   ];
 
   return (
-    <div className="grid grid-cols-5 gap-4 mt-8 h-[40%] ">
+    <div className="grid grid-cols-5 gap-4 mt-8  ">
       {categories.map((item, index) => (
         <Link
           href={`/categorySearch/${getCategoryParam[item.label]}`}
