@@ -29,7 +29,7 @@ const KakaoMap = ({ mapRef, coordinates }: IKakaoMap) => {
   return (
     <>
       <Map
-        center={coordinates || mapLocation || { lat: 37.5552, lng: 126.9368 }} // 기본 좌표 또는 현재 좌표
+        center={coordinates || mapLocation || { lat: 37.554, lng: 126.9368 }} // 기본 좌표 또는 현재 좌표
         style={{ width: '100%', height: '100%' }}
         ref={mapRef}
       >

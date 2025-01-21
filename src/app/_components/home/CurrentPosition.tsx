@@ -59,7 +59,7 @@ export default function CurrentPosition({
 
   const clickedPlace = (place: kakao.maps.services.PlacesSearchResultItem) => {
     setHomeLocation(place.place_name);
-    setMapLocation({ lat: Number(place.y), lng: Number(place.x) });
+    setMapLocation({ lat: Number(place.y) - 0.0012, lng: Number(place.x) });
     setIsOpen(false);
   };
 

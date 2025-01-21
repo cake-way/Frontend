@@ -59,11 +59,11 @@ export default function Home() {
       } else {
         navigator.geolocation.getCurrentPosition((position) => {
           setMapLocation({
-            lat: position.coords.latitude,
+            lat: position.coords.latitude - 0.0012,
             lng: position.coords.longitude,
           });
           setCurrentLocationLatLng({
-            lat: position.coords.latitude,
+            lat: position.coords.latitude - 0.0012,
             lng: position.coords.longitude,
           });
 
@@ -87,11 +87,11 @@ export default function Home() {
     if (!homeLocation && !mapLocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         setMapLocation({
-          lat: position.coords.latitude,
+          lat: position.coords.latitude - 0.0012,
           lng: position.coords.longitude,
         });
         setCurrentLocationLatLng({
-          lat: position.coords.latitude,
+          lat: position.coords.latitude - 0.0012,
           lng: position.coords.longitude,
         });
 
@@ -133,8 +133,8 @@ export default function Home() {
         <Image
           src={'/shop/positionIcon.svg'}
           alt="position_icon"
-          width={14}
-          height={14}
+          width={16}
+          height={16}
         />
         <div className="text-[#4f4f4f] text-sm font-medium">{homeLocation}</div>
         <Image

@@ -10,19 +10,19 @@ import Image from 'next/image';
 
 const CakePick = () => {
   return (
-    <section className="pt-8 pl-5  mb-7  h-full">
+    <section className="pt-5 pl-5  mb-7 h-auto  flex flex-col object-cover">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link
           href="/home/all-cakeways-picks"
-          className="text-sm text-[#3E3F45]"
+          className="text-sm  pr-5 text-[#3E3F45]"
         >
           전체보기 &gt;
         </Link>
       </div>
 
       {/* 슬라이드 섹션 */}
-      <section className="aspect-3/4 w-full ">
+      <section className=" w-full    ">
         <Swiper
           modules={[Autoplay]}
           autoplay={{
@@ -31,11 +31,11 @@ const CakePick = () => {
           }}
           spaceBetween={8}
           slidesPerView={1.2}
-          className="w-full h-full  "
+          className="w-full   "
         >
           {/* 첫 번째 슬라이드 */}
-          <SwiperSlide className="h-full">
-            <div className=" h-full  relative w-full  object-cover">
+          <SwiperSlide className="w-full">
+            <div className="  relative w-full aspect-[288/373]">
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
@@ -51,8 +51,8 @@ const CakePick = () => {
           </SwiperSlide>
 
           {/* 두 번째 슬라이드 */}
-          <SwiperSlide className="h-full">
-            <div className=" h-full  relative w-full  object-cover">
+          <SwiperSlide className="w-full">
+            <div className="  relative w-full aspect-[288/373]">
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
@@ -68,8 +68,8 @@ const CakePick = () => {
           </SwiperSlide>
 
           {/* 세 번째 슬라이드 */}
-          <SwiperSlide className="h-full">
-            <div className=" h-full  relative w-full  object-cover">
+          <SwiperSlide className="w-full">
+            <div className="  relative w-full aspect-[288/373]">
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
@@ -85,8 +85,8 @@ const CakePick = () => {
           </SwiperSlide>
 
           {/* 네 번째 슬라이드 */}
-          <SwiperSlide className="h-full">
-            <div className=" h-full  relative w-full  object-cover">
+          <SwiperSlide className="w-full">
+            <div className="  relative w-full aspect-[288/373]">
               <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,15,0.58)] to-transparent z-10" />
               <Image
                 fill
