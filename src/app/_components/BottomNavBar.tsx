@@ -42,7 +42,7 @@ const BottomNavBar = () => {
   const isLogActive = currentPath.startsWith('/log-entry');
 
   return (
-    <nav className="absolute bottom-0 w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 pb-4 space-x-9">
+    <nav className="absolute bottom-0 w-full h-[var(--bottome-nav-height)] bg-[#FFF] z-50 flex items-center justify-between px-6 space-x-9">
       {navItems.map(({ path, icon, label }) => {
         // isActive 조건: /my-log 또는 /log와 관련된 페이지도 활성화 상태로 인식
         const isActive =

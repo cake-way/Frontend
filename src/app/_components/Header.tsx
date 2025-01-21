@@ -9,6 +9,7 @@ interface HeaderProps {
   onRightButtonClick?: (() => void)[]; // 배열로 수정 (각 버튼별 클릭 이벤트 처리)
   centerComponent?: React.ReactNode; // 컴포넌트를 받을 수 있도록 설정
   borderBottom?: boolean; // borderBottom 유무를 받는 prop
+  backgroundTransparent?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -19,15 +20,18 @@ const Header: React.FC<HeaderProps> = ({
   onRightButtonClick = [],
   centerComponent,
   borderBottom = false,
+  backgroundTransparent = false,
 }) => {
   // 오른쪽 아이콘이 두 개인 경우 확인
   const isTwoIcons = rightButtonImage.length === 2;
 
   return (
     <header
-      className={`bg-[#FFF] text-[#131313] flex justify-between px-5 items-center sticky top-0 z-50 w-full  ${
+      className={` text-[#131313] flex justify-between px-5 items-center  top-0 z-50 w-full  ${
         borderBottom ? 'border-b border-gray-300' : ''
-      }`}
+      }
+      ${backgroundTransparent ? 'absolute' : 'sticky  bg-[#FFF]'}
+      `}
     >
       <button
         onClick={onLeftButtonClick}
@@ -44,11 +48,15 @@ const Header: React.FC<HeaderProps> = ({
         {centerComponent ? (
           centerComponent
         ) : (
-          <h1 className="text-[20px] font-bold">{centerText}</h1>
+          <h1
+            className={`text-xl  font-bold ${backgroundTransparent ? 'text-[#ffffff]' : ' '}`}
+          >
+            {centerText}
+          </h1>
         )}
       </div>
 
-      <div className="flex">
+      <div className={`flex  ${rightButtonImage.length ? '' : 'w-6'}`}>
         {rightButtonImage.map((image, index) => (
           <button
             key={index}

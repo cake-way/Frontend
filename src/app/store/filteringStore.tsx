@@ -1,12 +1,16 @@
 import { create } from 'zustand';
 
+type priceObject = {
+  min: number | undefined | null;
+  max: number | null;
+};
 interface IFilteringStore {
   confirmDesgin: string[] | null;
-  confirmPrice: number | null;
+  confirmPrice: priceObject | null;
   confirmReigon: string[] | null;
 
   setConfirmDesgin: (confirmDesgin: string[]) => void;
-  setConfirmPrice: (confirmPrice: number) => void;
+  setConfirmPrice: (confirmPrice: priceObject | null) => void;
   setConfirmReigon: (confirmReigon: string[]) => void;
 }
 
