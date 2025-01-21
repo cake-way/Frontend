@@ -1,8 +1,11 @@
+import Image from 'next/image';
+
 interface CakeCardProps {
   image: string;
   title: string;
   status: string;
   location: string;
+  sameDay: boolean;
 }
 
 const CakeCard: React.FC<CakeCardProps> = ({
@@ -10,13 +13,34 @@ const CakeCard: React.FC<CakeCardProps> = ({
   title,
   status,
   location,
+  sameDay,
 }) => {
   return (
-    <div className="relative rounded-lg shadow-lg overflow-hidden min-w-[48%]">
-      <img src={image} alt={title} className="w-full h-48 object-cover" />
-      <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
-        당일 가능
-      </div>
+    <div className="relative overflow-hidden min-w-[48%]">
+      <div
+        className="absolute bottom-0  w-full h-[50%]"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(117, 117, 117, 0.00) 0%,  rgba(15, 15, 15, 0.66) 100%)',
+          backgroundBlendMode: 'multiply',
+        }}
+      ></div>
+      <Image
+        src={image}
+        alt={title}
+        width={0}
+        height={0}
+        className="w-full h-full object-cover"
+      />
+
+      {sameDay && (
+        <div
+          className="absolute top-2 right-2 border-[0.5px] border-solid border-[#fffff]  bg-opacity-60 text-white text-xs px-2.5 py-1 rounded-[21px]"
+          style={{ background: 'rgba(255, 255, 255, 0.2)' }}
+        >
+          당일 가능
+        </div>
+      )}
       <div className="p-4  absolute bottom-0 text-white">
         <h3 className="font-bold text-sm mb-1">{title}</h3>
         <div className="flex items-center text-xs ">
