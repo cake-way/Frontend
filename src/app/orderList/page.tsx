@@ -2,29 +2,9 @@
 
 import { useState } from 'react';
 import OrderCard from '../_components/order/OrderCard';
-
-const orders = [
-  {
-    id: 1,
-    image: '/path/to/cake1.jpg',
-    store: '씨에이크 성수점',
-    description: '고양이 케이크 미니 · 초코',
-    date: '12.05 (목)',
-    time: '오후 5:00',
-    price: '30,000원',
-    dDay: 'D-3',
-  },
-  {
-    id: 2,
-    image: '/path/to/cake2.jpg',
-    store: '베니케이크 연남점',
-    description: '범스데이 케이크 미니 · 딸기',
-    date: '12.05 (목)',
-    time: '오후 5:00',
-    price: '30,000원',
-    dDay: 'D-8',
-  },
-];
+import { orders } from 'constants/mockData';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function OrderList() {
   const [activeTab, setActiveTab] = useState<'준비중' | '픽업 완료'>('준비중');
@@ -34,20 +14,17 @@ export default function OrderList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white py-4 px-5 shadow">
-        <div className="flex items-center gap-4">
-          <button onClick={() => history.back()} className="text-gray-700">
-            &lt;
-          </button>
-          <h1 className="text-lg font-bold">주문 상태</h1>
-        </div>
-      </header>
-
+    <div className="min-h-screen ">
       {/* Tabs */}
-      <div className="flex bg-white border-b">
-        <button
+      <div className="flex border-b">
+        <Image
+          src="/header-images/back.svg"
+          alt="back-icon"
+          width={24}
+          height={24}
+        />
+        <motion.button
+          layoutId={activeTab === '준비중' ? 'active-tab' : undefined}
           className={`flex-1 py-3 text-center text-sm font-medium border-b-2 transition-colors ${
             activeTab === '준비중'
               ? 'border-black text-black'
@@ -56,8 +33,9 @@ export default function OrderList() {
           onClick={() => handleTabChange('준비중')}
         >
           준비중
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          layoutId={activeTab === '픽업 완료' ? 'active-tab' : undefined}
           className={`flex-1 py-3 text-center text-sm font-medium border-b-2 transition-colors ${
             activeTab === '픽업 완료'
               ? 'border-black text-black'
@@ -66,7 +44,7 @@ export default function OrderList() {
           onClick={() => handleTabChange('픽업 완료')}
         >
           픽업 완료
-        </button>
+        </motion.button>
       </div>
 
       {/* Order List */}

@@ -2,13 +2,27 @@
 export const orders = [
   {
     id: 1,
-    image: '/path/to/cake1.jpg',
+    image: '/home/cake-pick-cake3.svg',
     store: '씨에이크 성수점',
     description: '고양이 케이크 미니 · 초코',
     date: '12.05 (목)',
     time: '오후 5:00',
-    price: '30,000원',
+    price: 30000,
     dDay: 'D-3',
+    order_id: 1231231231,
+    paymentMethod: '신용/체크카드',
+  },
+  {
+    id: 2,
+    image: '/home/cake-pick-cake3.svg',
+    store: '베니케이크 연남점',
+    description: '범스데이 케이크 미니 · 딸기',
+    date: '12.05 (목)',
+    time: '오후 5:00',
+    price: 30000,
+    dDay: 'D-8',
+    order_id: 12312312311,
+    paymentMethod: '신용/체크카드',
   },
 ];
 
