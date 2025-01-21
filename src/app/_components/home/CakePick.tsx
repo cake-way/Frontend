@@ -22,7 +22,7 @@ const CakePick = () => {
       </div>
 
       {/* 슬라이드 섹션 */}
-      <section className="h-full w-full ">
+      <section className="aspect-3/4 w-full ">
         <Swiper
           modules={[Autoplay]}
           autoplay={{

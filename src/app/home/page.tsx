@@ -10,7 +10,7 @@ import CakeRecommend from '../_components/home/CakeRecommend';
 import { useState } from 'react';
 import CurrentPosition from '../_components/home/CurrentPosition';
 import useHomeLocationStore from '../store/homeLocationStore';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,10 +18,99 @@ export default function Home() {
   const clickedCurrentPosition = () => {
     setIsOpen(true);
   };
-  const { homeLocation } = useHomeLocationStore();
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
-  // }, []);
+  const {
+    currentLocationLatLng,
+    currentLocationString,
+    homeLocation,
+    mapLocation,
+    setHomeLocation,
+    setMapLocation,
+    setCurrentLocationLatLng,
+    setCurrentLocationString,
+  } = useHomeLocationStore();
+
+  console.log(homeLocation);
+
+  //카카오맵 로드
+  useEffect(() => {
+    if (window.kakao?.maps) {
+      // autoload=false 때문에 필요한 초기화 과정
+      window.kakao.maps.load(() => {
+        afterLoadedKakao();
+      });
+    }
+
+    const script = document.querySelector('script[src*="dapi.kakao.com"]');
+    if (script) {
+      script.addEventListener('load', () => {
+        window.kakao.maps.load(() => {
+          afterLoadedKakao();
+        });
+      });
+    }
+  }, []);
+  //현재위치 설정
+  const afterLoadedKakao = (clicked?: boolean) => {
+    if (clicked) {
+      if (currentLocationLatLng && currentLocationString) {
+        setHomeLocation(currentLocationString);
+        setMapLocation(currentLocationLatLng);
+        return;
+      } else {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setMapLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setCurrentLocationLatLng({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+
+          const geocoder = new kakao.maps.services.Geocoder();
+
+          geocoder.coord2Address(
+            position.coords.longitude,
+            position.coords.latitude,
+            (result, status) => {
+              if (status === kakao.maps.services.Status.OK) {
+                setHomeLocation(result[0].address.address_name);
+                setCurrentLocationString(result[0].address.address_name);
+              }
+            }
+          );
+        });
+
+        return;
+      }
+    }
+    if (!homeLocation && !mapLocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setMapLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setCurrentLocationLatLng({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+
+        const geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.coord2Address(
+          position.coords.longitude,
+          position.coords.latitude,
+          (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              setHomeLocation(result[0].address.address_name);
+              setCurrentLocationString(result[0].address.address_name);
+            }
+          }
+        );
+      });
+    }
+  };
+
   return (
     <>
       <Header
@@ -56,7 +145,13 @@ export default function Home() {
         />
       </div>
       <CakeRecommend />
-      {isOpen && <CurrentPosition setIsOpen={setIsOpen} isOpen={isOpen} />}
+      {isOpen && (
+        <CurrentPosition
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          afterLoadedKakao={afterLoadedKakao}
+        />
+      )}
     </>
   );
 }

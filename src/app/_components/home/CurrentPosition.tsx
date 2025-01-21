@@ -8,11 +8,13 @@ import useHomeLocationStore from '@/app/store/homeLocationStore';
 interface CurrentPositionProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
+  afterLoadedKakao: (value: boolean) => void;
 }
 
 export default function CurrentPosition({
   isOpen,
   setIsOpen,
+  afterLoadedKakao,
 }: CurrentPositionProps) {
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
   const closeBottomSheet = () => setIsOpen(false);
@@ -61,6 +63,11 @@ export default function CurrentPosition({
     setIsOpen(false);
   };
 
+  const clicedCurrentPosition = () => {
+    afterLoadedKakao(true);
+    setIsOpen(false);
+  };
+
   return (
     <div className=" w-full  max-w-[480px] ">
       {/* Overlay */}
@@ -104,7 +111,7 @@ export default function CurrentPosition({
         </div>
         <div className="mb-7  h-2 bg-[#f4f4f4]"></div>
         {/* 현재위치로 주소찾기 */}
-        <div className="w-full px-5">
+        <div className="w-full px-5" onClick={clicedCurrentPosition}>
           <div className=" w-full flex justify-center border border-solid border-grayscale500 rounded-[4px] py-2.5  gap-2">
             <Image
               src="/home/location.svg"
