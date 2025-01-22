@@ -30,8 +30,6 @@ export default function Map() {
     }
   };
 
-  console.log(coordinates);
-
   const onTodayPickUpClicked = () => {
     setTodayPick((pre) => !pre);
   };

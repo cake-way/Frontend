@@ -18,6 +18,7 @@ import useFilteringStore from '@/app/store/filteringStore';
 import { cakes } from '../../../../constants/mockData';
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
+
 const CategorySearch = () => {
   const params = useParams();
   const category = params?.category as keyof typeof getCategoryParam;

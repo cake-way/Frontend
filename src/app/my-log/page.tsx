@@ -1,14 +1,15 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import BackIcon from '../../../public/header-images/back.svg';
 import SettingIcon from '../../../public/header-images/setting.svg';
 import AlarmIcon from '../../../public/header-images/alarm.svg';
-import Profile from '../../../public/my-log-images/profile-photo.svg';
+import Profile from '../../../public/my-log-images/profile-photo.svg'; // 기본 이미지
 
-import Cake1 from '../../../public/my-log-images/cake-1.svg'; // 임시로 SavedCake에 전달
+import Cake1 from '../../../public/my-log-images/cake-1.svg';
 import Cake2 from '../../../public/my-log-images/cake-2.svg';
 import Cake3 from '../../../public/my-log-images/cake-3.svg';
 import Cake4 from '../../../public/my-log-images/cake-4.svg';
@@ -24,8 +25,56 @@ import SavedCake from '../_components/my-log/SavedCake';
 import SavedStore from '../_components/my-log/SavedStore';
 import SavedLog from '../_components/my-log/SavedLog';
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const MyLog = () => {
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState({
+    profileImage: Profile.src, // 기본 이미지 처리
+    nickname: '',
+    introduction: '',
+  });
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('인증 토큰이 없습니다.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/mypage`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const user = data.userInfo;
+          console.log(data);
+          setUserInfo({
+            profileImage: user.profileImage || Profile.src, // 응답 이미지 또는 기본 이미지 (기본 이미지 필요)
+            nickname: user.username,
+            introduction:
+              user.description ||
+              '소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요.', // 기본 소개글 처리
+          });
+        } else {
+          console.error(
+            '사용자 정보를 가져오지 못했습니다:',
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error('서버 요청 중 오류 발생:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleLeftButtonClick = () => {
     router.back();
@@ -60,6 +109,7 @@ const MyLog = () => {
       address: '서울특별시 서초구 카페로 456',
     },
   ];
+
   const logData = [
     {
       src: Log1,
@@ -83,9 +133,9 @@ const MyLog = () => {
       />
 
       <UserInfo
-        profileImage={Profile}
-        nickname="mellowy23"
-        introduction="사진 찍었을 때 잘 나오고 조금 힙한 케이크를 좋아해요!! "
+        profileImage={userInfo.profileImage}
+        nickname={userInfo.nickname}
+        introduction={userInfo.introduction}
       />
 
       <section className="px-5 mt-[20px]">

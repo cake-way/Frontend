@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`bg-[#FFF] text-[#131313] flex justify-between px-5 items-center sticky top-0 z-50 w-full h-[70px] ${
+      className={`bg-[#FFF] text-[#131313] flex gap-2 justify-between px-5 items-center sticky top-0 z-50 w-full h-[60px] ${
         borderBottom ? 'border-b border-gray-300' : ''
       }`}
     >
