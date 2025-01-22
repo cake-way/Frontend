@@ -27,10 +27,10 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`bg-[#FFF] text-[#131313] flex gap-2 justify-between px-5 items-center sticky top-0 z-50 w-full h-[60px] ${
+      className={` text-[#131313] flex gap-2 justify-between px-5 items-center  top-0 z-50 w-full h-[60px] ${
         borderBottom ? 'border-b border-gray-300' : ''
       }
-      ${backgroundTransparent ? 'absolute' : 'sticky  bg-[#FFF]'}
+      ${backgroundTransparent ? 'absolute bg-transparent' : 'sticky  bg-[#FFF]'}
       `}
     >
       <button
