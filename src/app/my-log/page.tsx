@@ -31,8 +31,9 @@ const MyLog = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState({
     profileImage: Profile.src, // 기본 이미지 처리
-    nickname: '',
-    introduction: '',
+    nickname: 'melloy23',
+    introduction:
+      '소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요.', // 기본 소개글
   });
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const MyLog = () => {
           console.log(data);
           setUserInfo({
             profileImage: user.profileImage || Profile.src, // 응답 이미지 또는 기본 이미지 (기본 이미지 필요)
-            nickname: user.username,
+            nickname: user.username || 'melloy23',
             introduction:
               user.description ||
               '소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요. 소개글을 작성해 보세요.', // 기본 소개글 처리
