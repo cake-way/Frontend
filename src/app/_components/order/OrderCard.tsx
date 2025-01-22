@@ -32,21 +32,34 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
     >
       <div className="flex flex-1  gap-2 px-2 py-2.5">
         {/* 이미지 섹션 */}
-        <div className="relative  flex-1 h-auto bg-[#E7363F]">
-          <div className="absolute inset-0 p-2">
-            <div className="relative w-full h-full">
-              <Image
-                src={order.image}
-                alt={order.description}
-                fill
-                className="object-cover"
-              />
-              {orderList && (
-                <div className="absolute top-1 left-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                  {order.dDay}
-                </div>
-              )}
-            </div>
+
+        <div className="relative  flex-1 h-auto bg-[#E7363F]  inset-0 p-2">
+          <div className="relative w-full h-full">
+            <svg
+              viewBox="0 0 100 100"
+              className="w-8 h-8 absolute z-50"
+              preserveAspectRatio="none"
+            >
+              <path d="M0 0 L100 0 L0 100 Z" fill="#E7363F" />
+            </svg>
+            <svg
+              viewBox="0 0 100 100"
+              className="w-8 h-8 absolute bottom-0 right-0 z-50"
+              preserveAspectRatio="none"
+            >
+              <path d="M100 0 L100 100 L0 100 Z" fill="#E7363F" />
+            </svg>
+            <Image
+              src={order.image}
+              alt={order.description}
+              fill
+              className="object-cover"
+            />
+            {orderList && (
+              <div className="absolute top-2 right-1.5 border text-white text-[10px] px-2  rounded-full">
+                {order.dDay}
+              </div>
+            )}
           </div>
         </div>
 

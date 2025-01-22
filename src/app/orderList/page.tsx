@@ -55,7 +55,7 @@ export default function OrderList() {
         {activeTab === '준비중' && (
           <div className="space-y-4">
             {orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard key={order.id} order={order} orderList={true} />
             ))}
           </div>
         )}
