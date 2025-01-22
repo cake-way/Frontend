@@ -35,9 +35,9 @@ export default function Map() {
   };
 
   return (
-    <>
+    <div className="overscroll-contain">
       {/* 상단부분 */}
-      <div className="w-full p-4 absolute z-50 flex gap-3  flex-col">
+      <div className="w-full p-4 absolute z-50 flex gap-3  flex-col ">
         <InputField placeholder="지역, 공간, 주소 검색" map={true} />
         <div className="flex mb-2 ">
           <div
@@ -54,6 +54,6 @@ export default function Map() {
       <KakaoMap mapRef={mapRef} coordinates={coordinates} />
 
       <DraggableBottomSheet getCoordinates={getCoordinates} />
-    </>
+    </div>
   );
 }
