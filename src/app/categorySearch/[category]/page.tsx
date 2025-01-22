@@ -18,7 +18,6 @@ import useFilteringStore from '@/app/store/filteringStore';
 import { cakes } from '../../../../constants/mockData';
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
-
 const CategorySearch = () => {
   const params = useParams();
   const category = params?.category as keyof typeof getCategoryParam;
@@ -125,11 +124,12 @@ const CategorySearch = () => {
           <Image src={down} alt="arrow_down" className="right-1 absolute" />
         </div>
         {/* Category Tabs */}
-        <div className="flex gap-2 p-4">
+        <div className="flex gap-2 px-5 py-3.5">
           <button className="flex items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1">
             추천순
             <Image src={down} alt="arrow_down" />
           </button>
+
           <button
             className={`text-sm  rounded-2xl px-3 py-1 ${confirmReigon && confirmReigon?.length !== 0 ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}
             onClick={() => onClickedFilterButton('지역')}
@@ -137,7 +137,7 @@ const CategorySearch = () => {
             지역
           </button>
           <button
-            className={`  text-sm  bg-grayscale100 rounded-2xl px-3 py-1 ${confirmPrice ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}
+            className={`  text-sm  bg-grayscale100 rounded-2xl px-3 py-1 ${(confirmPrice?.max ?? confirmPrice?.min) ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}
             onClick={() => onClickedFilterButton('가격')}
           >
             가격
@@ -151,17 +151,19 @@ const CategorySearch = () => {
         </div>
 
         {/* Cake Grid */}
-        <div className="grid grid-cols-2 gap-4 p-5 ">
+        <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
           {cakes.map((cake, index) => (
             <div
               key={index}
-              className="relative cursor-pointer bg-white rounded-lg overflow-hidden"
+              className=" relative cursor-pointer   overflow-hidden mb-2.5"
               onClick={() => onOrder(cake.cake_id)}
             >
-              <img
+              <Image
                 src={cake.image}
                 alt={cake.name}
-                className="w-full aspect-square object-cover"
+                width={0}
+                height={0}
+                className="w-full   object-cover"
               />
               <div className="absolute top-2 right-2 p-1">
                 {cake.scrap_count ? (
@@ -171,16 +173,20 @@ const CategorySearch = () => {
                 )}
               </div>
 
-              <div className="p-3">
-                <h3 className="font-medium">{cake.name}</h3>
-                <p className="text-sm mt-1">{cake.price.toLocaleString()}원</p>
+              <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
+                <h3 className="font-bold text-xs text-grayscale900">
+                  {cake.name}
+                </h3>
+                <p className=" text-xs text-grayscale900 font-semibold">
+                  {cake.price.toLocaleString()}원
+                </p>
               </div>
             </div>
           ))}
         </div>
 
         {calendarOpen && (
-          <div className="absolute p=4 h-[calc(100dvh-var(--bottom-nav-height))]  bg-[#ffffff]">
+          <div className="absolute p=4 h-[calc(100dvh-var(--bottom-nav-height))]  bg-[#ffffff] w-full">
             <Header
               leftButtonImage={<Image src={back} alt="back" />}
               centerText={'예약하기'}

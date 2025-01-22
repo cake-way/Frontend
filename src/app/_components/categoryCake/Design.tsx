@@ -40,7 +40,7 @@ export default function Design() {
           <button
             key={index}
             onClick={() => onDesignClick(item)}
-            className={`px-3 py-2 text-sm border text-grayscale700 rounded-md
+            className={` whitespace-nowrap  py-2 text-sm border text-grayscale700 rounded-md
                 ${selectedDesign.find((name) => name === item) ? 'border-[#FA2840]  bg-[#FFEBEE]' : 'hover:bg-gray-200'}
                  `}
           >

@@ -142,6 +142,7 @@ export default function Home() {
           alt="position_icon"
           width={14}
           height={14}
+          className={` transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       </div>
       <CakeRecommend />

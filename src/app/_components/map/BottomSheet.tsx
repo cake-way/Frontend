@@ -103,14 +103,14 @@ const DraggableBottomSheet = ({ getCoordinates }: IDraggableBottomSheet) => {
 
   return (
     <div
-      className=" absolute inset-x-0 -bottom-[25%] z-50  overflow-hidden w-full mx-auto"
+      className=" absolute inset-x-0 -bottom-[25%] z-50 text-center overflow-hidden w-full mx-auto"
       style={{
         transform: `translateY(${position}px)`,
         // transition: isDragging ? 'none' : 'transform 0.3s ease-out',
       }}
     >
       <div
-        className="cursor-pointer w-[30%] mb-3 mx-auto z-50 flex gap-2.5 bg-[#ffffff] shadow border border-solid border-primaryRed1 rounded-[50px] px-2.5 py-2"
+        className="cursor-pointer text-nowrap  inline-block  w-[auto] mb-3 mx-auto z-50  gap-2.5 bg-[#ffffff] shadow border border-solid border-primaryRed1 rounded-[50px] px-2.5 py-2"
         onClick={getCoordinates}
       >
         <Image
@@ -118,10 +118,11 @@ const DraggableBottomSheet = ({ getCoordinates }: IDraggableBottomSheet) => {
           alt="map_icon"
           width={16}
           height={16}
+          className="inline-block"
         />
-        <span className="text-sm">이 지역에서 검색</span>
+        <span className="text-sm ml-2.5">이 지역에서 검색</span>
       </div>
-      <div className="bg-[#ffffff] rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px]">
+      <div className="bg-[#ffffff] text-start rounded-t-2xl shadow-lg max-h-[80vh] max-w-[480px]">
         {/* Drag Indicator */}
         <div
           className="w-full h-full p-4"

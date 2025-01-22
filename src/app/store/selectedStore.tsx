@@ -2,25 +2,29 @@ import { create } from 'zustand';
 
 interface ISelectedStore {
   selectedDesign: string[];
-  selectedPrice: number;
+  selectedMaxPrice: number | null;
+  selectedMinPrice: number | null;
   selectedSub: string[];
 
   setSelectedDesign: (callback: (prev: string[]) => string[]) => void;
-  setSelectedPrice: (SelectedPrice: number) => void;
+  setSelectedMaxPrice: (selectedMaxPrice: number) => void;
   setSelectedSub: (callback: (prev: string[]) => string[]) => void;
+  setSelectedMinPrice: (selectedMinPrice: number) => void;
 }
 
 const useSelectedStore = create<ISelectedStore>((set) => ({
   selectedDesign: [],
-  selectedPrice: 10,
+  selectedMaxPrice: null,
+  selectedMinPrice: null,
   selectedSub: [],
   setSelectedDesign: (callback) =>
     set((state) => ({
       selectedDesign: callback(state.selectedDesign),
     })),
-  setSelectedPrice: (selectedPrice) => set({ selectedPrice }),
+  setSelectedMaxPrice: (selectedMaxPrice) => set({ selectedMaxPrice }),
   setSelectedSub: (callback) =>
     set((state) => ({ selectedSub: callback(state.selectedSub) })),
+  setSelectedMinPrice: (selectedMinPrice) => set({ selectedMinPrice }),
 }));
 
 export default useSelectedStore;

@@ -20,20 +20,21 @@ export default function BottomSheet({
   const [filterName, setFilterName] = useState(initName); // 초기값은 빈 문자열
   const { setConfirmDesgin, setConfirmPrice, setConfirmReigon } =
     useFilteringStore();
-  const { selectedDesign, selectedSub, selectedPrice } = useSelectedStore();
+  const { selectedDesign, selectedSub, selectedMaxPrice, selectedMinPrice } =
+    useSelectedStore();
 
   const onClickedResult = () => {
     setConfirmDesgin(selectedDesign);
-    setConfirmPrice(selectedPrice);
+    setConfirmPrice({ max: selectedMaxPrice, min: selectedMinPrice });
     setConfirmReigon(selectedSub);
     setIsOpen(false);
   };
 
   return (
-    <div className="z-[100] w-full  max-w-[480px] ">
+    <div className="w-full  max-w-[480px] ">
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-10 ${
+        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-[51] ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={closeBottomSheet}
@@ -41,7 +42,7 @@ export default function BottomSheet({
 
       {/* Bottom Sheet */}
       <div
-        className={`fixed mx-auto h-[80vh] bottom-0 left-0 right-0  w-full max-w-[480px] bg-white rounded-t-lg shadow-lg transform transition-transform duration-300 z-20 ${
+        className={`fixed mx-auto h-[80vh] bottom-0 left-0 right-0  w-full max-w-[480px] bg-white rounded-t-lg shadow-lg transform transition-transform duration-300 z-[51] ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
