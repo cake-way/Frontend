@@ -16,35 +16,38 @@ export default function OrderList() {
   return (
     <div className="min-h-screen ">
       {/* Tabs */}
-      <div className="flex border-b">
+      <div className="flex  relative border-b px-5 justify-center">
         <Image
           src="/header-images/back.svg"
           alt="back-icon"
           width={24}
           height={24}
+          className="absolute justify-start left-5 top-2.5"
         />
-        <motion.button
-          layoutId={activeTab === '준비중' ? 'active-tab' : undefined}
-          className={`flex-1 py-3 text-center text-sm font-medium border-b-2 transition-colors ${
-            activeTab === '준비중'
-              ? 'border-black text-black'
-              : 'border-transparent text-gray-400'
-          }`}
-          onClick={() => handleTabChange('준비중')}
-        >
-          준비중
-        </motion.button>
-        <motion.button
-          layoutId={activeTab === '픽업 완료' ? 'active-tab' : undefined}
-          className={`flex-1 py-3 text-center text-sm font-medium border-b-2 transition-colors ${
-            activeTab === '픽업 완료'
-              ? 'border-black text-black'
-              : 'border-transparent text-gray-400'
-          }`}
-          onClick={() => handleTabChange('픽업 완료')}
-        >
-          픽업 완료
-        </motion.button>
+        <div className="flex gap-[18px]">
+          <motion.button
+            layoutId={activeTab === '준비중' ? 'active-tab' : undefined}
+            className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
+              activeTab === '준비중'
+                ? 'border-black text-black'
+                : 'border-transparent text-gray-400'
+            }`}
+            onClick={() => handleTabChange('준비중')}
+          >
+            준비중
+          </motion.button>
+          <motion.button
+            layoutId={activeTab === '픽업 완료' ? 'active-tab' : undefined}
+            className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
+              activeTab === '픽업 완료'
+                ? 'border-black text-black'
+                : 'border-transparent text-gray-400'
+            }`}
+            onClick={() => handleTabChange('픽업 완료')}
+          >
+            픽업 완료
+          </motion.button>
+        </div>
       </div>
 
       {/* Order List */}

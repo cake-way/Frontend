@@ -55,7 +55,7 @@ const BottomNavBar = () => {
           <button
             key={path}
             onClick={() => navigateToPath(path)} // 버튼 클릭 시 해당 경로로 이동
-            className={`flex flex-col items-center justify-center w-14 h-16 ${isActive ? 'text-black' : 'text-grayscale600'}`}
+            className={`flex flex-col items-center justify-center w-14 h-16 ${isActive ? 'text-black' : 'text-grayscale600'} transition`}
           >
             <div>{icon}</div>
             <p className="text-[10px] mt-1 w-full text-center whitespace-nowrap">

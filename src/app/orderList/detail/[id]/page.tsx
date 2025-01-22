@@ -23,57 +23,67 @@ export default function OrderDetail() {
   };
 
   return (
-    <div className="w-full ">
+    <>
       {/* Header */}
       <Header
         leftButtonImage={<Image src={back} alt="back" />}
-        centerText={'예약하기'}
+        centerText={'상세내역'}
         onLeftButtonClick={onclickedBack}
+        borderBottom
       />
-      <OrderCard order={getCurrentOrder} detail={true} />
+      <div className="w-full ">
+        <div className="pt-9 px-5 ">
+          <OrderCard order={getCurrentOrder} detail={true} />
+        </div>
 
-      {/* 주문 정보 섹션 */}
-      <section className="p-4 border-b border-gray-100">
-        <h2 className="text-lg font-bold mb-4">주문 정보</h2>
-        <div className="space-y-2 text-sm">
-          <div className="flex gap-2">
-            <span className="text-gray-600">주문일시 :</span>
-            <span>
-              {getCurrentOrder?.date}
-              {getCurrentOrder?.time}
+        {/* 주문 정보 섹션 */}
+        <section className=" px-5 mt-5 mb-7 ">
+          <h2 className=" font-semibold mb-[5px] ">주문 정보</h2>
+          <div className="space-y-1 text-sm">
+            <div className="flex gap-2 text-grayscale700 text-sm font-medium">
+              <span>주문일시 :</span>
+              <span>
+                {getCurrentOrder?.date}
+                &nbsp;
+                {getCurrentOrder?.time}
+              </span>
+            </div>
+            <div className="flex gap-2 text-grayscale700 text-sm font-medium">
+              <span>주문번호 :</span>
+              <span>{getCurrentOrder?.order_id}</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 추가 요청사항 섹션 */}
+        <section className="px-5  pb-7 border-grayscale100 border-b-[6px]">
+          <h2 className="font-semibold mb-[5px]">추가 요청사항</h2>
+          <div className=" text-grayscale700 text-sm font-medium">
+            {getCurrentOrder?.description}
+          </div>
+        </section>
+
+        {/* 총금액 및 결제방법 섹션 */}
+        <section className=" px-5 pt-[18px] ">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-base">총금액</span>
+            <span className="text-base font-bold">
+              {getCurrentOrder?.price}
             </span>
           </div>
-          <div className="flex gap-2">
-            <span className="text-gray-600">주문번호 :</span>
-            <span>{getCurrentOrder?.order_id}</span>
+          <div className="flex justify-between items-center">
+            <span className="text-base">결제 방법</span>
+            <span className="text-base">{getCurrentOrder?.paymentMethod}</span>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 추가 요청사항 섹션 */}
-      <section className="p-4 border-b border-gray-100">
-        <h2 className="text-lg font-bold mb-4">추가 요청사항</h2>
-        <div className="text-base">{getCurrentOrder?.description}</div>
-      </section>
-
-      {/* 총금액 및 결제방법 섹션 */}
-      <section className="p-4 border-b border-gray-100">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-base">총금액</span>
-          <span className="text-base font-bold">{getCurrentOrder?.price}</span>
+        {/* 주문내역 삭제 버튼 */}
+        <div className=" px-5 mt-11 w-full">
+          <button className="w-full py-3 border border-grayscale500 text-base text-center text-primaryRed1 rounded">
+            주문내역 삭제
+          </button>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-base">결제 방법</span>
-          <span className="text-base">{getCurrentOrder?.paymentMethod}</span>
-        </div>
-      </section>
-
-      {/* 주문내역 상세 버튼 */}
-      <div className="p-4">
-        <button className="w-full py-3 border border-gray-300 rounded-lg text-base text-center">
-          주문내역 상세
-        </button>
       </div>
-    </div>
+    </>
   );
 }

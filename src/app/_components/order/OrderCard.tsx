@@ -23,7 +23,7 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
 
   return (
     <div
-      className="w-full border h-[154px] flex"
+      className="w-full border min-h-[154px] flex"
       style={
         !detail
           ? { boxShadow: '1px 1px 4px 1px rgba(0, 0, 0, 0.10)' }
@@ -74,14 +74,16 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
             <p className=" flex items-center  text-sm font-bold">
               {order.price}원
             </p>
-            <Image
-              src={'/order/arrow_right.svg'}
-              alt="arrow-right-icon"
-              width={16}
-              height={16}
-              className="cursor-pointer"
-              onClick={() => router.push(`/orderList/detail/${order.id}`)}
-            />
+            {!detail && (
+              <Image
+                src={'/order/arrow_right.svg'}
+                alt="arrow-right-icon"
+                width={16}
+                height={16}
+                className="cursor-pointer "
+                onClick={() => router.push(`/orderList/detail/${order.id}`)}
+              />
+            )}
           </div>
         </div>
       </div>

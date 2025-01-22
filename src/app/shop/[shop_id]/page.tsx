@@ -86,7 +86,7 @@ const Shop = () => {
     <div className=" min-h-screen h-full mb-[var(--bottom-nav-height)]">
       <div
         className="h-[35%] bg-no-repeat bg-cover"
-        style={{ backgroundImage: "url('/images/cake-1.svg')" }}
+        style={{ backgroundImage: "url('/home/cake-1.svg')" }}
       ></div>
       <div className="h-[35%] relative">
         {/* 상단 정보 */}
@@ -203,7 +203,7 @@ const Shop = () => {
 
       {/* 메인 콘텐츠 */}
       {activeTab === '전체메뉴' && (
-        <div className="p-4">
+        <div className="p-4 pb-[var(--bottom-nav-height)]">
           {/* 카테고리 탭 */}
           <div className="flex space-x-4 overflow-x-auto mb-4">
             {tabs.map((tab) => (
@@ -225,7 +225,7 @@ const Shop = () => {
             {[1, 2, 3, 4].map((item) => (
               <div key={item} className="space-y-1 aspect-square ">
                 <img
-                  src="/images/cake-3.svg"
+                  src="/home/cake-3.svg"
                   alt="케이크"
                   className="w-full aspect-square object-cover rounded-lg"
                 />
@@ -238,27 +238,57 @@ const Shop = () => {
       )}
 
       {activeTab === '케이크로그' && (
-        <div className="p-4 overflow-x-scroll flex gap-1 ">
-          {cakeLogs.map((log) => (
-            <div key={log.id} className="space-y-4 min-w-[60%]">
-              <div className="relative">
-                <img
-                  src={log.image}
-                  alt={log.name}
-                  className="w-full h-full object-cover "
-                />
+        <div className=" pb-[var(--bottom-nav-height)]">
+          <div className="px-5 py-7 overflow-x-scroll flex gap-1">
+            {cakeLogs.map((log) => (
+              <div key={log.id} className="space-y-4 min-w-[60%]">
+                <div className="relative">
+                  <img
+                    src={log.image}
+                    alt={log.name}
+                    className="w-full h-full object-cover "
+                  />
 
-                <div className="space-y-2 absolute z-50 bottom-0 ">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">{log.instagram}</span>
-                    <span className="text-gray-500">{log.date}</span>
+                  <div className="space-y-2 absolute z-50 bottom-0 ">
+                    <div className="flex items-center mb-3.5 ml-4 justify-between flex-col text-grayscale100">
+                      <span className="font-medium">{log.name}</span>
+                      <span className="text-xs font-semibold">
+                        {log.instagram}
+                      </span>
+                    </div>
                   </div>
-                  <p className="text-sm">{log.description}</p>
                 </div>
               </div>
-              <h1>ㅁㄴㅇㄹㅁㄴ</h1>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="h-1.5 bg-grayscale100 w-full"></div>
+          {/* 하단 케이크 로그 상세 */}
+          <div className="px-5 gap-1 ">
+            {cakeLogs.map((log) => (
+              <div key={log.id} className="border-b pb-[18px]">
+                <div className="flex gap-2.5 items-center my-[18px]">
+                  <h1 className="text-sm font-medium text-grayscale900">
+                    {log.name}
+                  </h1>
+                  <span className="text-xs text-[#949494] align-middle">
+                    {log.instagram}
+                  </span>
+                </div>
+                <div className="flex gap-3.5">
+                  <Image
+                    src={log.image}
+                    alt={log.name}
+                    width={73}
+                    height={95}
+                  />
+                  <div className="text-xs text-grayscale800 flex flex-col justify-between">
+                    <span>{log.description}</span>
+                    <span>주문일 {log.date}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
