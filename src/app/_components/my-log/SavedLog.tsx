@@ -32,7 +32,7 @@ const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
           <div
             key={index}
             onClick={() => handleToLogDetail(cake.cakeLogid)} // 클릭 시 cakelog_id를 넘겨줌
-            className="relative w-full h-[250px] cursor-pointer"
+            className="relative w-full h-[215px] cursor-pointer"
           >
             {/* 이미지 */}
             <Image
@@ -47,7 +47,7 @@ const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
             <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
             {/* 이미지 위에 제목 */}
-            <div className="px-4 absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
+            <div className="px-4 text-[12px] absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
               {cake.title}
             </div>
           </div>
