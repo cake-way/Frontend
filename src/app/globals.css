@@ -60,13 +60,7 @@
   }
 } */
 
-html {
-  touch-action: manipulation; /* 터치로 확대/축소를 방지 */
-  -ms-touch-action: manipulation; /* IE 지원 */
-}
-
 body {
-  overscroll-behavior: none; /* 스크롤로 인한 확대 방지 */
   color: var(--foreground);
   background: var(--background);
   font-family: Pretendard;
