@@ -2,21 +2,36 @@ import useSelectedStore from '@/app/store/selectedStore';
 
 export default function Price() {
   //   const [priceRange, setPriceRange] = useState(4); // 초기값 설정
-  const { selectedPrice, setSelectedPrice } = useSelectedStore();
+  const {
+    selectedMaxPrice,
+    setSelectedMaxPrice,
+    selectedMinPrice,
+    setSelectedMinPrice,
+  } = useSelectedStore();
 
-  const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(e.target.value);
-    if (value <= 1) {
-      value = 2;
-      setSelectedPrice(value);
-      return;
+
+    if (value <= min) {
+      value = min + 1; // 최댓값이 최솟값보다 작지 않도록 제한
     }
-    setSelectedPrice(value);
+    setSelectedMaxPrice(value);
+  };
+  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = parseInt(e.target.value);
+
+    if (value >= max) {
+      value = max - 1; // 최솟값이 최댓값을 넘지 않도록 제한
+    }
+    setSelectedMinPrice(value);
   };
 
   const handleButtonClick = (value: number) => {
-    setSelectedPrice(value);
+    setSelectedMaxPrice(value);
   };
+
+  const max = selectedMaxPrice ?? 10; //null 연산자
+  const min = selectedMinPrice ?? 0;
 
   return (
     <div className="p-4">
@@ -26,7 +41,9 @@ export default function Price() {
 
       {/* 가격 범위 표시 */}
       <div className=" mb-4">
-        <p className="text-lg font-bold text-center">0원-{selectedPrice}만원</p>
+        <p className="text-lg font-bold text-center">
+          {min}만원-{max}만원
+        </p>
       </div>
 
       {/* 슬라이더 */}
@@ -36,7 +53,7 @@ export default function Price() {
         <div className="absolute top-5 text-xs font-medium text-grayscale600">
           0원
         </div>
-        {selectedPrice !== 10 ? (
+        {max !== 10 ? (
           <div className="absolute top-5  right-0 text-xs font-medium text-grayscale600">
             10만원
           </div>
@@ -44,13 +61,13 @@ export default function Price() {
         {
           <div
             className={`absolute top-5 text-xs font-medium text-grayscale800 
-            ${selectedPrice === 10 ? '-translate-x-8 text-nowrap' : '-translate-x-1/2'}
+            ${max === 10 ? '-translate-x-8 text-nowrap' : '-translate-x-1/2'}
             `}
             style={{
-              left: `${(selectedPrice / 10) * 100}%`, // 슬라이더와 동일 위치
+              left: `${(max / 10) * 100}%`, // 슬라이더와 동일 위치
             }}
           >
-            {selectedPrice}만원
+            {max}만원
           </div>
         }
 
@@ -58,8 +75,8 @@ export default function Price() {
         <div
           className="absolute h-1  right-0 bg-primaryRed1 "
           style={{
-            left: '3px',
-            right: `${100 - (selectedPrice / 10) * 100}%`,
+            left: `${(min / 10) * 100}%`,
+            right: `${100 - (max / 10) * 100}%`,
           }}
         ></div>
 
@@ -68,10 +85,10 @@ export default function Price() {
           aria-label="min"
           type="range"
           min="0"
-          max="0"
-          value={0}
-          onChange={(e) => handleRangeChange(e)}
-          className="absolute w-full appearance-none bg-transparent cursor-pointer
+          max="10"
+          value={min}
+          onChange={(e) => handleMinChange(e)}
+          className="z-20 absolute w-full appearance-none bg-transparent cursor-pointer
                [&::-webkit-slider-thumb]:appearance-none
                [&::-webkit-slider-thumb]:w-4
                [&::-webkit-slider-thumb]:h-4
@@ -98,9 +115,9 @@ export default function Price() {
           type="range"
           min="0"
           max="10"
-          value={selectedPrice}
-          onChange={(e) => handleRangeChange(e)}
-          className="absolute w-full appearance-none bg-transparent cursor-pointer
+          value={max}
+          onChange={(e) => handleMaxChange(e)}
+          className="z-20 absolute w-full appearance-none bg-transparent cursor-pointer
           
                [&::-webkit-slider-thumb]:appearance-none
                [&::-webkit-slider-thumb]:w-4
@@ -131,7 +148,7 @@ export default function Price() {
             onClick={() => handleButtonClick(i + 2)}
             key={i}
             className={`text-sm py-2 border  text-grayscale700 rounded-md ${
-              selectedPrice === i + 2
+              max === i + 2
                 ? 'border-[#FA2840]  bg-[#FFEBEE] '
                 : 'border-grayscale300 hover:bg-gray-200'
             }`}

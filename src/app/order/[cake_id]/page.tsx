@@ -10,6 +10,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Calendar from '@/app/_components/order/Calendar';
 import OrderCard from '@/app/_components/order/OrderCard';
 import { orders } from '../../../../constants/mockData';
+import Dropdown from '@/app/_components/order/Dropdwon';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -18,10 +19,9 @@ const Order: React.FC = () => {
 
   const [selectedSize, setSelectedSize] = useState('미니사이즈');
   const [selectedFlavor, setSelectedFlavor] = useState('초코맛');
-  const [selectedColor, setSelectedColor] = useState('화이트');
-  const [message, setMessage] = useState('');
+  const [selectedBgColor, setSelectedBgColor] = useState('');
+  const [letteringColor, setLetteringColor] = useState('');
   const [letteringText, setLetteringText] = useState('');
-  const [refundPolicy, setRefundPolicy] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
@@ -45,7 +45,6 @@ const Order: React.FC = () => {
   ];
 
   const flavors = ['초코맛', '바닐라맛', '딸기맛'];
-  const colors = ['화이트', '핑크', '블루'];
 
   const onclickedBack = () => {
     router.back();
@@ -95,7 +94,7 @@ const Order: React.FC = () => {
                       value={size.name}
                       checked={selectedSize === size.name}
                       onChange={() => setSelectedSize(size.name)}
-                      className="w-4 h-4 accent-red-500"
+                      className="w-4 h-4 accent-[#fa2840]"
                     />
                     <div>
                       <p className="font-medium">{size.name}</p>
@@ -111,43 +110,41 @@ const Order: React.FC = () => {
           </div>
           {/* Flavor Selection */}
           <div className="p-5">
-            <h2 className="text-lg font-bold mb-2">맛 선택</h2>
-            <select
-              value={selectedFlavor}
-              onChange={(e) => setSelectedFlavor(e.target.value)}
-              className="w-full border border-gray-300 rounded-md p-2"
-            >
-              {flavors.map((flavor) => (
-                <option key={flavor} value={flavor}>
-                  {flavor}
-                </option>
-              ))}
-            </select>
+            <Dropdown
+              options={flavors}
+              selectedValue={selectedFlavor}
+              onChange={(option) => setSelectedFlavor(option)}
+              label="맛 선택"
+            />
           </div>
-          {/* Color Selection */}
+          {/* 배경색상 Selection */}
           <div className="p-5">
-            <h2 className="text-lg font-bold mb-2">색상 선택</h2>
-            <select
-              value={selectedColor}
-              onChange={(e) => setSelectedColor(e.target.value)}
-              className="w-full border border-gray-300 rounded-md p-2"
-            >
-              {colors.map((color) => (
-                <option key={color} value={color}>
-                  {color}
-                </option>
-              ))}
-            </select>
+            <h2 className="text-lg font-bold mb-2">배경 색상</h2>
+            <input
+              value={selectedBgColor}
+              type="text"
+              aria-label="background-color"
+              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900  w-full px-3 py-1.5 focus:outline-none rounded-md"
+              onChange={(e) => setSelectedBgColor(e.target.value)}
+            />
+          </div>
+          {/* 레터링색상 Selection */}
+          <div className="p-5">
+            <h2 className="text-lg font-bold mb-2">레터링 색상</h2>
+            <input
+              value={letteringColor}
+              type="text"
+              aria-label="background-color"
+              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900 w-full px-3 py-1.5 focus:outline-none rounded-md"
+              onChange={(e) => setLetteringColor(e.target.value)}
+            />
           </div>
           {/* Message Input */}
           <div className="p-5">
             <h2 className="text-lg font-bold mb-2">꼭 확인해주세요!</h2>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="메시지를 입력하세요"
-              className="w-full border border-gray-300 rounded-md p-2 h-24 resize-none"
-            />
+            <p className="rounded-md text-grayscale900 bg-[#f4f4f4] px-3 py-1.5">
+              공지내용
+            </p>
           </div>
           {/* Next Button */}
           <div className="p-5">
@@ -180,18 +177,15 @@ const Order: React.FC = () => {
               value={letteringText}
               onChange={(e) => setLetteringText(e.target.value)}
               placeholder="희망문구 (영문 11자 한글 9자)"
-              className="w-full border border-gray-300 rounded-md p-2 h-24 resize-none"
+              className="bg-[#f4f4f4]  resize-none text-sm font-medium text-grayscale900  w-full px-3.5 py-3.5 focus:outline-none rounded-md h-40"
             />
           </div>
           {/* Refund Policy Section */}
-          <div className="p-4">
+          <div className="p-4 mt-32">
             <h2 className="text-lg font-bold mb-2">취소 및 환불 규정</h2>
-            <textarea
-              value={refundPolicy}
-              onChange={(e) => setRefundPolicy(e.target.value)}
-              placeholder="취소 및 환불 규정을 입력하세요"
-              className="w-full border border-gray-300 rounded-md p-2 h-24 resize-none"
-            />
+            <p className="rounded-md text-grayscale900 bg-[#f4f4f4] px-3 py-1.5">
+              환불규정에 관해서 나타내기
+            </p>
           </div>
           {/* Reservation Button */}
           <div className="p-4">
