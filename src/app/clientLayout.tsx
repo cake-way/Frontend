@@ -15,7 +15,7 @@ export default function ClientWrapper({
 
   // 로그인 페이지일 때는 pb-[var(--bottom-nav-height)]를 제외
   const mainClass =
-    pathname === '/login'
+    pathname === '/login' || pathname === '/'
       ? 'w-full h-full overflow-y-scroll'
       : 'w-full h-full overflow-y-scroll pb-[var(--bottom-nav-height)]';
 

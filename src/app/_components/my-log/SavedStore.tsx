@@ -40,7 +40,7 @@ const SavedStore: React.FC<SavedStoreProps> = ({ stores }) => {
             <div className="flex flex-col">
               {/* 당일 예약 여부 */}
               <span
-                className={`px-2 py-[2px] mb-1 text-sm border rounded-full text-body2 w-fit ${
+                className={`px-2 py-[2px] mb-1 text-[12px] border rounded-full text-body2 w-fit ${
                   store.isSameDayReservation
                     ? 'bg-[#FFDDE2] text-primaryRed1 border-primaryRed2'
                     : 'bg-red-200 text-red-800 border-red-500'
