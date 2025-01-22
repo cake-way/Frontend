@@ -37,14 +37,14 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
           <div className="relative w-full h-full">
             <svg
               viewBox="0 0 100 100"
-              className="w-8 h-8 absolute z-50"
+              className="w-8 h-8 absolute z-30"
               preserveAspectRatio="none"
             >
               <path d="M0 0 L100 0 L0 100 Z" fill="#E7363F" />
             </svg>
             <svg
               viewBox="0 0 100 100"
-              className="w-8 h-8 absolute bottom-0 right-0 z-50"
+              className="w-8 h-8 absolute bottom-0 right-0 z-30"
               preserveAspectRatio="none"
             >
               <path d="M100 0 L100 100 L0 100 Z" fill="#E7363F" />

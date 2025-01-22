@@ -14,9 +14,9 @@ export default function OrderList() {
   };
 
   return (
-    <div className="min-h-screen ">
+    <>
       {/* Tabs */}
-      <div className="flex  relative border-b px-5 justify-center">
+      <header className="flex sticky bg-[#ffffff] top-0 z-50 border-b px-5 justify-center">
         <Image
           src="/header-images/back.svg"
           alt="back-icon"
@@ -48,7 +48,7 @@ export default function OrderList() {
             픽업 완료
           </motion.button>
         </div>
-      </div>
+      </header>
 
       {/* Order List */}
       <div className="p-4">
@@ -66,6 +66,6 @@ export default function OrderList() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
