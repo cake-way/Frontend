@@ -8,7 +8,6 @@ import calendar from '@/../public/order/calendar.svg';
 import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';
 import mark from '@/../public/my-log-images/mark.svg';
-import { getCategoryParam } from '../../../../constants/constants';
 import { getCategoryName, getHoursMinutes } from '../../../../utils/utils';
 import { useState } from 'react';
 import Calendar from '@/app/_components/order/Calendar';
@@ -17,10 +16,49 @@ import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 import useFilteringStore from '@/app/store/filteringStore';
 import { cakes } from '../../../../constants/mockData';
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
+import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/_components/Loading';
+import dayjs from 'dayjs';
+import { ICategoryData } from 'types/categoryCake.types';
 
+//카테고리 없는 ui
 const CategorySearch = () => {
-  const params = useParams();
-  const category = params?.category as keyof typeof getCategoryParam;
+  const { category } = useParams();
+
+  // 유효한 카테고리인지 확인하는 함수
+  const isValidCategory = (cat: string | string[] | undefined) => {
+    const validCategories = [
+      'birthday',
+      'graduation',
+      'dating',
+      'party',
+      'yearend',
+      'anniversary',
+      'thanks',
+      'wedding',
+      'work',
+      'today',
+    ];
+    if (typeof cat === 'string') {
+      return validCategories.includes(cat);
+    }
+    return false;
+  };
+  if (!category || Array.isArray(category) || !isValidCategory(category)) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h1 className="text-xl font-bold">유효하지 않은 카테고리입니다</h1>
+        <button
+          className="mt-4 p-2 bg-black text-white rounded"
+          onClick={() => router.push('/')}
+        >
+          홈으로 돌아가기
+        </button>
+      </div>
+    );
+  }
+
   const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterName, setFilterName] = useState('');
@@ -29,9 +67,26 @@ const CategorySearch = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
-
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
+  const { data, isLoading } = useQuery({
+    queryKey: ['categoryCake', category, filteringDate],
+    queryFn: () => {
+      const localISOString = filteringDate
+        ? dayjs(filteringDate).format('YYYY-MM-DDTHH:mm')
+        : undefined;
+      console.log(localISOString);
+      return cakeCategorySearchApi(
+        getCategoryName(category),
+        localISOString,
+        confirmPrice,
+        confirmReigon,
+        confirmDesgin
+      );
+    },
+  });
+
+  console.log(data);
 
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
@@ -71,6 +126,7 @@ const CategorySearch = () => {
         selectedDate.getDate(),
         ...getHoursMinutes(selectedTime, selectedPeriod)
       );
+
       setFilteringDate(newDate);
       setTime(selectedTime);
       setPeriod(selectedPeriod);
@@ -83,6 +139,10 @@ const CategorySearch = () => {
       setCalendarOpen(false);
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -150,40 +210,47 @@ const CategorySearch = () => {
           </button>
         </div>
 
-        {/* Cake Grid */}
-        <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
-          {cakes.map((cake, index) => (
-            <div
-              key={index}
-              className=" relative cursor-pointer   overflow-hidden mb-2.5"
-              onClick={() => onOrder(cake.cake_id)}
-            >
-              <Image
-                src={cake.image}
-                alt={cake.name}
-                width={0}
-                height={0}
-                className="w-full   object-cover"
-              />
-              <div className="absolute top-2 right-2 p-1">
-                {cake.scrap_count ? (
-                  <MarkIcon />
-                ) : (
-                  <Image src={mark} alt="mark" />
-                )}
-              </div>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {' '}
+            {/* Cake Grid */}
+            <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
+              {(data.length ? data : cakes).map((cake: ICategoryData) => (
+                <div
+                  key={cake.cakeId}
+                  className=" relative cursor-pointer   overflow-hidden mb-2.5"
+                  onClick={() => onOrder(cake.cakeId)}
+                >
+                  <Image
+                    src={cake.cakeImage}
+                    alt={cake.cakeName}
+                    width={0}
+                    height={0}
+                    className="w-full   object-cover"
+                  />
+                  <div className="absolute top-2 right-2 p-1">
+                    {cake.isScraped ? (
+                      <MarkIcon />
+                    ) : (
+                      <Image src={mark} alt="mark" />
+                    )}
+                  </div>
 
-              <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
-                <h3 className="font-bold text-xs text-grayscale900">
-                  {cake.name}
-                </h3>
-                <p className=" text-xs text-grayscale900 font-semibold">
-                  {cake.price.toLocaleString()}원
-                </p>
-              </div>
+                  <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
+                    <h3 className="font-bold text-xs text-grayscale900">
+                      {cake.cakeName}
+                    </h3>
+                    <p className=" text-xs text-grayscale900 font-semibold">
+                      {cake.cakeprice.toLocaleString()}원
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
         {calendarOpen && (
           <div className="absolute p=4 h-[calc(100dvh-var(--bottom-nav-height))]  bg-[#ffffff] w-full">

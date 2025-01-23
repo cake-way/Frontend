@@ -28,12 +28,7 @@ export const getCategoryParameter = (name: string) => {
 export const getCategoryName = (english: string) => {
   const found = Object.entries(getCategoryParam).find(
     ([, value]) => value === english
-  );
-
-  if (!found) {
-    console.warn(`Category not found for: ${english}`);
-    return undefined;
-  }
+  ) as [string, string];
 
   return found[0];
 };

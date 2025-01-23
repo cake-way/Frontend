@@ -29,7 +29,7 @@ export default function Home() {
     setCurrentLocationString,
   } = useHomeLocationStore();
 
-  console.log(homeLocation);
+  //로딩중인 현재위치 나타내기!!!!!!!
 
   //카카오맵 로드
   useEffect(() => {
