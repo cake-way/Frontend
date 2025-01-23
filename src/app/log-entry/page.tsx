@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -9,9 +10,41 @@ import AlarmIcon from '../../../public/header-images/alarm.svg';
 import Header from '../_components/Header';
 import CreateLog from '../_components/log-entry/CreateLog';
 import MyCakeLog from '../_components/log-entry/MyCakeLog';
+import { fetchCakelogData } from '../_lib/api/mycakelog';
+
+interface MyCakeLogProps {
+  cakelogs: Array<{
+    cakeLogid: number;
+    username: string;
+    cakeShopName: string;
+    cakeCategoryName: string;
+    title: string;
+    thumbnailImage: string;
+    body: string;
+    isPublic: true;
+    imageList: [string];
+  }>;
+}
 
 const LogEntry = () => {
+  const [latestOrderShop, setLatestOrderShop] = useState<string | null>(null);
+  const [cakelogs, setCakelogs] = useState<MyCakeLogProps['cakelogs']>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchLogData = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const data = await fetchCakelogData(token);
+        setLatestOrderShop(data.latestOrderShop);
+        setCakelogs(data.cakelogs);
+      } catch (error) {
+        console.error('Failed to fetch cakelog data:', error);
+      }
+    };
+
+    fetchLogData();
+  }, []);
 
   const handleLeftButtonClick = () => {
     router.back();
@@ -34,8 +67,8 @@ const LogEntry = () => {
         borderBottom={true}
       />
       <main className="w-full px-5">
-        <CreateLog />
-        <MyCakeLog />
+        <CreateLog latestOrderShop={latestOrderShop} />
+        <MyCakeLog cakelogs={cakelogs} />
       </main>
     </div>
   );

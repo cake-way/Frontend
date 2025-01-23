@@ -4,13 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import MapIcon from '../../../../../public/log-entry/map-icon.svg';
 import SearchIcon from '../../../../../public/header-images/search.svg';
+import { fetchRecentOrders } from '@/app/_lib/api/preCakelog';
 
 interface RecentOrder {
   shopId: number;
   shopName: string;
 }
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const LocationSearch = () => {
   const [searchResults, setSearchResults] = useState<RecentOrder[]>([]);
@@ -25,27 +24,11 @@ const LocationSearch = () => {
     }
 
     try {
-      const response = await fetch(`${BACKEND_URL}/preCakelog`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setSearchResults(data.recentOrderList || []);
-      } else {
-        console.error(
-          '최근 주문 내역을 가져오지 못했습니다:',
-          response.statusText
-        );
-        setSearchResults([]);
-      }
+      const recentShops = await fetchRecentOrders(token);
+      setSearchResults(recentShops);
     } catch (error) {
       console.error('서버 요청 중 오류 발생:', error);
-      setSearchResults([]);
+      setSearchResults([]); // 오류 발생 시 빈 배열 설정
     } finally {
       setIsResultsVisible(true);
     }
