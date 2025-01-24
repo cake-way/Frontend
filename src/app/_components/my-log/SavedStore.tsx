@@ -4,20 +4,12 @@ import React from 'react';
 
 import Status from '../../../../public/my-log-images/status.svg';
 import Title from './Title';
+import useUserStore from '@/app/store/userStore';
 
-interface StoreData {
-  storeImage: string; // 가게 케이크 사진
-  isSameDayReservation: boolean; // 당일 예약 여부
-  storename: string; // 카페 이름
-  openingHours: string; // 영업 시간
-  address: string; // 카페 주소
-}
+const SavedStore: React.FC = () => {
+  const stores = useUserStore((state) => state.storeScrap);
 
-interface SavedStoreProps {
-  stores: StoreData[]; // 저장된 가게 목록
-}
-
-const SavedStore: React.FC<SavedStoreProps> = ({ stores }) => {
+  const lastTwoStore = stores.slice(-2);
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
       <Title title="저장한 가게" link="/my-log/stores" length={stores.length} />
@@ -27,13 +19,13 @@ const SavedStore: React.FC<SavedStoreProps> = ({ stores }) => {
         <p className="text-gray-700 mt-10">아직 저장한 가게가 없습니다!</p>
       ) : (
         <div className="flex w-full mt-[15px] flex-col gap-[23px]">
-          {stores.map((store, index) => (
+          {lastTwoStore.map((store, index) => (
             <section key={index} className="flex items-center gap-4">
               {/* 왼쪽: 가게 케이크 사진 */}
               <figure className="flex-shrink-0 w-[110px] h-[110px]">
                 <Image
                   src={store.storeImage}
-                  alt={`${store.storename}의 대표 이미지`}
+                  alt={`${store.storeName}의 대표 이미지`}
                   width={110}
                   height={110}
                   className="object-cover"
@@ -45,19 +37,20 @@ const SavedStore: React.FC<SavedStoreProps> = ({ stores }) => {
                 {/* 당일 예약 여부 */}
                 <span
                   className={`px-2 py-[2px] mb-1 text-[12px] border rounded-full text-body2 w-fit ${
-                    store.isSameDayReservation
+                    store.sameDay
                       ? 'bg-[#FFDDE2] text-primaryRed1 border-primaryRed2'
                       : 'bg-red-200 text-red-800 border-red-500'
                   }`}
                 >
-                  {store.isSameDayReservation ? '당일예약' : ''}
+                  {store.sameDay ? '당일예약' : ''}
                 </span>
 
                 {/* 가게 정보 */}
-                <h1 className="text-lg font-bold">{store.storename}</h1>
+                <h1 className="text-lg font-bold">{store.storeName}</h1>
                 <section className="flex gap-1 text-sm font-semibold text-black mb-3">
                   <Image src={Status} alt="상태 표시" />
-                  영업 중 {store.openingHours}
+                  영업 중{' '}
+                  {`${store.operatingHours.openTime.hour}:${store.operatingHours.openTime.minute} ~ ${store.operatingHours.closeTime.hour}:${store.operatingHours.closeTime.minute}`}
                 </section>
                 <p className="text-sm text-black"> {store.address}</p>
               </div>

@@ -8,11 +8,10 @@ import CakeWayLogo from '../../../public/login-images/cake-way.svg';
 const Login = () => {
   const handleKakaoLogin = async () => {
     try {
-      // 서버에서 카카오 인증 URL을 생성한 후 리디렉션
-      const response = await fetch('/api/auth');
+      const response = await fetch('/api/auth'); // app key 감추기 위해 next 서버 이용
       if (response.ok) {
         const data = await response.json();
-        window.location.href = data.authUrl; // 서버에서 받은 URL로 리디렉션
+        window.location.href = data.authUrl; // 디벨로퍼에서 설정한 URL로 리디렉션
       } else {
         throw new Error('카카오 인증 URL 생성 실패');
       }

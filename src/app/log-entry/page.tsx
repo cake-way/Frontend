@@ -10,7 +10,7 @@ import AlarmIcon from '../../../public/header-images/alarm.svg';
 import Header from '../_components/Header';
 import CreateLog from '../_components/log-entry/CreateLog';
 import MyCakeLog from '../_components/log-entry/MyCakeLog';
-import { fetchCakelogData } from '../_lib/api/mycakelog';
+import { fetchCakelogData } from '../_lib/api/myCakeLogs';
 
 interface MyCakeLogProps {
   cakelogs: Array<{
@@ -36,8 +36,8 @@ const LogEntry = () => {
       const token = localStorage.getItem('token');
       try {
         const data = await fetchCakelogData(token);
-        setLatestOrderShop(data.latestOrderShop);
-        setCakelogs(data.cakelogs);
+        setLatestOrderShop(data.latestOrderShop); // 가장 최근 주문한 가게
+        setCakelogs(data.cakelogs); // 나의 케이크 로그들
       } catch (error) {
         console.error('Failed to fetch cakelog data:', error);
       }
@@ -51,7 +51,7 @@ const LogEntry = () => {
   };
 
   const handleRightButtonClick = () => {
-    router.push('/notice');
+    router.push('/notice'); // 임시
   };
 
   return (

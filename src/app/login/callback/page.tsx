@@ -1,9 +1,11 @@
 'use client';
 
-import LoadingSpinner from '@/app/_components/Loading';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
+
+import LoadingSpinner from '@/app/_components/Loading';
 import useUserStore from '@/app/store/userStore';
+import { fetchUserInfo } from '@/app/_lib/api/userInfo';
 
 const LoginCallback = () => {
   const searchParams = useSearchParams(); // 카카오 인증 코드 추출
@@ -13,7 +15,7 @@ const LoginCallback = () => {
   useEffect(() => {
     const code = searchParams.get('code');
     if (!code) {
-      alert('인증 코드가 존재하지 않습니다. 관리자에 문의해 주세요.');
+      alert('카카오 인증 코드가 존재하지 않습니다. 관리자에 문의해 주세요.');
       router.push('/login');
       return;
     }
@@ -35,29 +37,15 @@ const LoginCallback = () => {
         }
 
         const { token } = await response.json();
+
         if (token) {
-          localStorage.setItem('token', token); // 액세스 토큰 저장
+          localStorage.setItem('token', token); // 액세스 토큰 저장 -> 추후 보안 고려해서 저장 방식 수정
           alert('로그인이 완료되었습니다!');
 
           // 마이페이지 api 호출해서 memberId get
-          const fetchUserInfo = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/mypage`,
-            {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const userData = await fetchUserInfo(token);
 
-          if (!fetchUserInfo.ok) {
-            throw new Error('사용자 정보 요청 실패');
-          }
-
-          const userData = await fetchUserInfo.json();
-
-          // Zustand에 사용자 정보 저장
+          // Zustand에 사용자 정보 저장 (현재 로그인한 사용자 전역 관리)
           setUserInfo(userData);
 
           router.push('/home'); // 홈 페이지로 이동

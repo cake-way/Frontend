@@ -1,26 +1,23 @@
 'use client';
 import React from 'react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import Title from './Title';
 import { useRouter } from 'next/navigation';
+import useUserStore from '@/app/store/userStore';
 
-interface LogData {
-  src: StaticImageData; // Next.js `Image` 컴포넌트에 사용 가능한 타입
-  title: string;
-  cakeLogid: string; // 각 로그 항목의 고유한 cakelog_id
-}
-
-interface SavedLogProps {
-  savedLog: LogData[]; // cakelog_id를 포함한 savedLog 데이터
-}
-
-const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
+const SavedLog: React.FC = () => {
   const router = useRouter();
 
-  const handleToLogDetail = (cakeLogid: string) => {
+  const handleToLogDetail = (cakeLogid: number) => {
     // cakelog_id를 URL에 포함시켜서 동적 라우팅
     router.push(`/log-detail/${cakeLogid}`);
   };
+
+  // useUserStore에서 전역적으로 관리되는 사용자 정보 get
+  const savedLog = useUserStore((state) => state.logScrap);
+
+  // 배열의 마지막 2개 항목 가져오기
+  const lastTwoLogs = savedLog.slice(-2);
 
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
@@ -37,19 +34,19 @@ const SavedLog: React.FC<SavedLogProps> = ({ savedLog }) => {
         </p>
       ) : (
         <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">
-          {savedLog.map((cake, index) => (
+          {lastTwoLogs.map((cake, index) => (
             <div
               key={index}
-              onClick={() => handleToLogDetail(cake.cakeLogid)} // 클릭 시 cakelog_id를 넘겨줌
+              onClick={() => handleToLogDetail(cake.logId)} // 클릭 시 cakelog_id를 넘겨줌
               className="relative w-full h-[215px] cursor-pointer"
             >
               {/* 이미지 */}
               <Image
-                src={cake.src}
+                src={cake.logImage}
                 alt={cake.title}
                 layout="fill"
                 objectFit="cover"
-                onClick={() => handleToLogDetail(cake.cakeLogid)} // 이미지 클릭 시에도 동적 라우팅
+                onClick={() => handleToLogDetail(cake.logId)} // 이미지 클릭 시에도 동적 라우팅
               />
 
               {/* 그라데이션 배경 */}

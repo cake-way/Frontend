@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Title from '@/app/_components/my-log/Title';
+import { useRouter } from 'next/navigation';
 
 interface MyCakeLogProps {
   cakelogs: Array<{
@@ -18,6 +19,13 @@ interface MyCakeLogProps {
 }
 
 const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
+  const router = useRouter();
+
+  const handleToLogDetail = (cakeLogid: number) => {
+    // cakelog_id를 URL에 포함시켜서 동적 라우팅
+    router.push(`/log-detail/${cakeLogid}`);
+  };
+
   return (
     <section className="mt-6">
       <Title title="나의 케이크 로그" />
@@ -35,6 +43,9 @@ const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
                 alt={cake.title}
                 layout="fill"
                 objectFit="cover"
+                onClick={() => {
+                  handleToLogDetail(cake.cakeLogid);
+                }}
               />
               {/* 그라데이션 배경 */}
               <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>

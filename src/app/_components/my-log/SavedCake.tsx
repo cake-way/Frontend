@@ -2,18 +2,17 @@
 
 import React from 'react';
 import Image from 'next/image';
+
 import Title from './Title';
+import useUserStore from '@/app/store/userStore';
 
-interface SavedCakeData {
-  src: string; // 이미지 URL
-  alt: string; // 이미지 설명
-}
+const SavedCake: React.FC = () => {
+  // useUserStore에서 전역적으로 관리되는 사용자 정보 get
+  const cakes = useUserStore((state) => state.designScrap);
 
-interface SavedCakeProps {
-  cakes: SavedCakeData[]; // 데이터 배열
-}
+  // 배열의 마지막 4개 항목 가져오기
+  const lastFourCakes = cakes.slice(-4);
 
-const SavedCake: React.FC<SavedCakeProps> = ({ cakes }) => {
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
       <Title
@@ -22,16 +21,16 @@ const SavedCake: React.FC<SavedCakeProps> = ({ cakes }) => {
         length={cakes.length}
       />
 
-      {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 디자인 미리보기 */}
+      {/* 조건부 렌더링 */}
       {cakes.length === 0 ? (
-        <p className="text-gray-700 mt-10">아직 저장한 디자인이 없습니다! </p>
+        <p className="text-gray-700 mt-10">아직 저장한 디자인이 없습니다!</p>
       ) : (
         <section className="mt-4 w-full h-[360px] grid grid-cols-2 grid-rows-2 rounded-lg overflow-hidden">
-          {cakes.map((cake, index) => (
+          {lastFourCakes.map((cake, index) => (
             <div key={index} className="relative w-full h-full">
               <Image
-                src={cake.src}
-                alt={cake.alt}
+                src={cake.cakeImage} // designScrap 내 각 항목의 이미지 경로
+                alt={`저장된 케이크 ${index + 1}`}
                 layout="fill"
                 objectFit="cover"
               />
