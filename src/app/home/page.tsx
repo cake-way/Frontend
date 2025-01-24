@@ -29,8 +29,6 @@ export default function Home() {
     setCurrentLocationString,
   } = useHomeLocationStore();
 
-  //로딩중인 현재위치 나타내기!!!!!!!
-
   //카카오맵 로드
   useEffect(() => {
     if (window.kakao?.maps) {
@@ -136,7 +134,9 @@ export default function Home() {
           width={16}
           height={16}
         />
-        <div className="text-[#4f4f4f] text-sm font-medium">{homeLocation}</div>
+        <div className="text-[#4f4f4f] text-sm font-medium">
+          {homeLocation ? homeLocation : '위치를 선택해주세요'}
+        </div>
         <Image
           src={'/order/arrow_down.svg'}
           alt="position_icon"

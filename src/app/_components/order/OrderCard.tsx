@@ -17,6 +17,7 @@ const OrderCard = ({
 
   const cakeDetail = cakeSearch?.find((item) => item.name === order.cakeName);
   const cardColor = getDday() <= 3 ? '#E7363F' : '#C8C400';
+  const pickupDate = new Date(order.pickupDate);
   return (
     <div
       className="w-full border min-h-[154px] flex"
@@ -84,16 +85,12 @@ const OrderCard = ({
               height={17}
             />
             <span className=" text-grayscale900 text-xs font-medium">
-              {new Date(order.pickupDate).getMonth() + 1}.
-              {new Date(order.pickupDate).getDate()}
+              {pickupDate.getMonth() + 1}.{pickupDate.getDate()}
               &nbsp; ({days[new Date().getDay()]})&nbsp;&nbsp;
-              {new Date(order.pickupDate).getHours() <= 11 ? '오전' : '오후'}
+              {pickupDate.getHours() <= 11 ? '오전' : '오후'}
               &nbsp;
-              {new Date(order.pickupDate).getHours()}:
-              {new Date(order.pickupDate)
-                .getMinutes()
-                .toString()
-                .padStart(2, '0')}
+              {pickupDate.getHours()}:
+              {pickupDate.getMinutes().toString().padStart(2, '0')}
             </span>
           </div>
           <div className="py-1.5 flex-[2] flex justify-between  border-t px-2.5">

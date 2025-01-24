@@ -1,32 +1,62 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { cakeShops } from '../../../../constants/mockData';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
-import { getHoursMinutes } from '../../../../utils/utils';
+import { useQuery } from '@tanstack/react-query';
+import shopDetailApi from '@/app/_lib/shopApi';
+import { IShopDetail } from 'types/relatedCake';
+import Link from 'next/link';
+import LoadingSpinner from '@/app/_components/Loading';
 
 const Shop = () => {
-  const param = useParams();
+  const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
-  const [subTab, setSubTab] = useState('');
+  const [subTab, setSubTab] = useState<string | null>(null);
+  const router = useRouter();
 
-  const getShopData = () => {
-    return cakeShops.find((item) => item.shop_id === Number(param.shop_id));
-  };
+  if (!shop_id || Array.isArray(shop_id)) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h1 className="text-xl font-bold">존재하지 않는 케이크입니다.</h1>
+        <button
+          className="mt-4 p-2 bg-black text-white rounded"
+          onClick={() => router.push('/home')}
+        >
+          홈으로 돌아가기
+        </button>
+      </div>
+    );
+  }
 
-  const shop = getShopData();
+  const { data: shopDetail, isLoading } = useQuery<IShopDetail>({
+    queryKey: ['shopDetail', shop_id],
+    queryFn: () => shopDetailApi(+shop_id, subTab),
+  });
+  const tabs = shopDetail?.cakes.cakeCategoryResponseDtos.map(
+    (item) => item.categoryName
+  );
+  // const { data: shopCategory } = useQuery({
+  //   queryKey: ['shopCategory', shop_id],
+  //   queryFn: () => shopCategoryApi(shop_id),
+  // });
 
-  const tabs = [
-    '생일',
-    '졸업',
-    '데이트',
-    '파티',
-    '연말',
-    '결혼',
-    '직장',
-    '당일',
-  ];
+  // const getShopData = () => {
+  //   return cakeShops.find((item) => item.shop_id === Number(shop_id));
+  // };
+
+  // const shop = getShopData();
+
+  // const tabs = [
+  //   '생일',
+  //   '졸업',
+  //   '데이트',
+  //   '파티',
+  //   '연말',
+  //   '결혼',
+  //   '직장',
+  //   '당일',
+  // ];
 
   const cakeLogs = [
     {
@@ -67,19 +97,26 @@ const Shop = () => {
       description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
     },
   ];
-
-  if (!shop) {
-    return <div>로딩중</div>;
+  if (isLoading) {
+    return <LoadingSpinner />;
   }
-
   const getRunTime = () => {
     const nowHours = new Date().getHours();
     const nowMinutes = new Date().getMinutes();
     const totalNowMinutes = nowHours * 60 + nowMinutes;
-    const [hours, minutes] = getHoursMinutes(shop?.close_time);
-    const totalMinutes = hours * 60 + minutes;
+    const hour = shopDetail?.operatingHour.closeTime.hour;
+    const minutes = shopDetail?.operatingHour.closeTime.minute;
+
+    const totalMinutes = hour! * 60 + minutes!; //
 
     return totalNowMinutes - totalMinutes;
+  };
+  const onClickedSubTap = (tab: string) => {
+    if (tab === subTab) {
+      setSubTab('');
+      return;
+    }
+    setSubTab(tab);
   };
 
   return (
@@ -94,10 +131,10 @@ const Shop = () => {
           className=" border-[0.5px] border-solid border-[#EFEFEF]  flex flex-col items-center bg-[#ffffff] w-[88%] p-4 rounded-lg absolute left-[50%] -translate-x-[50%] -translate-y-[50%] "
           style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
         >
-          <h1 className="text-[22px] font-bold">{shop?.name}</h1>
+          <h1 className="text-[22px] font-bold">{shopDetail?.name}</h1>
           <div className="mt-2 text-sm flex flex-col items-center">
             <p className="flex items-center text-grayscale700 text-xs font-bold">
-              {`케이크 로그 ${shop?.scrap_count}개 |`}
+              {`케이크 로그 ${shopDetail?.scrapCount}개 |`}
               <span className="mr-2 flex">
                 <Image
                   src="/shop/bookMark.svg"
@@ -105,12 +142,14 @@ const Shop = () => {
                   height={16}
                   alt="book_mark"
                 />
-                {shop?.scrap_count}
+                {shopDetail?.scrapCount}
               </span>
             </p>
-            <span className="text-xs m-5 text-grayscale900 bg-grayscale200 py-1 px-[10px] text-center rounded-[33px]">
-              당일예약
-            </span>
+            {shopDetail?.sameDay && (
+              <span className="text-xs m-5 text-grayscale900 bg-grayscale200 py-1 px-[10px] text-center rounded-[33px]">
+                당일예약
+              </span>
+            )}
             <div className="flex flex-col gap-[2px]">
               <p className="flex items-center text-gray-600">
                 <span className="mr-2">
@@ -121,7 +160,7 @@ const Shop = () => {
                     alt="adress_icon"
                   />
                 </span>
-                {shop?.address}
+                {shopDetail?.address}
                 <span className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top">
                   지도보기
                 </span>
@@ -135,8 +174,18 @@ const Shop = () => {
                     alt="runtime_icon"
                   />
                 </span>
-                {getRunTime() > 0 ? '영업 중' : '마감'} 화 오전 11:30 -{' '}
-                {shop.close_time}
+                {getRunTime() > 0 ? '영업 중' : '마감'}{' '}
+                {shopDetail?.operatingHour?.dayOfWeek}
+                {shopDetail?.operatingHour?.openTime?.hour !== undefined &&
+                  (shopDetail.operatingHour.openTime.hour <= 11
+                    ? '오전'
+                    : '오후')}
+                {shopDetail?.operatingHour?.openTime?.hour}:
+                {shopDetail?.operatingHour?.openTime?.minute} -&nbsp;
+                {shopDetail?.operatingHour?.closeTime?.hour}:
+                {shopDetail?.operatingHour?.openTime?.minute
+                  .toString()
+                  .padStart(2, '0')}
               </p>
               <p className="flex items-center text-gray-600">
                 <span className="mr-2">
@@ -147,7 +196,7 @@ const Shop = () => {
                     alt="instagram_link_icon"
                   />
                 </span>
-                {shop?.contact}
+                {shopDetail?.contact}
               </p>
             </div>
           </div>
@@ -157,6 +206,7 @@ const Shop = () => {
           <button
             className="whitespace-nowrap px-10 py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
             style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
+            onClick={() => router.push('/log-entry/new-log')}
           >
             <Image
               width={28}
@@ -167,9 +217,10 @@ const Shop = () => {
             />
             케이크 로그 작성
           </button>
-          <button
+          <Link
             className="whitespace-nowrap px-10 py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
             style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
+            href={shopDetail?.instagram || ''}
           >
             <Image
               width={24}
@@ -179,7 +230,7 @@ const Shop = () => {
               className="mx-auto mb-2"
             />
             인스타그램
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -206,13 +257,13 @@ const Shop = () => {
         <div className="p-4 pb-[var(--bottom-nav-height)]">
           {/* 카테고리 탭 */}
           <div className="flex space-x-4 overflow-x-auto mb-4">
-            {tabs.map((tab) => (
+            {tabs?.map((tab) => (
               <button
                 key={tab}
                 className={`
                     ${subTab === tab ? 'bg-grayscale800 text-[#f6f6f6]' : 'bg-grayscale100 text-[#131313]'}
                  font-medium px-4 py-1 rounded-full text-sm whitespace-nowrap`}
-                onClick={() => setSubTab(tab)}
+                onClick={() => onClickedSubTap(tab)}
               >
                 {tab}
               </button>
@@ -222,15 +273,15 @@ const Shop = () => {
           <h3 className="font-bold text-lg">{subTab}</h3>
           {/* 케이크 메뉴 그리드 */}
           <div className="grid grid-cols-2 gap-4 mt-4">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="space-y-1 aspect-square ">
-                <img
-                  src="/home/cake-3.svg"
-                  alt="케이크"
+            {shopDetail?.cakes?.cakes?.map((item) => (
+              <div key={item.cakeId} className="space-y-1 aspect-square ">
+                <Image
+                  src={item.thumnailUrl}
+                  alt={item.cakeName}
                   className="w-full aspect-square object-cover rounded-lg"
                 />
-                <p className="text-sm">벨스데이 케이크</p>
-                <p className="text-xs">19,000원</p>
+                <p className="text-sm">{item.cakeName}</p>
+                <p className="text-xs">{item.price}</p>
               </div>
             ))}
           </div>

@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import cakeDetailApi from '@/app/_lib/cakeDetail';
 import LoadingSpinner from '@/app/_components/Loading';
 import { ICakeDetail } from 'types/relatedCake';
-import { getShopAdress } from '@/app/_lib/shopDetail';
+import { getShopAdress } from '@/app/_lib/shopApi';
 
 export default function CakeDetail() {
   const router = useRouter();
