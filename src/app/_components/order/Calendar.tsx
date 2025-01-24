@@ -5,10 +5,10 @@ import { amTimes, pmTimes } from '../../../../constants/constants';
 
 interface CalendarComponentProps {
   selectedDate: Date;
-  selectedTime: string;
+  selectedTime: string | null;
   selectedPeriod: string;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
-  setSelectedTime: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
 }
 

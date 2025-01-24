@@ -20,7 +20,8 @@ import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
 import dayjs from 'dayjs';
-import { ICategoryData } from 'types/categoryCake.types';
+import { ICategoryData } from 'types/relatedCake';
+import { days } from 'constants/constants';
 
 //카테고리 없는 ui
 const CategorySearch = () => {
@@ -51,7 +52,7 @@ const CategorySearch = () => {
         <h1 className="text-xl font-bold">유효하지 않은 카테고리입니다</h1>
         <button
           className="mt-4 p-2 bg-black text-white rounded"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/home')}
         >
           홈으로 돌아가기
         </button>
@@ -65,12 +66,19 @@ const CategorySearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { confirmDesgin, confirmPrice, confirmReigon } = useFilteringStore();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
   const { data, isLoading } = useQuery({
-    queryKey: ['categoryCake', category, filteringDate],
+    queryKey: [
+      'categoryCake',
+      category,
+      filteringDate,
+      confirmPrice?.max,
+      confirmReigon,
+      confirmDesgin,
+    ],
     queryFn: () => {
       const localISOString = filteringDate
         ? dayjs(filteringDate).format('YYYY-MM-DDTHH:mm')
@@ -79,7 +87,7 @@ const CategorySearch = () => {
       return cakeCategorySearchApi(
         getCategoryName(category),
         localISOString,
-        confirmPrice,
+        confirmPrice?.max,
         confirmReigon,
         confirmDesgin
       );
@@ -101,8 +109,6 @@ const CategorySearch = () => {
       );
     }
   };
-
-  const days = ['일', '월', '화', '수', '목', '금', '토'];
 
   const filteredDate = filteringDate || new Date();
 
@@ -139,10 +145,6 @@ const CategorySearch = () => {
       setCalendarOpen(false);
     }
   };
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <>

@@ -12,7 +12,7 @@ export default function OrderDetail() {
   const { id } = useParams();
   const router = useRouter();
 
-  const getCurrentOrder = orders.find((item) => item.id === Number(id));
+  const getCurrentOrder = orders.find((item) => item.orderId === Number(id));
 
   if (!getCurrentOrder) {
     return <LoadingSpinner />;
@@ -43,14 +43,20 @@ export default function OrderDetail() {
             <div className="flex gap-2 text-grayscale700 text-sm font-medium">
               <span>주문일시 :</span>
               <span>
-                {getCurrentOrder?.date}
+                {new Date(getCurrentOrder.orderDate).getFullYear()}년&nbsp;
+                {new Date(getCurrentOrder.orderDate).getMonth() + 1}월&nbsp;
+                {new Date(getCurrentOrder.orderDate).getDate()}일&nbsp;
+                {new Date(getCurrentOrder.orderDate).getHours() <= 11
+                  ? '오전'
+                  : '오후'}
                 &nbsp;
-                {getCurrentOrder?.time}
+                {new Date(getCurrentOrder.orderDate).getHours()}:
+                {new Date(getCurrentOrder.orderDate).getMinutes()}
               </span>
             </div>
             <div className="flex gap-2 text-grayscale700 text-sm font-medium">
               <span>주문번호 :</span>
-              <span>{getCurrentOrder?.order_id}</span>
+              <span>{getCurrentOrder?.orderId}</span>
             </div>
           </div>
         </section>
@@ -59,7 +65,7 @@ export default function OrderDetail() {
         <section className="px-5  pb-7 border-grayscale100 border-b-[6px]">
           <h2 className="font-semibold mb-[5px]">추가 요청사항</h2>
           <div className=" text-grayscale700 text-sm font-medium">
-            {getCurrentOrder?.description}
+            {getCurrentOrder?.lettering}
           </div>
         </section>
 
@@ -68,12 +74,14 @@ export default function OrderDetail() {
           <div className="flex justify-between items-center mb-3">
             <span className="text-base">총금액</span>
             <span className="text-base font-bold">
-              {getCurrentOrder?.price}
+              {getCurrentOrder?.totalPrice}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-base">결제 방법</span>
-            <span className="text-base">{getCurrentOrder?.paymentMethod}</span>
+            <span className="text-base">
+              {getCurrentOrder?.paymentMethod ?? ''}
+            </span>
           </div>
         </section>
 

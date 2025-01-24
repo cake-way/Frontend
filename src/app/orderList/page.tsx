@@ -5,10 +5,39 @@ import OrderCard from '../_components/order/OrderCard';
 import { orders } from 'constants/mockData';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { orderHistoryApi, orderHistoryGetCakeApi } from '../_lib/orderApi';
+import { cakeSearch, OrderType } from 'types/relatedCake';
+import LoadingSpinner from '../_components/Loading';
 
 export default function OrderList() {
   const [activeTab, setActiveTab] = useState<'준비중' | '픽업 완료'>('준비중');
+  const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
+    queryKey: ['cakeOrders'],
+    queryFn: () => orderHistoryApi(1),
+    select: (data) => {
+      // NOT_FOUND인 경우 빈 배열 반환
+      return 'status' in data && data.status === 'NOT_FOUND' ? [] : data;
+    },
+  });
 
+  console.log(cakeOrders);
+
+  const { data: cakeSearch } = useQuery<cakeSearch[]>({
+    queryKey: ['cakeSearch', cakeOrders],
+    queryFn: async () => {
+      const cakeNames = cakeOrders?.map((item) => item.cakeName);
+      return cakeNames
+        ? await Promise.all(
+            cakeNames.map((item) => orderHistoryGetCakeApi(item))
+          )
+        : [];
+    },
+  });
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   const handleTabChange = (tab: '준비중' | '픽업 완료') => {
     setActiveTab(tab);
   };
@@ -54,8 +83,13 @@ export default function OrderList() {
       <div className="p-4">
         {activeTab === '준비중' && (
           <div className="space-y-4">
-            {orders.map((order) => (
-              <OrderCard key={order.id} order={order} orderList={true} />
+            {(cakeOrders?.length ? cakeOrders : orders).map((order) => (
+              <OrderCard
+                key={order.orderId}
+                order={order}
+                orderList={true}
+                cakeSearch={cakeSearch}
+              />
             ))}
           </div>
         )}

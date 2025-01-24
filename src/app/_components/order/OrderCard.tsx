@@ -1,26 +1,22 @@
+import { days } from 'constants/constants';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { OrderCardProps } from 'types/relatedCake';
 
-interface OrderType {
-  id: number;
-  image: string;
-  store: string;
-  description: string;
-  date: string;
-  time: string;
-  price: number;
-  dDay: string;
-}
-
-interface OrderCardProps {
-  order: OrderType;
-  orderList?: boolean;
-  detail?: boolean;
-}
-
-const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
+const OrderCard = ({
+  order,
+  orderList,
+  detail = false,
+  cakeSearch,
+}: OrderCardProps) => {
   const router = useRouter();
+  const getDday = () => {
+    const interval = new Date(order.pickupDate).getTime() - Date.now();
+    return Math.ceil(interval / (1000 * 60 * 60 * 24));
+  };
 
+  const cakeDetail = cakeSearch?.find((item) => item.name === order.cakeName);
+  const cardColor = getDday() <= 3 ? '#E7363F' : '#C8C400';
   return (
     <div
       className="w-full border min-h-[154px] flex"
@@ -33,31 +29,36 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
       <div className="flex flex-1  gap-2 px-2 py-2.5">
         {/* 이미지 섹션 */}
 
-        <div className="relative  flex-1 h-auto bg-[#E7363F]  inset-0 p-2">
+        <div
+          className={`relative  flex-1 h-auto bg-[${cardColor}]  inset-0 p-2`}
+        >
           <div className="relative w-full h-full">
             <svg
               viewBox="0 0 100 100"
               className="w-8 h-8 absolute z-30"
               preserveAspectRatio="none"
             >
-              <path d="M0 0 L100 0 L0 100 Z" fill="#E7363F" />
+              <path d="M0 0 L100 0 L0 100 Z" fill={`${cardColor}`} />
             </svg>
             <svg
               viewBox="0 0 100 100"
               className="w-8 h-8 absolute bottom-0 right-0 z-30"
               preserveAspectRatio="none"
             >
-              <path d="M100 0 L100 100 L0 100 Z" fill="#E7363F" />
+              <path d="M100 0 L100 100 L0 100 Z" fill={`${cardColor}`} />
             </svg>
             <Image
-              src={order.image}
-              alt={order.description}
+              src={
+                order.imageUrl || cakeDetail?.imageUrl || '/home/cake-pick.svg'
+              }
+              //여기 왜이러지?ㅜ
+              alt={order.cakeName}
               fill
               className="object-cover"
             />
             {orderList && (
               <div className="absolute top-2 right-1.5 border text-white text-[10px] px-2  rounded-full">
-                {order.dDay}
+                D-{getDday()}
               </div>
             )}
           </div>
@@ -66,9 +67,12 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
         {/* 텍스트 섹션 */}
         <div className="flex-1 pt-2.5 border solid flex flex-col">
           <div className="border-b  flex-[2] solid  px-2.5">
-            <h3 className="font-semibold ">{order.store}</h3>
+            <h3 className="font-semibold ">
+              {order.shopName || cakeDetail?.shopName}
+            </h3>
             <p className="text-grayscale900 text-xs font-medium mb-2">
-              {order.description}
+              {order.cakeName}
+              {order.size}
             </p>
           </div>
 
@@ -80,12 +84,21 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
               height={17}
             />
             <span className=" text-grayscale900 text-xs font-medium">
-              {order.date} {order.time}
+              {new Date(order.pickupDate).getMonth() + 1}.
+              {new Date(order.pickupDate).getDate()}
+              &nbsp; ({days[new Date().getDay()]})&nbsp;&nbsp;
+              {new Date(order.pickupDate).getHours() <= 11 ? '오전' : '오후'}
+              &nbsp;
+              {new Date(order.pickupDate).getHours()}:
+              {new Date(order.pickupDate)
+                .getMinutes()
+                .toString()
+                .padStart(2, '0')}
             </span>
           </div>
           <div className="py-1.5 flex-[2] flex justify-between  border-t px-2.5">
             <p className=" flex items-center  text-sm font-bold">
-              {order.price}원
+              {order.totalPrice}원
             </p>
             {!detail && (
               <Image
@@ -94,7 +107,9 @@ const OrderCard = ({ order, orderList, detail = false }: OrderCardProps) => {
                 width={16}
                 height={16}
                 className="cursor-pointer "
-                onClick={() => router.push(`/orderList/detail/${order.id}`)}
+                onClick={() =>
+                  router.push(`/orderList/detail/${order.orderId}`)
+                }
               />
             )}
           </div>

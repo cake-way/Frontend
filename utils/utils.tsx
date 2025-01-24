@@ -34,11 +34,11 @@ export const getCategoryName = (english: string) => {
 };
 
 export const getHoursMinutes = (
-  selectedTime: string,
-  selectedPeriod?: string
+  selectedTime: string | null,
+  selectedPeriod?: string | null
 ) => {
   // eslint-disable-next-line prefer-const
-  let [hours, minutes] = selectedTime.split(':').map(Number);
+  let [hours, minutes] = selectedTime!.split(':').map(Number);
   if (selectedPeriod === '오후' && hours !== 12) {
     hours = hours + 12;
   }

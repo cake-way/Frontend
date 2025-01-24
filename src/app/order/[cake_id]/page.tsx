@@ -9,8 +9,11 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import Calendar from '@/app/_components/order/Calendar';
 import OrderCard from '@/app/_components/order/OrderCard';
-import { orders } from '../../../../constants/mockData';
 import Dropdown from '@/app/_components/order/Dropdwon';
+import orderApi from '@/app/_lib/orderApi';
+import { getHoursMinutes } from 'utils/utils';
+import { ICakeDetail } from 'types/relatedCake';
+import { useQuery } from '@tanstack/react-query';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -19,12 +22,15 @@ const Order: React.FC = () => {
 
   const [selectedSize, setSelectedSize] = useState('미니사이즈');
   const [selectedFlavor, setSelectedFlavor] = useState('초코맛');
-  const [selectedBgColor, setSelectedBgColor] = useState('');
-  const [letteringColor, setLetteringColor] = useState('');
-  const [letteringText, setLetteringText] = useState('');
+  const [selectedBgColor, setSelectedBgColor] = useState<string | null>(null);
+  const [letteringColor, setLetteringColor] = useState<string | null>(null);
+  const [letteringText, setLetteringText] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
+  const { data } = useQuery<ICakeDetail>({
+    queryKey: ['cakeDetail', cake_id],
+  });
 
   const sizes = [
     {
@@ -48,6 +54,70 @@ const Order: React.FC = () => {
 
   const onclickedBack = () => {
     router.back();
+  };
+
+  const onClickedOrder = async () => {
+    try {
+      if (
+        cake_id &&
+        selectedDate &&
+        selectedTime &&
+        selectedPeriod &&
+        selectedSize &&
+        selectedFlavor &&
+        selectedBgColor &&
+        letteringText &&
+        letteringColor
+      ) {
+        const newDate = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate(),
+          ...getHoursMinutes(selectedTime, selectedPeriod)
+        );
+
+        // const pickupDate = dayjs(newDate).format('YYYY-MM-DDTHH:MM');
+        const body = {
+          memberId: 0, //현재 user의 토큰으로 바꾸기
+          cakeId: +cake_id,
+          orderDate: new Date().toISOString(),
+          pickupDate: newDate.toISOString(),
+          size: selectedSize,
+          lettering: letteringText,
+          color: selectedBgColor,
+          selectedOptionIds: [flavors.indexOf(selectedFlavor)],
+        };
+        console.log(body);
+        await orderApi(body);
+        alert('주문이 완료되었습니다.');
+        router.push('/orderList');
+      } else {
+        alert('주문서를 모두 작성해주세요');
+        return;
+      }
+    } catch (e) {
+      console.error('주문 실패:', e);
+    }
+  };
+
+  const order = {
+    orderId: Date.now(),
+    cakeName: data?.cakeName || '',
+    orderDate: new Date().toISOString().toString(),
+    pickupDate: new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate(),
+      ...getHoursMinutes(selectedTime ?? '00:00', selectedPeriod)
+    )
+      .toISOString()
+      .toString(),
+    totalPrice: data?.price || 0,
+    status: 'string',
+    size: selectedSize,
+    lettering: letteringText || '',
+    imageUrl: data?.imageUrl || '',
+    shopName: data?.shopName,
   };
 
   return (
@@ -121,7 +191,7 @@ const Order: React.FC = () => {
           <div className="p-5">
             <h2 className="text-lg font-bold mb-2">배경 색상</h2>
             <input
-              value={selectedBgColor}
+              value={selectedBgColor ?? ''}
               type="text"
               aria-label="background-color"
               className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900  w-full px-3 py-1.5 focus:outline-none rounded-md"
@@ -132,7 +202,7 @@ const Order: React.FC = () => {
           <div className="p-5">
             <h2 className="text-lg font-bold mb-2">레터링 색상</h2>
             <input
-              value={letteringColor}
+              value={letteringColor ?? ''}
               type="text"
               aria-label="background-color"
               className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900 w-full px-3 py-1.5 focus:outline-none rounded-md"
@@ -166,15 +236,13 @@ const Order: React.FC = () => {
           />
           {/* OrderCard */}
           <div className="p-4">
-            {orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
+            <OrderCard key={order.orderId} order={order} />
           </div>
           {/* Lettering Section */}
           <div className="p-4">
             <h2 className="text-lg font-bold mb-2">레터링 문구</h2>
             <textarea
-              value={letteringText}
+              value={letteringText ?? ''}
               onChange={(e) => setLetteringText(e.target.value)}
               placeholder="희망문구 (영문 11자 한글 9자)"
               className="bg-[#f4f4f4]  resize-none text-sm font-medium text-grayscale900  w-full px-3.5 py-3.5 focus:outline-none rounded-md h-40"
@@ -191,7 +259,7 @@ const Order: React.FC = () => {
           <div className="p-4">
             <button
               className="w-full bg-black text-white py-2 rounded-md text-lg font-medium"
-              onClick={() => router.push('/orderList')}
+              onClick={onClickedOrder}
             >
               예약하기
             </button>
