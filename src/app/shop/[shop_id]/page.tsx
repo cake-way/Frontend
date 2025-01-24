@@ -4,8 +4,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import shopDetailApi from '@/app/_lib/shopApi';
-import { IShopDetail } from 'types/relatedCake';
+import shopDetailApi, { shopLogApi } from '@/app/_lib/shopApi';
+import { IShopDetail, shopLogs } from 'types/relatedCake';
 import Link from 'next/link';
 import LoadingSpinner from '@/app/_components/Loading';
 
@@ -30,12 +30,16 @@ const Shop = () => {
   }
 
   const { data: shopDetail, isLoading } = useQuery<IShopDetail>({
-    queryKey: ['shopDetail', shop_id],
+    queryKey: ['shopDetail', shop_id, subTab],
     queryFn: () => shopDetailApi(+shop_id, subTab),
   });
-  const tabs = shopDetail?.cakes.cakeCategoryResponseDtos.map(
+  const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(
     (item) => item.categoryName
   );
+  const { data: shopLogs, isLoading: shopLogsLoading } = useQuery<shopLogs>({
+    queryKey: ['shopLogs', shop_id],
+    queryFn: () => shopLogApi(shop_id),
+  });
   // const { data: shopCategory } = useQuery({
   //   queryKey: ['shopCategory', shop_id],
   //   queryFn: () => shopCategoryApi(shop_id),
@@ -58,45 +62,45 @@ const Shop = () => {
   //   '당일',
   // ];
 
-  const cakeLogs = [
-    {
-      id: 1,
-      image: '/shop/log.png',
-      price: '19,000원',
-      name: '벨스데이 케이크',
-      instagram: '@sarangbunny',
-      date: '2024.01.01',
-      description:
-        '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이! 크고 맛있어서 엄청 아까워서 사진찍어서 남겨요...',
-    },
-    {
-      id: 2,
-      image: '/shop/log.png',
-      price: '32,000원',
-      name: '달월 홀 케이크',
-      instagram: '@sarangbunny',
-      date: '2024.01.01',
-      description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-    },
-    {
-      id: 3,
-      image: '/shop/log.png',
-      price: '32,000원',
-      name: '달월 홀 케이크',
-      instagram: '@sarangbunny',
-      date: '2024.01.01',
-      description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-    },
-    {
-      id: 4,
-      image: '/shop/log.png',
-      price: '32,000원',
-      name: '달월 홀 케이크',
-      instagram: '@sarangbunny',
-      date: '2024.01.01',
-      description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-    },
-  ];
+  // const cakeLogs = [
+  //   {
+  //     id: 1,
+  //     image: '/shop/log.png',
+  //     price: '19,000원',
+  //     name: '벨스데이 케이크',
+  //     instagram: '@sarangbunny',
+  //     date: '2024.01.01',
+  //     description:
+  //       '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이! 크고 맛있어서 엄청 아까워서 사진찍어서 남겨요...',
+  //   },
+  //   {
+  //     id: 2,
+  //     image: '/shop/log.png',
+  //     price: '32,000원',
+  //     name: '달월 홀 케이크',
+  //     instagram: '@sarangbunny',
+  //     date: '2024.01.01',
+  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
+  //   },
+  //   {
+  //     id: 3,
+  //     image: '/shop/log.png',
+  //     price: '32,000원',
+  //     name: '달월 홀 케이크',
+  //     instagram: '@sarangbunny',
+  //     date: '2024.01.01',
+  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
+  //   },
+  //   {
+  //     id: 4,
+  //     image: '/shop/log.png',
+  //     price: '32,000원',
+  //     name: '달월 홀 케이크',
+  //     instagram: '@sarangbunny',
+  //     date: '2024.01.01',
+  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
+  //   },
+  // ];
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -104,8 +108,8 @@ const Shop = () => {
     const nowHours = new Date().getHours();
     const nowMinutes = new Date().getMinutes();
     const totalNowMinutes = nowHours * 60 + nowMinutes;
-    const hour = shopDetail?.operatingHour.closeTime.hour;
-    const minutes = shopDetail?.operatingHour.closeTime.minute;
+    const hour = shopDetail?.operatingHour?.closeTime?.hour;
+    const minutes = shopDetail?.operatingHour?.closeTime?.minute;
 
     const totalMinutes = hour! * 60 + minutes!; //
 
@@ -289,58 +293,64 @@ const Shop = () => {
       )}
 
       {activeTab === '케이크로그' && (
-        <div className=" pb-[var(--bottom-nav-height)]">
-          <div className="px-5 py-7 overflow-x-scroll flex gap-1">
-            {cakeLogs.map((log) => (
-              <div key={log.id} className="space-y-4 min-w-[60%]">
-                <div className="relative">
-                  <img
-                    src={log.image}
-                    alt={log.name}
-                    className="w-full h-full object-cover "
-                  />
+        <>
+          {shopLogsLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div className=" pb-[var(--bottom-nav-height)]">
+              <div className="px-5 py-7 overflow-x-scroll flex gap-1">
+                {shopLogs?.cakelogs?.map((log) => (
+                  <div key={log.id} className="space-y-4 min-w-[60%]">
+                    <div className="relative">
+                      <img
+                        src={log.thumbnail_image}
+                        alt={log.title}
+                        className="w-full h-full object-cover "
+                      />
 
-                  <div className="space-y-2 absolute z-50 bottom-0 ">
-                    <div className="flex items-center mb-3.5 ml-4 justify-between flex-col text-grayscale100">
-                      <span className="font-medium">{log.name}</span>
-                      <span className="text-xs font-semibold">
+                      <div className="space-y-2 absolute z-50 bottom-0 ">
+                        <div className="flex items-center mb-3.5 ml-4 justify-between flex-col text-grayscale100">
+                          <span className="font-medium">{log.title}</span>
+                          <span className="text-xs font-semibold">
+                            {log.instagram}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="h-1.5 bg-grayscale100 w-full"></div>
+              {/* 하단 케이크 로그 상세 */}
+              <div className="px-5 gap-1 ">
+                {shopLogs?.cakelogs?.map((log) => (
+                  <div key={log.id} className="border-b pb-[18px]">
+                    <div className="flex gap-2.5 items-center my-[18px]">
+                      <h1 className="text-sm font-medium text-grayscale900">
+                        {log.title}
+                      </h1>
+                      <span className="text-xs text-[#949494] align-middle">
                         {log.instagram}
                       </span>
                     </div>
+                    <div className="flex gap-3.5">
+                      <Image
+                        src={log.thumbnail_image}
+                        alt={log.title}
+                        width={73}
+                        height={95}
+                      />
+                      <div className="text-xs text-grayscale800 flex flex-col justify-between">
+                        <span>{log.body}</span>
+                        <span>주문일 {log.date}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="h-1.5 bg-grayscale100 w-full"></div>
-          {/* 하단 케이크 로그 상세 */}
-          <div className="px-5 gap-1 ">
-            {cakeLogs.map((log) => (
-              <div key={log.id} className="border-b pb-[18px]">
-                <div className="flex gap-2.5 items-center my-[18px]">
-                  <h1 className="text-sm font-medium text-grayscale900">
-                    {log.name}
-                  </h1>
-                  <span className="text-xs text-[#949494] align-middle">
-                    {log.instagram}
-                  </span>
-                </div>
-                <div className="flex gap-3.5">
-                  <Image
-                    src={log.image}
-                    alt={log.name}
-                    width={73}
-                    height={95}
-                  />
-                  <div className="text-xs text-grayscale800 flex flex-col justify-between">
-                    <span>{log.description}</span>
-                    <span>주문일 {log.date}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

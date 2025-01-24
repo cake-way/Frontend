@@ -30,3 +30,12 @@ export async function shopCategoryApi(shopId: string) {
     console.log('shopCategoryApi' + e);
   }
 }
+export async function shopLogApi(shopId: string) {
+  try {
+    const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/${shopId}/cakelog`;
+    const response = await fetch(URL);
+    return await response.json();
+  } catch (e) {
+    console.log('shopCategoryApi' + e);
+  }
+}

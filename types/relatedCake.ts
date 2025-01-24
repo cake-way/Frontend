@@ -54,7 +54,7 @@ export interface IShopDetail {
       second: number;
       nano: number;
     };
-    active: true;
+    active: boolean;
   };
   cakes: {
     cakeCategoryResponseDtos: [
@@ -74,8 +74,8 @@ export interface IShopDetail {
       },
     ];
   };
-  scraped: true;
-  sameDay: true;
+  scraped: boolean;
+  sameDay: boolean;
 }
 
 export interface OrderType {
@@ -104,4 +104,38 @@ export interface OrderCardProps {
   orderList?: boolean;
   detail?: boolean;
   cakeSearch?: cakeSearch[];
+}
+
+export interface shopLogs {
+  name: string;
+  address: string;
+  contact: string;
+  instagram: string;
+  scrapCount: number;
+  operatingHour: {
+    dayOfWeek: string;
+    openTime: {
+      hour: number;
+      minute: number;
+      second: number;
+      nano: number;
+    };
+    closeTime: {
+      hour: number;
+      minute: number;
+      second: number;
+      nano: number;
+    };
+    active: boolean;
+  };
+  cakelogs: [
+    {
+      id: number;
+      title: string;
+      thumbnail_image: string;
+      body: string;
+    },
+  ];
+  scraped: boolean;
+  sameDay: boolean;
 }
