@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import back from '../../../../public/header-images/orderBack.svg';
-import { cakeLog, cakes } from '../../../../constants/mockData';
+import { cakes } from '../../../../constants/mockData';
 import { useParams, useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
 import { useQuery } from '@tanstack/react-query';
@@ -136,32 +136,40 @@ export default function CakeDetail() {
       <div className="p-4">
         <h2 className="text-lg font-bold mb-2">케이크 로그</h2>
         <div className="flex gap-[5px] overflow-x-auto no-scrollbar">
-          {(data?.cakeLogs || cakeLog).map((log) => (
-            <div key={log.cakelogId} className="relative">
-              <div className=" relative w-auto h-56 aspect-[3/4] ">
-                <div
-                  className="z-20 absolute bottom-0  w-full h-[50%]"
-                  style={{
-                    background:
-                      'linear-gradient(180deg, rgba(117, 117, 117, 0.00) 0%,  rgba(15, 15, 15, 0.66) 100%)',
-                    backgroundBlendMode: 'multiply',
-                  }}
-                ></div>
-                <Image
-                  src={log.thumbnailImage}
-                  alt={log.title}
-                  fill
-                  className="object-cover"
-                />
+          {data?.cakeLogs && data.cakeLogs.length > 0 ? (
+            // 케이크 로그가 존재하는 경우
+            data.cakeLogs.map((log) => (
+              <div key={log.cakelogId || log.title} className="relative">
+                <div className=" relative w-auto h-56 aspect-[3/4] ">
+                  <div
+                    className="z-20 absolute bottom-0  w-full h-[50%]"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(117, 117, 117, 0.00) 0%,  rgba(15, 15, 15, 0.66) 100%)',
+                      backgroundBlendMode: 'multiply',
+                    }}
+                  ></div>
+                  <Image
+                    src={log.thumbnailImage || '/default-image.jpg'}
+                    alt={log.title || '케이크 로그'}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <p className="text-grayscale100 left-3 z-20 absolute bottom-8 mt-[2px] text-sm font-medium">
+                  {log.title || '제목 없음'}
+                </p>
+                <p className="z-20 text-sm absolute left-3 bottom-4 text-grayscale100">
+                  @{log.cakelogId || 'ID 없음'}
+                </p>
               </div>
-              <p className="  text-grayscale100  left-3 z-20 absolute bottom-8 mt-[2px] text-sm font-medium">
-                {log.title}
-              </p>
-              <p className="z-20 text-sm absolute left-3 bottom-4 text-grayscale100">
-                @{log.cakelogId}
-              </p>
+            ))
+          ) : (
+            // 케이크 로그가 없을 경우
+            <div className="text-center text-gray-500 text-sm py-5">
+              작성된 케이크 로그가 없습니다.
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

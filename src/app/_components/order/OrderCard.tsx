@@ -86,7 +86,7 @@ const OrderCard = ({
             />
             <span className=" text-grayscale900 text-xs font-medium">
               {pickupDate.getMonth() + 1}.{pickupDate.getDate()}
-              &nbsp; ({days[new Date().getDay()]})&nbsp;&nbsp;
+              &nbsp;({days[new Date().getDay()]})&nbsp;&nbsp;
               {pickupDate.getHours() <= 11 ? '오전' : '오후'}
               &nbsp;
               {pickupDate.getHours()}:
@@ -97,7 +97,7 @@ const OrderCard = ({
             <p className=" flex items-center  text-sm font-bold">
               {order.totalPrice}원
             </p>
-            {!detail && (
+            {!detail && orderList && (
               <Image
                 src={'/order/arrow_right.svg'}
                 alt="arrow-right-icon"

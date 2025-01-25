@@ -9,7 +9,7 @@ export default async function cakeCategorySearchApi(
     const params = new URLSearchParams();
 
     if (time) params.append('time', String(time));
-    if (price) params.append('price', String(price));
+    if (price) params.append('price', String(price * 10000));
     if (region?.length) {
       region.forEach((item) => params.append('region', item));
     }
@@ -20,6 +20,7 @@ export default async function cakeCategorySearchApi(
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/cake/category/${categoryName}${params.toString() ? `?${params}` : ''}`;
 
     const response = await fetch(URL);
+
     return await response.json();
   } catch (e) {
     console.log('cakeCategorySearchApi error :', e);

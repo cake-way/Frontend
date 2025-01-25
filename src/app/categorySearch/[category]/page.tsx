@@ -74,10 +74,10 @@ const CategorySearch = () => {
     queryKey: [
       'categoryCake',
       category,
-      filteringDate,
-      confirmPrice?.max,
+      confirmPrice,
       confirmReigon,
       confirmDesgin,
+      filteringDate,
     ],
     queryFn: () => {
       const localISOString = filteringDate
@@ -245,7 +245,7 @@ const CategorySearch = () => {
                       {cake.cakeName}
                     </h3>
                     <p className=" text-xs text-grayscale900 font-semibold">
-                      {cake.cakeprice.toLocaleString()}원
+                      {cake.cakePrice?.toLocaleString()}원
                     </p>
                   </div>
                 </div>

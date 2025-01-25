@@ -103,7 +103,7 @@ const CakeRecommend: React.FC = () => {
           initial="hidden"
           animate={isInView2 ? 'visible' : 'hidden'}
         >
-          <h2 className="title-2 mb-4">특별한 날, 특별한 케이크</h2>
+          <h2 className="title-2 mb-4">지금 가장 트렌디한 케이크</h2>
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
             {cakes.map((cake, index) => (

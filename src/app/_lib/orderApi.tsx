@@ -5,7 +5,8 @@ interface OrderRequestBody {
   pickupDate: string; // ISO 8601 형식의 날짜 문자열
   size: string; // 케이크 사이즈
   lettering: string; // 레터링 문구
-  color: string; // 색상
+  color: string; //
+  lettercolor: string;
   selectedOptionIds: number[];
 }
 

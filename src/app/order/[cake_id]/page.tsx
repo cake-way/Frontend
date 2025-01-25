@@ -85,6 +85,7 @@ const Order: React.FC = () => {
           size: selectedSize,
           lettering: letteringText,
           color: selectedBgColor,
+          lettercolor: letteringColor,
           selectedOptionIds: [flavors.indexOf(selectedFlavor)],
         };
         console.log(body);
@@ -118,6 +119,8 @@ const Order: React.FC = () => {
     lettering: letteringText || '',
     imageUrl: data?.imageUrl || '',
     shopName: data?.shopName,
+    color: selectedBgColor,
+    lettercolor: letteringColor,
   };
 
   return (

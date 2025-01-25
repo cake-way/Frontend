@@ -1,6 +1,6 @@
 export interface ICategoryData {
   cakeName: string;
-  cakeprice: number;
+  cakePrice: number;
   cakeImage: string;
   cakeId: number;
   scrapCount: number;
@@ -25,11 +25,11 @@ export interface ICakeDetail {
       imageUrl: string;
     },
   ];
-  cakeLogs: [
+  cakeLogs?: [
     {
-      cakelogId: number;
-      title: string;
-      thumbnailImage: string;
+      cakelogId?: number;
+      title?: string;
+      thumbnailImage?: string;
     },
   ];
 }
