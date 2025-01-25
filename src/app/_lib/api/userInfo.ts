@@ -1,16 +1,12 @@
+import { getAuthHeaders } from './getAuthHeader';
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const fetchUserInfo = async (token: string) => {
-  if (!token) {
-    throw new Error('인증 토큰이 없습니다.');
-  }
-
+export const fetchUserInfo = async () => {
   try {
     const response = await fetch(`${BACKEND_URL}/mypage`, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {

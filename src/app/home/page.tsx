@@ -11,9 +11,11 @@ import { useState } from 'react';
 import CurrentPosition from '../_components/home/CurrentPosition';
 import useHomeLocationStore from '../store/homeLocationStore';
 import { useEffect } from 'react';
+import SearchResults from '../_components/home/SearchResults';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   const clickedCurrentPosition = () => {
     setIsOpen(true);
@@ -29,7 +31,7 @@ export default function Home() {
     setCurrentLocationString,
   } = useHomeLocationStore();
 
-  console.log(homeLocation);
+  console.log('내 위치', homeLocation);
 
   //카카오맵 로드
   useEffect(() => {
@@ -116,42 +118,65 @@ export default function Home() {
       <Header
         leftButtonImage={<Image src={CakeWay} alt="Cake Way" />}
         centerComponent={
-          <InputField placeholder=" 원하는 케이크 찾으러 가기" />
+          <InputField
+            placeholder="원하는 케이크 찾으러 가기"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSearchKeyword(e.target.value)
+            }
+          />
         }
         rightButtonImage={[<Image key="Alarm" src={Alarm} alt="Alarm" />]}
       />
 
-      <CakePick />
-      <CategoryCake />
-      <div className="my-7  h-2 bg-[#f4f4f4]"></div>
+      {/* 검색어가 있을 때 */}
+      {searchKeyword ? (
+        <div className="absolute top-15 left-0 w-full bg-white z-10 min-h-screen">
+          {currentLocationLatLng?.lat && currentLocationLatLng?.lng && (
+            <SearchResults
+              keyword={searchKeyword}
+              latitude={currentLocationLatLng.lat}
+              longitude={currentLocationLatLng.lng}
+            />
+          )}
+        </div>
+      ) : (
+        // 기본 홈 화면
+        <>
+          <CakePick />
+          <CategoryCake />
+          <div className="my-7 h-2 bg-[#f4f4f4]"></div>
 
-      {/* 위치설정 */}
-      <div
-        className="flex gap-1.5 px-5 cursor-pointer"
-        onClick={clickedCurrentPosition}
-      >
-        <Image
-          src={'/shop/positionIcon.svg'}
-          alt="position_icon"
-          width={16}
-          height={16}
-        />
-        <div className="text-[#4f4f4f] text-sm font-medium">{homeLocation}</div>
-        <Image
-          src={'/order/arrow_down.svg'}
-          alt="position_icon"
-          width={14}
-          height={14}
-          className={` transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
-        />
-      </div>
-      <CakeRecommend />
-      {isOpen && (
-        <CurrentPosition
-          setIsOpen={setIsOpen}
-          isOpen={isOpen}
-          afterLoadedKakao={afterLoadedKakao}
-        />
+          {/* 위치 설정 */}
+          <div
+            className="flex gap-1.5 px-5 cursor-pointer"
+            onClick={clickedCurrentPosition}
+          >
+            <Image
+              src={'/shop/positionIcon.svg'}
+              alt="position_icon"
+              width={16}
+              height={16}
+            />
+            <div className="text-[#4f4f4f] text-sm font-medium">
+              {homeLocation}
+            </div>
+            <Image
+              src={'/order/arrow_down.svg'}
+              alt="position_icon"
+              width={14}
+              height={14}
+              className={`transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+            />
+          </div>
+          <CakeRecommend />
+          {isOpen && (
+            <CurrentPosition
+              setIsOpen={setIsOpen}
+              isOpen={isOpen}
+              afterLoadedKakao={afterLoadedKakao}
+            />
+          )}
+        </>
       )}
     </>
   );

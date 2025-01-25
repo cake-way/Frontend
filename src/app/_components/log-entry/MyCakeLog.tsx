@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Title from '@/app/_components/my-log/Title';
 import { useRouter } from 'next/navigation';
+import LogIcon from '../Icons/LogIcon';
 
 interface MyCakeLogProps {
   cakelogs: Array<{
@@ -30,9 +31,15 @@ const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
     <section className="mt-6">
       <Title title="나의 케이크 로그" />
       {cakelogs.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">
-          작성한 케이크 로그가 없습니다.
-        </p>
+        <div className=" flex flex-col items-center justify-center mt-36">
+          <LogIcon width={56} height={56} />
+          <p className="text-center font-bold text-[18px] text-gray-700">
+            작성한 로그 없음
+          </p>
+          <p className=" w-1/2 text-center text-sm text-gray-600">
+            케이크 경험을 다른 사람들과 함께 공유해요
+          </p>
+        </div>
       ) : (
         <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">
           {cakelogs.map((cake, index) => (

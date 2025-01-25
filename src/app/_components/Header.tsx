@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({
           centerComponent
         ) : (
           <h1
-            className={`text-xl  font-bold ${backgroundTransparent ? 'text-[#ffffff]' : ' '}`}
+            className={`text-xl  font-semibold ${backgroundTransparent ? 'text-[#ffffff]' : ' '}`}
           >
             {centerText}
           </h1>

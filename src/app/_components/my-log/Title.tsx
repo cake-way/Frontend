@@ -18,7 +18,7 @@ const Title: React.FC<HeaderProps> = ({ title, link = '', length = 0 }) => {
   const handleViewAll = () => {
     // 배열의 length가 0일 경우 홈으로 이동, 그렇지 않으면 해당 링크로 이동
     if (length === 0) {
-      router.push('/home'); // 홈으로 이동
+      router.push(link); // 홈으로 이동
     } else {
       router.push(link); // 해당 카테고리의 상세 페이지로 이동
     }

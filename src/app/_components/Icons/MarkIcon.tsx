@@ -1,26 +1,21 @@
 import React from 'react';
 
-interface MarkIconProps {
-  fill?: string;
-}
-
-const MarkIcon: React.FC<MarkIconProps> = ({
-  fill = 'white', // 기본 fill 색상: white
-}) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path
-        d="M5.44922 2.92969H18.5522V20.6936L12.0007 16.4048L5.44922 20.6936V2.92969Z"
-        fill={fill}
-      />
-    </svg>
-  );
-};
+const MarkIcon = (props: React.SVGProps<SVGSVGElement> & { fill?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="19"
+    viewBox="0 0 14 19"
+    fill="none"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.448242 0.929688H13.5513V18.6936L6.99975 14.4048L0.448242 18.6936V0.929688ZM1.94824 2.42969V15.9188L6.99975 12.6119L12.0513 15.9188V2.42969H1.94824Z"
+      fill={props.fill || 'gray'}
+    />
+  </svg>
+);
 
 export default MarkIcon;

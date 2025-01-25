@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import BackIcon from '../../../../../public/header-images/back.svg';
+import DefaultProfile from '../../../../../public/my-log-images/profile-photo.svg';
 import { useRouter } from 'next/navigation';
 
 interface ThumbnailProps {
@@ -9,6 +10,8 @@ interface ThumbnailProps {
   setThumbnailImage: (value: string | null) => void;
   logTitle: string;
   setLogTitle: (value: string) => void;
+  userProfileImage: string; // 프로필 사진 URL
+  username: string; // 사용자 이름
 }
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
@@ -16,6 +19,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   setThumbnailImage,
   logTitle,
   setLogTitle,
+  userProfileImage,
+  username,
 }) => {
   const router = useRouter();
   const today = new Date().toLocaleDateString(); // 오늘 날짜 포맷팅
@@ -79,15 +84,19 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         className="flex items-center gap-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <Image
-          width={40}
-          height={40}
-          src="/my-log-images/profile-photo.svg"
-          className="rounded-full"
-          alt="프로필 사진"
-        />
+        <div className="w-10 h-10 rounded-full overflow-hidden">
+          <Image
+            width={40}
+            height={40}
+            src={userProfileImage || DefaultProfile} // 기본 이미지 처리
+            className="w-full h-full object-cover"
+            alt="프로필 사진"
+          />
+        </div>
         <div>
-          <p className="font-medium text-sm text-gray-700">mellowy23</p>
+          <p className="font-medium text-sm text-gray-700">
+            {username || '익명 사용자'}
+          </p>
           <time className="text-gray-500 text-[12px]">{today}</time>
         </div>
       </footer>

@@ -5,7 +5,10 @@ import Thumbnail from '@/app/_components/log-entry/new-log/Thumbnail';
 import AddPhotos from '@/app/_components/log-entry/new-log/AddPhotos';
 import CategorySelector from '@/app/_components/log-entry/new-log/CategorySelector';
 import LocationSearch from '@/app/_components/log-entry/new-log/LocationSearch';
+import { getAuthHeaders } from '@/app/_lib/api/getAuthHeader';
+import useUserStore from '@/app/store/userStore';
 
+// TODO: 카테고리 목록 알아오기, 리뷰 작성 api 연결하기
 const categories = [
   { id: 1, name: '생일' },
   { id: 2, name: '기념일' },
@@ -14,15 +17,18 @@ const categories = [
 ];
 
 const NewLog = () => {
+  const { userInfo } = useUserStore(); // 현재 사용자 정보 가져오기
+
   const [thumbnailImage, setThumbnailImage] = useState<string | null>(null); // 대표 사진
   const [logTitle, setLogTitle] = useState(''); // 로그 제목
   const [logBody, setLogBody] = useState(''); // 본문 작성
-  const [photos, setPhotos] = useState<File[]>([]); // 사진
+  const [photos, setPhotos] = useState<File[]>([]); // 등록된 사진들
   const [isPublic, setIsPublic] = useState(false); // 공개 여부
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false); // 말풍선 모달 표시 여부
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   ); // 선택된 카테고리 ID
+
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false); // 말풍선 모달 표시 여부
 
   const handleTogglePublic = () => {
     const nextPublicState = !isPublic; // 다음 상태 미리 계산
@@ -38,58 +44,75 @@ const NewLog = () => {
     setIsTooltipVisible(false); // 말풍선 모달 닫기
   };
 
-  const handleSaveDraft = () => {
-    const draft = {
-      categoryId: selectedCategoryId,
-      thumbnailImage,
-      logTitle,
-      logBody,
-      photos,
-      isPublic,
-    };
-    console.log('임시 저장', draft);
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedCategoryId) {
       alert('카테고리를 선택해주세요.');
       return;
     }
 
-    const payload = {
-      categoryId: selectedCategoryId,
-      title: logTitle,
-      thumbnailImage,
-      body: logBody,
-      isPublic,
-      imageList: photos.map((photo) => URL.createObjectURL(photo)), // 사진 URL로 변환
-    };
+    // FormData 생성
+    const formData = new FormData();
 
-    fetch('/api/new-log', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    // 텍스트 데이터 추가
+    formData.append('categoryId', String(selectedCategoryId)); // 숫자는 문자열로 변환
+    formData.append('title', logTitle);
+    formData.append('body', logBody);
+    formData.append('isPublic', JSON.stringify(isPublic)); // boolean은 문자열로 변환
+
+    // 대표 이미지 추가
+    if (thumbnailImage) {
+      const thumbnailFile = photos.find(
+        (photo) => photo.name === thumbnailImage
+      );
+      if (thumbnailFile) {
+        formData.append('thumbnailImage', thumbnailFile);
+      }
+    }
+
+    // 이미지 리스트 추가
+    photos.forEach((photo) => {
+      formData.append('imageList', photo);
+    });
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/cakelog`,
+        {
+          method: 'POST',
+          body: formData, // JSON 대신 FormData 전송
+          headers: getAuthHeaders(),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
         console.log('작성 완료:', data);
-      })
-      .catch((err) => {
-        console.error('작성 실패:', err);
-      });
+      } else {
+        console.error('작성 실패:', await response.text());
+      }
+    } catch (error) {
+      console.error('작성 중 에러 발생:', error);
+    }
   };
+
+  // 공통 클래스 정의
+  const commonSectionClass = 'w-full px-5 mt-5';
+  const commonButtonClass =
+    'w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none';
 
   return (
     <main className="w-full flex flex-col items-center">
       {/* 상단 대표사진 */}
-      <Thumbnail
-        thumbnailImage={thumbnailImage}
-        setThumbnailImage={setThumbnailImage}
-        logTitle={logTitle}
-        setLogTitle={setLogTitle}
-      />
+      <section className={commonSectionClass}>
+        <Thumbnail
+          thumbnailImage={thumbnailImage}
+          setThumbnailImage={setThumbnailImage}
+          logTitle={logTitle}
+          setLogTitle={setLogTitle}
+          username={userInfo?.username || ''}
+          userProfileImage={userInfo?.profileImage || ''}
+        />
+      </section>
 
       {/* 전체 공개 토글 */}
       <header className="flex w-full items-center justify-end px-5 gap-2 mt-5 mb-3 relative">
@@ -108,10 +131,8 @@ const NewLog = () => {
           ></span>
         </button>
         {isTooltipVisible && (
-          <div className="absolute top-full right-0 mt-2 px-2 py-[6px] bg-black text-white text-xs rounded-[4px] shadow-lg flex items-center justify-between w-60 z-10">
-            {/* 말풍선 삼각형 */}
+          <aside className="absolute top-full right-0 mt-2 px-2 py-[6px] bg-black text-white text-xs rounded-[4px] shadow-lg flex items-center justify-between w-60 z-10">
             <div className="absolute top-[-4px] right-9 w-2 h-2 bg-black rotate-45"></div>
-
             <p>전체 공개 시 홈 화면에 노출될 수 있습니다.</p>
             <button
               onClick={handleCloseTooltip}
@@ -120,24 +141,31 @@ const NewLog = () => {
             >
               ✕
             </button>
-          </div>
+          </aside>
         )}
       </header>
 
-      <LocationSearch />
+      {/* 위치 검색 */}
+      <section className={commonSectionClass}>
+        <LocationSearch />
+      </section>
 
-      {/* 카테고리 선택 영역 */}
-      <CategorySelector
-        categories={categories}
-        selectedCategoryId={selectedCategoryId}
-        onSelectCategory={setSelectedCategoryId}
-      />
+      {/* 카테고리 선택 */}
+      <section className={commonSectionClass}>
+        <CategorySelector
+          categories={categories}
+          selectedCategoryId={selectedCategoryId}
+          onSelectCategory={setSelectedCategoryId}
+        />
+      </section>
 
-      {/* 사진 첨부 영역 */}
-      <AddPhotos photos={photos} setPhotos={setPhotos} />
+      {/* 사진 첨부 */}
+      <section className={commonSectionClass}>
+        <AddPhotos photos={photos} setPhotos={setPhotos} />
+      </section>
 
       {/* 본문 작성 */}
-      <section className="w-full px-5 mt-14">
+      <section className={`w-full px-5 mt-14`}>
         <p className="font-semibold">본문 작성</p>
         <textarea
           id="body"
@@ -149,21 +177,20 @@ const NewLog = () => {
         />
       </section>
 
-      {/* 버튼들: 임시 저장, 작성 완료 */}
-      <div className="w-full flex justify-between px-5 mt-16 mb-11">
+      {/* 버튼들 */}
+      <footer className="w-full flex justify-between px-5 mt-16 mb-11">
         <button
-          className="w-[48%] py-2 text-gray-700 border border-gray-400 rounded-[4px]"
-          onClick={handleSaveDraft}
+          className={`${commonButtonClass} text-gray-700 border border-gray-400`}
         >
           임시 저장
         </button>
         <button
-          className="w-[48%] py-2 text-white bg-black rounded-[4px]"
+          className={`${commonButtonClass} text-white bg-black`}
           onClick={handleSubmit}
         >
           작성 완료
         </button>
-      </div>
+      </footer>
     </main>
   );
 };

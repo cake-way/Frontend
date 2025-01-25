@@ -23,7 +23,9 @@ const SavedCake: React.FC = () => {
 
       {/* 조건부 렌더링 */}
       {cakes.length === 0 ? (
-        <p className="text-gray-700 mt-10">아직 저장한 디자인이 없습니다!</p>
+        <p className="text-gray-700 text-sm my-24">
+          아직 저장한 디자인이 없어요
+        </p>
       ) : (
         <section className="mt-4 w-full h-[360px] grid grid-cols-2 grid-rows-2 rounded-lg overflow-hidden">
           {lastFourCakes.map((cake, index) => (

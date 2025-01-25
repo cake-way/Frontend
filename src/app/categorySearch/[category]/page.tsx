@@ -16,7 +16,7 @@ import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 import useFilteringStore from '@/app/store/filteringStore';
 import { cakes } from '../../../../constants/mockData';
-import MarkIcon from '@/app/_components/Icons/MarkIcon';
+import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
 
 const CategorySearch = () => {
   const params = useParams();
@@ -167,7 +167,7 @@ const CategorySearch = () => {
               />
               <div className="absolute top-2 right-2 p-1">
                 {cake.scrap_count ? (
-                  <MarkIcon />
+                  <FilledMarkIcon />
                 ) : (
                   <Image src={mark} alt="mark" />
                 )}

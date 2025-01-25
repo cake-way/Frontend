@@ -1,16 +1,12 @@
+import { getAuthHeaders } from './getAuthHeader';
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const fetchCakelogData = async (token: string | null) => {
-  if (!token) {
-    throw new Error('Authentication token is missing.');
-  }
-
+export const fetchCakelogData = async () => {
   try {
     const response = await fetch(`${BACKEND_URL}/cakelog`, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {

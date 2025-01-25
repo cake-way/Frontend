@@ -17,14 +17,8 @@ const LocationSearch = () => {
   const [isResultsVisible, setIsResultsVisible] = useState(false);
 
   const handleSearchClick = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('인증 토큰이 없습니다.');
-      return;
-    }
-
     try {
-      const recentShops = await fetchRecentOrders(token);
+      const recentShops = await fetchRecentOrders();
       setSearchResults(recentShops);
     } catch (error) {
       console.error('서버 요청 중 오류 발생:', error);

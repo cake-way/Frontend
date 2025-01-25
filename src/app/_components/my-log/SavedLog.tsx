@@ -29,8 +29,8 @@ const SavedLog: React.FC = () => {
 
       {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 디자인 미리보기 */}
       {savedLog.length === 0 ? (
-        <p className="text-gray-700 mt-10">
-          아직 저장한 케이크 로그가 없습니다!
+        <p className="text-gray-700 text-sm my-24">
+          아직 저장한 케이크 로그가 없어요
         </p>
       ) : (
         <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">

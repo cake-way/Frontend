@@ -33,9 +33,8 @@ const LogEntry = () => {
 
   useEffect(() => {
     const fetchLogData = async () => {
-      const token = localStorage.getItem('token');
       try {
-        const data = await fetchCakelogData(token);
+        const data = await fetchCakelogData();
         setLatestOrderShop(data.latestOrderShop); // 가장 최근 주문한 가게
         setCakelogs(data.cakelogs); // 나의 케이크 로그들
       } catch (error) {
@@ -51,7 +50,7 @@ const LogEntry = () => {
   };
 
   const handleRightButtonClick = () => {
-    router.push('/notice'); // 임시
+    router.push('/notice'); // 임시...
   };
 
   return (

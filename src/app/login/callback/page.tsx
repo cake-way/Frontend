@@ -43,7 +43,7 @@ const LoginCallback = () => {
           alert('로그인이 완료되었습니다!');
 
           // 마이페이지 api 호출해서 memberId get
-          const userData = await fetchUserInfo(token);
+          const userData = await fetchUserInfo();
 
           // Zustand에 사용자 정보 저장 (현재 로그인한 사용자 전역 관리)
           setUserInfo(userData);

@@ -16,7 +16,7 @@ const SavedStore: React.FC = () => {
 
       {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 가게 리스트 렌더링 */}
       {stores.length === 0 ? (
-        <p className="text-gray-700 mt-10">아직 저장한 가게가 없습니다!</p>
+        <p className="text-gray-700 text-sm my-24">아직 저장한 가게가 없어요</p>
       ) : (
         <div className="flex w-full mt-[15px] flex-col gap-[23px]">
           {lastTwoStore.map((store, index) => (

@@ -19,10 +19,6 @@ const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
     router.push('/log-entry/new-log');
   };
 
-  const handleArrowClick = () => {
-    router.push('/home');
-  };
-
   return (
     <>
       {/* 최근 방문 알림 섹션 */}
@@ -53,15 +49,15 @@ const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
             ) : (
               <>
                 <p className="font-bold" role="heading" aria-level={2}>
-                  아직 작성된 케이크 로그가 없어요.
+                  케이크 경험을 공유해 봐요
                 </p>
                 <div className="flex mt-1">
                   <button
-                    onClick={handleArrowClick}
+                    onClick={handleLogButtonClick}
                     className="text-gray-700 text-sm flex items-center cursor-pointer"
-                    aria-label="홈으로 이동"
+                    aria-label="로그 작성"
                   >
-                    케이크 둘러보기
+                    케이크 로그 작성하기
                     <span className="ml-1 flex items-center justify-center">
                       <Image src={ArrowIcon} alt="화살표 아이콘" />
                     </span>

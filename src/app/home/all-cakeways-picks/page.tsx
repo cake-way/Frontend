@@ -7,7 +7,7 @@ import Header from '@/app/_components/Header';
 import BackIcon from '../../../../public/header-images/back.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
 import AlarmIcon from '../../../../public/header-images/alarm.svg';
-import MarkIcon from '@/app/_components/Icons/MarkIcon';
+import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
 import { savedLog } from 'constants/constants';
 import { useState } from 'react';
 
@@ -58,7 +58,7 @@ export default function AllCakewayPicks() {
             >
               {marked[index] ? (
                 // marked가 true일 때 컴포넌트 렌더링
-                <MarkIcon />
+                <FilledMarkIcon />
               ) : (
                 // marked가 false일 때 이미지 렌더링
                 <Image

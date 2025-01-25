@@ -1,11 +1,11 @@
-export const fetchRecentOrders = async (token: string) => {
+import { getAuthHeaders } from './getAuthHeader';
+
+export const fetchRecentOrders = async () => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/preCakelog`,
     {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
     }
   );
 
