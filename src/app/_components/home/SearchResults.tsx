@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
-import { fetchCakesData, fetchShopsData } from '@/app/_lib/api/searchResults';
+import {
+  fetchCakesData,
+  fetchShopsData,
+  scrapCake,
+  scrapShop,
+} from '@/app/_lib/api/searchResults';
 import MarkIcon from '../Icons/MarkIcon';
+import FilledMarkIcon from '../Icons/FilledMarkIcon';
 
 interface Cake {
   cakeId: number;
@@ -10,6 +16,7 @@ interface Cake {
   price: number;
   scrapCount: number;
   shopName: string;
+  isScrapped: boolean;
 }
 
 interface Shop {
@@ -19,6 +26,8 @@ interface Shop {
   contact: string;
   thumbnailImage: string;
   distance: number;
+  isScrapped: boolean;
+  cakes: Cake[];
 }
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
@@ -36,12 +45,9 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           fetchShopsData(keyword, latitude, longitude),
         ]);
 
-        console.log(latitude);
-        console.log(longitude);
         setCakeResults(cakes);
-        console.log(cakes);
-        console.log(shops);
         setShopResults(shops);
+        console.log(shops);
       } catch (error) {
         console.error('검색 중 오류 발생:', error);
       }
@@ -54,6 +60,39 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
       debouncedFetch.cancel();
     };
   }, [keyword, latitude, longitude]);
+
+  const handleScrapCake = async (cakeId: number) => {
+    try {
+      const success = await scrapCake(cakeId);
+      if (success) {
+        setCakeResults((prevCakes) =>
+          prevCakes.map((cake) =>
+            cake.cakeId === cakeId
+              ? { ...cake, isScrapped: !cake.isScrapped }
+              : cake
+          )
+        );
+      }
+    } catch (error) {
+      console.error('스크랩 API 호출 중 오류:', error);
+    }
+  };
+
+  const handleScrapShop = async (shopId: number, index: number) => {
+    try {
+      const shop = shopResults[index];
+      const success = await scrapShop(shopId, shop.isScrapped); // 분리된 API 호출
+      if (success) {
+        setShopResults((prevShops) =>
+          prevShops.map((s, i) =>
+            i === index ? { ...s, isScrapped: !s.isScrapped } : s
+          )
+        );
+      }
+    } catch (error) {
+      console.error('가게 스크랩 처리 중 오류 발생:', error);
+    }
+  };
 
   return (
     <div className="search-results">
@@ -82,59 +121,91 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
 
       <div className="results-container px-5 pb-44 max-h-screen overflow-y-auto scrollbar-hide">
         {activeTab === 'cake' ? (
-          <div className="grid grid-cols-2 gap-2 w-full pt-5">
+          <>
             {cakeResults.length > 0 ? (
-              cakeResults.map((cake) => (
-                <div key={cake.cakeId} className="relative w-full h-auto">
-                  <div className="relative w-full h-[226px]">
-                    <img
-                      src={`https://drive.google.com/thumbnail?id=${cake.imageUrl.split('/d/')[1].split('/view')[0]}`}
-                      alt={cake.name}
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                  </div>
+              <div className="grid grid-cols-2 gap-2 w-full pt-5">
+                {cakeResults.map((cake) => (
+                  <div key={cake.cakeId} className="relative w-full h-auto">
+                    <div className="relative w-full h-[226px]">
+                      <img
+                        src={cake.imageUrl}
+                        alt={cake.name}
+                        className="w-full h-full object-cover cursor-pointer"
+                      />
+                    </div>
 
-                  {/* 케이크 이름과 가격 (이미지 아래) */}
-                  <div className="pt-[5px] pb-[10px] text-sm font-bold">
-                    <h3 className="text-sm">{cake.name}</h3>
-                    <p className="text-[12px]">{cake.price}원~</p>
+                    <div className="pt-[5px] pb-[10px] text-sm font-bold">
+                      <h3 className="text-sm">{cake.name}</h3>
+                      <p className="text-[12px]">{cake.price}원~</p>
+                    </div>
+
+                    <button
+                      className="absolute top-2 right-2 z-10"
+                      onClick={() => handleScrapCake(cake.cakeId)}
+                    >
+                      {cake.isScrapped ? (
+                        <FilledMarkIcon />
+                      ) : (
+                        <MarkIcon fill="white" />
+                      )}
+                    </button>
                   </div>
-                  {/* 마크 토글 버튼 */}
-                  <button className="absolute top-2 right-2 z-10">
-                    <MarkIcon fill="white" />
-                  </button>
-                </div>
-              ))
+                ))}
+              </div>
             ) : (
-              <p className=" mt-5">해당 키워드와 관련된 케이크가 없습니다.</p>
+              <div className="w-full">
+                <p className="mt-5">해당 키워드와 관련된 케이크가 없습니다.</p>
+              </div>
             )}
-          </div>
+          </>
         ) : (
           <div className="shop-results">
             {shopResults.length > 0 ? (
-              shopResults.map((shop, index) => (
-                <div
-                  key={shop.shopId}
-                  className={`shop-item ${index !== shopResults.length - 1 ? 'border-b' : ''} py-6`}
-                >
-                  <div className="shop-header flex items-center">
-                    <h3 className="shop-name text-lg font-bold mr-3 flex-grow">
-                      {shop.name}
-                    </h3>
-                    <div className="shop-marker text-xl">
-                      <MarkIcon fill="black" />
+              <div className="shop-results">
+                {shopResults.map((shop, index) => {
+                  const latestFourCakes = shop.cakes.slice(-4); // 각 가게의 cakes 배열에서 마지막 4개만 선택
+
+                  return (
+                    <div
+                      key={shop.shopId}
+                      className={`shop-item ${index !== shopResults.length - 1 ? 'border-b' : ''} py-6`}
+                    >
+                      <div className="shop-header flex items-center">
+                        <h3 className="shop-name text-lg font-bold mr-3 flex-grow">
+                          {shop.name}
+                        </h3>
+                        <div className="shop-marker text-xl">
+                          <button
+                            onClick={() => handleScrapShop(shop.shopId, index)}
+                          >
+                            {shop.isScrapped ? (
+                              <FilledMarkIcon fill="black" />
+                            ) : (
+                              <MarkIcon fill="black" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                      <p className="shop-address text-sm mb-3">
+                        {shop.address}
+                      </p>
+
+                      {/* 각 가게의 케이크 이미지 4개만 렌더링 */}
+                      <div className="shop-cakes flex gap-0.5">
+                        {latestFourCakes.map((cake) => (
+                          <div key={cake.cakeId} className="w-1/4">
+                            <img
+                              src={cake.imageUrl}
+                              alt={cake.name}
+                              className="w-full h-20 object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <p className="shop-address text-sm mb-3">{shop.address}</p>
-                  <div className="shop-image">
-                    <img
-                      src={`https://drive.google.com/thumbnail?id=${shop.thumbnailImage.split('/d/')[1].split('/view')[0]}`}
-                      alt={shop.name}
-                      className="w-20 h-20 object-cover rounded-lg "
-                    />
-                  </div>
-                </div>
-              ))
+                  );
+                })}
+              </div>
             ) : (
               <p className="mt-5">
                 해당 키워드와 관련된 케이크 가게가 없습니다.

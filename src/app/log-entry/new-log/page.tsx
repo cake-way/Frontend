@@ -27,7 +27,6 @@ const NewLog = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   ); // 선택된 카테고리 ID
-
   const [isTooltipVisible, setIsTooltipVisible] = useState(false); // 말풍선 모달 표시 여부
 
   const handleTogglePublic = () => {
@@ -79,7 +78,7 @@ const NewLog = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/cakelog`,
         {
           method: 'POST',
-          body: formData, // JSON 대신 FormData 전송
+          body: formData, // FormData 전송
           headers: getAuthHeaders(),
         }
       );

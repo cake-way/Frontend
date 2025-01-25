@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['k.kakaocdn.net'], // 카카오 도메인 추가
+    domains: ['k.kakaocdn.net', 'cakeway.s3.ap-northeast-2.amazonaws.com'],
   },
 };
 

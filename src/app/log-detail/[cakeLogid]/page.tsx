@@ -5,24 +5,31 @@ import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-import mockLogData from 'constants/mockLogData';
 import LoadingSpinner from '@/app/_components/Loading';
 import ScrapIcon from '../../../../public/my-log-images/mark.svg';
 import ScrapIconFilled from '../../../../public/my-log-images/mark-fill.svg';
 import BackIcon from '../../../../public/header-images/back.svg';
 import Image from 'next/image';
+import { fetchLogDetail } from '@/app/_lib/api/logDetail';
 
 interface LogData {
   cakeLogid: number;
   username: string;
-  cakeShopName: string;
+  userProfile: string;
   createAt: string;
+  cakeShopId: number;
+  cakeShopName: string;
   cakeCategoryName: string;
   title: string;
   thumbnailImage: string;
   body: string;
   isPublic: boolean;
   imageList: string[];
+}
+
+interface LogResponse {
+  latestOrderShop: string;
+  cakelogs: LogData[];
 }
 
 const currentUser = 'mimizae'; // 현재 로그인된 사용자 ID
@@ -91,15 +98,25 @@ const LogDetail = () => {
   const [isScraped, setIsScraped] = useState(false); // 스크랩 여부 상태
 
   useEffect(() => {
-    if (cakeLogid) {
-      const fetchLogDetail = () => {
-        const data = mockLogData.find(
-          (log) => log.cakeLogid === Number(cakeLogid)
-        );
-        setLog(data || null); // 데이터가 없으면 null로 설정
+    if (cakeLogid && typeof cakeLogid === 'string') {
+      // cakeLogid가 string인 경우에만 처리
+      const fetchLog = async () => {
+        try {
+          const data: LogResponse = await fetchLogDetail(cakeLogid); // API 호출
+
+          // cakelogs 배열에서 해당 cakeLogid에 맞는 데이터 찾기
+          const logData = data.cakelogs.find(
+            (log) => log.cakeLogid === Number(cakeLogid)
+          );
+
+          setLog(logData || null); // 데이터가 없으면 null로 설정
+        } catch (error) {
+          console.log(error);
+          console.error('로그 데이터를 가져오는 데 실패했습니다.');
+        }
       };
 
-      fetchLogDetail();
+      fetchLog();
     }
   }, [cakeLogid]);
 
