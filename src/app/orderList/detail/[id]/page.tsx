@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { orderHistoryDetailApi } from '@/app/_lib/orderApi';
 import { useQuery } from '@tanstack/react-query';
-import { OrderType } from 'types/relatedCake';
+import { OrderhistoryDetail } from 'types/relatedCake';
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ export default function OrderDetail() {
     );
   }
 
-  const { data: orderDetail, isLoading } = useQuery<OrderType>({
+  const { data: orderDetail, isLoading } = useQuery<OrderhistoryDetail>({
     queryKey: ['orderDetail', id],
     queryFn: () => orderHistoryDetailApi(1, +id),
   });

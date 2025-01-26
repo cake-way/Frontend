@@ -14,7 +14,7 @@ import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 import useFilteringStore from '@/app/store/filteringStore';
-import { cakes } from '../../../../constants/mockData';
+
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
 import { useQuery } from '@tanstack/react-query';
@@ -219,7 +219,7 @@ const CategorySearch = () => {
             {' '}
             {/* Cake Grid */}
             <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
-              {(data.length ? data : cakes).map((cake: ICategoryData) => (
+              {data.map((cake: ICategoryData) => (
                 <div
                   key={cake.cakeId}
                   className=" relative cursor-pointer   overflow-hidden mb-2.5"

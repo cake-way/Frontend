@@ -122,7 +122,7 @@ const Order: React.FC = () => {
     shopName: data?.shopName,
     color: selectedBgColor || '',
     lettercolor: letteringColor || '',
-    selectedTastes: selectedFlavor || '',
+    selectedTastes: [selectedFlavor],
   };
 
   if (isLoading) {

@@ -3,7 +3,22 @@ import Image from 'next/image';
 interface CakeCardProps {
   image: string;
   title: string;
-  status: string;
+  operatingHours: {
+    dayOfWeek: string;
+    openTime: {
+      hour: number;
+      minute: number;
+      second: number;
+      nano: number;
+    };
+    closeTime: {
+      hour: number;
+      minute: number;
+      second: number;
+      nano: number;
+    };
+    active: boolean;
+  };
   location: string;
   sameDay: boolean;
 }
@@ -11,10 +26,29 @@ interface CakeCardProps {
 const CakeCard: React.FC<CakeCardProps> = ({
   image,
   title,
-  status,
+  operatingHours,
   location,
   sameDay,
 }) => {
+  const getRunTime = () => {
+    const date = new Date();
+    const hours = operatingHours.openTime.hour * 60;
+    const minutes = operatingHours.openTime.minute;
+
+    const start = hours + minutes;
+
+    const endHours = operatingHours.closeTime.hour * 60;
+    const endMinutes = operatingHours.closeTime.minute;
+
+    const end = endHours + endMinutes;
+    if (start === 0 && end === 0) {
+      return true; // 24시간 영업
+    }
+
+    const now = date.getHours() * 60 + date.getMinutes();
+
+    return start < now && now < end;
+  };
   return (
     <div className="relative overflow-hidden min-w-[48%]">
       <div
@@ -45,9 +79,9 @@ const CakeCard: React.FC<CakeCardProps> = ({
         <h3 className="font-bold text-sm mb-1">{title}</h3>
         <div className="flex items-center text-xs ">
           <span
-            className={`w-2 h-2 rounded-full mr-1 ${status === '영업 중' ? 'bg-green-500' : 'bg-red-500'}`}
+            className={`w-2 h-2 rounded-full mr-1 ${getRunTime() === true ? 'bg-green-500' : 'bg-red-500'}`}
           ></span>
-          {status} {location}
+          {getRunTime()} {location}
         </div>
       </div>
     </div>

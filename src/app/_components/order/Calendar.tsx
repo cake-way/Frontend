@@ -197,22 +197,43 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           </span>
         </div>
         <div className="flex   max-w-full overflow-x-auto gap-2 mt-2">
-          {(selectedPeriod === '오후' ? pmTimes : amTimes)
-            .filter((time) => availableTimes?.includes(time))
-            .map((time) => (
-              <button
-                key={time}
-                className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
-                  selectedTime === time
-                    ? 'bg-primaryRed1 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-                onClick={() => setSelectedTime(time)}
-              >
-                {selectedPeriod}&nbsp;
-                {time}
-              </button>
-            ))}
+          {availableTimes ? (
+            <>
+              {(selectedPeriod === '오후' ? pmTimes : amTimes)
+                .filter((time) => availableTimes?.includes(time))
+                .map((time) => (
+                  <button
+                    key={time}
+                    className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
+                      selectedTime === time
+                        ? 'bg-primaryRed1 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                    onClick={() => setSelectedTime(time)}
+                  >
+                    {selectedPeriod}&nbsp;
+                    {time}
+                  </button>
+                ))}
+            </>
+          ) : (
+            <>
+              {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
+                <button
+                  key={time}
+                  className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
+                    selectedTime === time
+                      ? 'bg-primaryRed1 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                  onClick={() => setSelectedTime(time)}
+                >
+                  {selectedPeriod}&nbsp;
+                  {time}
+                </button>
+              ))}
+            </>
+          )}
         </div>
       </section>
     </div>

@@ -11,9 +11,16 @@ import { useState } from 'react';
 import CurrentPosition from '../_components/home/CurrentPosition';
 import useHomeLocationStore from '../store/homeLocationStore';
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { homeRecommendApi } from '../_lib/homeApi';
+import { HomeRecommend } from 'types/relatedCake';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useQuery<HomeRecommend>({
+    queryKey: ['recommend'],
+    queryFn: () => homeRecommendApi(),
+  });
 
   const clickedCurrentPosition = () => {
     setIsOpen(true);
@@ -145,7 +152,8 @@ export default function Home() {
           className={` transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       </div>
-      <CakeRecommend />
+
+      {data && <CakeRecommend data={data} />}
       {isOpen && (
         <CurrentPosition
           setIsOpen={setIsOpen}

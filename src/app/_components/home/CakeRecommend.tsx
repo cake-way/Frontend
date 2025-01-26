@@ -1,46 +1,15 @@
 import { useRef } from 'react';
 import CakeCard from './CakeCard';
 import { motion, useInView } from 'framer-motion';
+import { HomeRecommend } from 'types/relatedCake';
 
-const cakes = [
-  {
-    image: '/home/cake-1.svg',
-    title: '베니케이크',
-    status: '오늘 휴무',
-    location: '서울/마포',
-    sameDay: false,
-  },
-  {
-    image: '/home/cake-2.svg',
-    title: '커피 벌스데이',
-    status: '영업 중',
-    location: '서울/마포',
-    sameDay: true,
-  },
-  {
-    image: '/home/cake-3.svg',
-    title: '씨케이크',
-    status: '영업 중',
-    location: '서울/마포',
-    sameDay: true,
-  },
-  {
-    image: '/home/cake-4.svg',
-    title: 'TAND CAKE',
-    status: '오늘 휴무',
-    location: '서울/강남',
-    sameDay: true,
-  },
-  {
-    image: '/home/cake-4.svg',
-    title: 'TAND CAKE',
-    status: '오늘 휴무',
-    location: '서울/강남',
-    sameDay: false,
-  },
-];
+interface ICakeRecommend {
+  data: HomeRecommend;
+}
 
-const CakeRecommend: React.FC = () => {
+const CakeRecommend = ({ data }: ICakeRecommend) => {
+  const special = data.special;
+  const trendy = data.trendy;
   const ref1 = useRef(null);
   const ref2 = useRef(null);
   const isInView1 = useInView(ref1, {
@@ -83,13 +52,13 @@ const CakeRecommend: React.FC = () => {
           <h2 className="title-2 mb-4">특별한 날, 특별한 케이크</h2>
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
-            {cakes.map((cake, index) => (
+            {special.map((cake) => (
               <CakeCard
-                key={index}
-                image={cake.image}
-                title={cake.title}
-                status={cake.status}
-                location={cake.location}
+                key={cake.shopId}
+                image={cake.shopImg}
+                title={cake.shopName}
+                operatingHours={cake.operatingHours}
+                location={cake.region}
                 sameDay={cake.sameDay}
               />
             ))}
@@ -106,13 +75,13 @@ const CakeRecommend: React.FC = () => {
           <h2 className="title-2 mb-4">지금 가장 트렌디한 케이크</h2>
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
-            {cakes.map((cake, index) => (
+            {trendy.map((cake, index) => (
               <CakeCard
                 key={index}
-                image={cake.image}
-                title={cake.title}
-                status={cake.status}
-                location={cake.location}
+                image={cake.shopImg}
+                title={cake.shopName}
+                operatingHours={cake.operatingHours}
+                location={cake.region}
                 sameDay={cake.sameDay}
               />
             ))}

@@ -51,56 +51,6 @@ const Shop = () => {
 
   // const shop = getShopData();
 
-  // const tabs = [
-  //   '생일',
-  //   '졸업',
-  //   '데이트',
-  //   '파티',
-  //   '연말',
-  //   '결혼',
-  //   '직장',
-  //   '당일',
-  // ];
-
-  // const cakeLogs = [
-  //   {
-  //     id: 1,
-  //     image: '/shop/log.png',
-  //     price: '19,000원',
-  //     name: '벨스데이 케이크',
-  //     instagram: '@sarangbunny',
-  //     date: '2024.01.01',
-  //     description:
-  //       '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이! 크고 맛있어서 엄청 아까워서 사진찍어서 남겨요...',
-  //   },
-  //   {
-  //     id: 2,
-  //     image: '/shop/log.png',
-  //     price: '32,000원',
-  //     name: '달월 홀 케이크',
-  //     instagram: '@sarangbunny',
-  //     date: '2024.01.01',
-  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-  //   },
-  //   {
-  //     id: 3,
-  //     image: '/shop/log.png',
-  //     price: '32,000원',
-  //     name: '달월 홀 케이크',
-  //     instagram: '@sarangbunny',
-  //     date: '2024.01.01',
-  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-  //   },
-  //   {
-  //     id: 4,
-  //     image: '/shop/log.png',
-  //     price: '32,000원',
-  //     name: '달월 홀 케이크',
-  //     instagram: '@sarangbunny',
-  //     date: '2024.01.01',
-  //     description: '친구들과 새해 맞이 특별 케이크 ㅎㅎ 너무 예뻐 케이!',
-  //   },
-  // ];
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -312,7 +262,7 @@ const Shop = () => {
                         <div className="flex items-center mb-3.5 ml-4 justify-between flex-col text-grayscale100">
                           <span className="font-medium">{log.title}</span>
                           <span className="text-xs font-semibold">
-                            {log.instagram}
+                            {log.author}
                           </span>
                         </div>
                       </div>
@@ -330,7 +280,7 @@ const Shop = () => {
                         {log.title}
                       </h1>
                       <span className="text-xs text-[#949494] align-middle">
-                        {log.instagram}
+                        {log.author}
                       </span>
                     </div>
                     <div className="flex gap-3.5">
@@ -342,7 +292,7 @@ const Shop = () => {
                       />
                       <div className="text-xs text-grayscale800 flex flex-col justify-between">
                         <span>{log.body}</span>
-                        <span>주문일 {log.date}</span>
+                        <span>주문일 {log.createTime}</span>
                       </div>
                     </div>
                   </div>

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import back from '../../../../public/header-images/orderBack.svg';
-import { cakes } from '../../../../constants/mockData';
+
 import { useParams, useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
 import { useQuery } from '@tanstack/react-query';
@@ -115,21 +115,30 @@ export default function CakeDetail() {
       <div className="p-4">
         <h2 className="text-lg font-bold mb-2">다른 디자인</h2>
         <div className="flex gap-[5px] overflow-x-auto no-scrollbar">
-          {(data?.otherCakes || cakes).map((design) => (
-            <div key={design.cakeId}>
-              <div className="relative  h-40 overflow-hidden aspect-square">
-                <Image
-                  src={design.imageUrl}
-                  alt={design.name}
-                  width={300}
-                  height={300}
-                  className="w-full h-auto object-cover s"
-                />
-              </div>
-              <p className="mt-[2px] text-sm font-medium">{design.name}</p>
-              <p className="text-xs font-medium ">{design.price}</p>
+          {data?.otherCakes && data.otherCakes.length > 0 ? (
+            <>
+              {data.otherCakes.map((design) => (
+                <div key={design.cakeId}>
+                  <div className="relative  h-40 overflow-hidden aspect-square">
+                    <Image
+                      src={design.imageUrl}
+                      alt={design.name}
+                      width={300}
+                      height={300}
+                      className="w-full h-auto object-cover s"
+                    />
+                  </div>
+                  <p className="mt-[2px] text-sm font-medium">{design.name}</p>
+                  <p className="text-xs font-medium ">{design.price}</p>
+                </div>
+              ))}
+            </>
+          ) : (
+            // 다른 디자인이 없을 경우
+            <div className="text-center text-gray-500 text-sm py-5">
+              준비중입니다.
             </div>
-          ))}
+          )}
         </div>
       </div>
 

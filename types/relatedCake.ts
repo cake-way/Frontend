@@ -89,7 +89,7 @@ export interface OrderType {
   lettering: string;
   imageUrl?: string;
   shopName?: string;
-  selectedTastes: string;
+  selectedTastes: string[];
   color: string;
   lettercolor: string;
   paymentMethod?: string;
@@ -136,6 +136,8 @@ export interface shopLogs {
     {
       id: number;
       title: string;
+      author: string;
+      createTime: string;
       thumbnail_image: string;
       body: string;
     },
@@ -147,4 +149,73 @@ export interface shopLogs {
 export interface TimeSlotResponse {
   cakeShopId: number;
   availableTimes: string[];
+}
+
+export interface OrderhistoryDetail {
+  orderId: number;
+  cakeName: string;
+  cakeShopName: string;
+  orderDate: string;
+  pickupDate: string;
+  totalPrice: number;
+  status: string;
+  size: string;
+  lettering: string;
+  color: string;
+  lettercolor: string;
+  selectedTastes: string[];
+  paymentMethod?: string;
+}
+
+export interface HomeRecommend {
+  special: [
+    {
+      shopId: number;
+      shopName: string;
+      shopImg: string;
+      operatingHours: {
+        dayOfWeek: string;
+        openTime: {
+          hour: number;
+          minute: number;
+          second: number;
+          nano: number;
+        };
+        closeTime: {
+          hour: number;
+          minute: number;
+          second: number;
+          nano: number;
+        };
+        active: boolean;
+      };
+      region: string;
+      sameDay: boolean;
+    },
+  ];
+  trendy: [
+    {
+      shopId: number;
+      shopName: string;
+      shopImg: string;
+      operatingHours: {
+        dayOfWeek: string;
+        openTime: {
+          hour: number;
+          minute: number;
+          second: number;
+          nano: number;
+        };
+        closeTime: {
+          hour: number;
+          minute: number;
+          second: number;
+          nano: number;
+        };
+        active: boolean;
+      };
+      region: string;
+      sameDay: boolean;
+    },
+  ];
 }
