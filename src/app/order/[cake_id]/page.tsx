@@ -142,7 +142,7 @@ const Order: React.FC = () => {
           <div className=" relative bg-[#ffffff] mx-5 border-solid py-2.5 text-sm flex items-center border-b border-t border-[#E9E9E9]">
             <Image src={cakeIcon} alt="cakeIcon" />
             <div className="ml-2.5 px-2 font-medium text-gray-700">
-              {cake_id}
+              {data?.cakeName}
             </div>
           </div>
           {/* Calendar Component */}
