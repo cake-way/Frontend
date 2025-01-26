@@ -98,7 +98,7 @@ const OrderCard = ({
           </div>
           <div className="py-1.5 flex-[2] flex justify-between  border-t px-2.5">
             <p className=" flex items-center  text-sm font-bold">
-              {order.totalPrice}원
+              {order.totalPrice.toLocaleString()}원
             </p>
             {!detail && orderList && (
               <Image

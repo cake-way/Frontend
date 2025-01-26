@@ -7,13 +7,14 @@ import cakeIcon from '@/../public/order/cakeIcon.svg';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import Calendar from '@/app/_components/order/Calendar';
+import { TimeSlotCalendar } from '@/app/_components/order/Calendar';
 import OrderCard from '@/app/_components/order/OrderCard';
 import Dropdown from '@/app/_components/order/Dropdwon';
 import orderApi from '@/app/_lib/orderApi';
 import { getHoursMinutes } from 'utils/utils';
 import { ICakeDetail } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/_components/Loading';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -28,7 +29,7 @@ const Order: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
-  const { data } = useQuery<ICakeDetail>({
+  const { data, isLoading } = useQuery<ICakeDetail>({
     queryKey: ['cakeDetail', cake_id],
   });
 
@@ -124,6 +125,9 @@ const Order: React.FC = () => {
     selectedTastes: selectedFlavor || '',
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className="   flex flex-col">
       {!nextPage ? (
@@ -143,7 +147,8 @@ const Order: React.FC = () => {
           </div>
           {/* Calendar Component */}
           <div>
-            <Calendar
+            <TimeSlotCalendar
+              cakeShopId={data?.shopId}
               selectedDate={selectedDate}
               selectedPeriod={selectedPeriod}
               selectedTime={selectedTime}

@@ -2,6 +2,10 @@
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { amTimes, pmTimes } from '../../../../constants/constants';
+import { TimeSlotResponse } from 'types/relatedCake';
+import { useQuery } from '@tanstack/react-query';
+import { orderTimeSlotApi } from '@/app/_lib/shopApi';
+import { ComponentType, useState } from 'react';
 
 interface CalendarComponentProps {
   selectedDate: Date;
@@ -10,7 +14,84 @@ interface CalendarComponentProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
+  shopId?: number;
+  cakeShopId?: number; // 추가
 }
+interface WithTimeSlotsProps {
+  cakeShopId: number;
+  selectedDate: Date;
+  selectedTime: string | null;
+  selectedPeriod: string;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
+}
+export const withTimeSlots = <P extends WithTimeSlotsProps>(
+  WrappedComponent: ComponentType<
+    P & { tileDisabled?: (props: { date: Date }) => boolean }
+  >
+) => {
+  return function WithTimeSlotsComponent(props: P) {
+    const { cakeShopId } = props;
+    const [currentViewDate, setCurrentViewDate] = useState(new Date());
+    const { data: timeSlots } = useQuery<TimeSlotResponse>({
+      queryKey: ['timeSlots', cakeShopId, currentViewDate],
+      queryFn: async () => {
+        if (!cakeShopId) {
+          return null;
+        }
+        let monthStart = new Date(
+          currentViewDate.getFullYear(),
+          currentViewDate.getMonth(),
+          1
+        );
+        if (monthStart.getMonth() === new Date().getMonth())
+          monthStart = new Date();
+        const monthEnd = new Date(
+          currentViewDate.getFullYear(),
+          currentViewDate.getMonth() + 1,
+          0
+        );
+        return await orderTimeSlotApi(
+          cakeShopId,
+          monthStart.toISOString(),
+          monthEnd.toISOString()
+        );
+      },
+      enabled: !!cakeShopId,
+    });
+    console.log(timeSlots);
+
+    const tileDisabled = ({ date }: { date: Date }) => {
+      if (!timeSlots?.availableTimes) return false;
+
+      return !timeSlots.availableTimes.some((timeStr) => {
+        const timeSlot = new Date(timeStr);
+        return (
+          timeSlot.getDate() === date.getDate() &&
+          timeSlot.getMonth() === date.getMonth() &&
+          timeSlot.getFullYear() === date.getFullYear()
+        );
+      });
+    };
+
+    return (
+      <WrappedComponent
+        {...props}
+        tileDisabled={cakeShopId ? tileDisabled : undefined}
+        onActiveStartDateChange={({
+          activeStartDate,
+        }: {
+          activeStartDate: Date;
+        }) => {
+          if (activeStartDate) {
+            setCurrentViewDate(activeStartDate);
+          }
+        }}
+      />
+    );
+  };
+};
 
 const CalendarComponent: React.FC<CalendarComponentProps> = ({
   selectedDate,
@@ -111,3 +192,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 };
 
 export default CalendarComponent;
+
+// Usage
+const TimeSlotCalendar = withTimeSlots(CalendarComponent);
+export { TimeSlotCalendar };

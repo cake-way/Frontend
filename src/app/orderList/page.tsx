@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import OrderCard from '../_components/order/OrderCard';
-import { orders } from 'constants/mockData';
+
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';

@@ -143,3 +143,8 @@ export interface shopLogs {
   scraped: boolean;
   sameDay: boolean;
 }
+
+export interface TimeSlotResponse {
+  cakeShopId: number;
+  availableTimes: string[];
+}
