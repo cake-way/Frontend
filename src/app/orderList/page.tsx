@@ -91,7 +91,7 @@ export default function OrderList() {
               </div>
             ) : (
               <>
-                {(readyCake || orders).map((order) => (
+                {readyCake?.map((order) => (
                   <OrderCard
                     key={order.orderId}
                     order={order}
@@ -112,7 +112,7 @@ export default function OrderList() {
               </div>
             ) : (
               <>
-                {(doneCake || orders).map((order) => (
+                {doneCake?.map((order) => (
                   <OrderCard
                     key={order.orderId}
                     order={order}

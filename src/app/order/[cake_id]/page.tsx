@@ -119,9 +119,9 @@ const Order: React.FC = () => {
     lettering: letteringText || '',
     imageUrl: data?.imageUrl || '',
     shopName: data?.shopName,
-    color: selectedBgColor,
-    lettercolor: letteringColor,
-    selectedTastes: selectedFlavor,
+    color: selectedBgColor || '',
+    lettercolor: letteringColor || '',
+    selectedTastes: selectedFlavor || '',
   };
 
   return (

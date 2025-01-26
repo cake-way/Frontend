@@ -92,6 +92,7 @@ export interface OrderType {
   selectedTastes: string;
   color: string;
   lettercolor: string;
+  paymentMethod?: string;
 }
 
 export interface cakeSearch {
