@@ -89,6 +89,9 @@ export interface OrderType {
   lettering: string;
   imageUrl?: string;
   shopName?: string;
+  selectedTastes: string;
+  color: string;
+  lettercolor: string;
 }
 
 export interface cakeSearch {

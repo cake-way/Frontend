@@ -35,7 +35,7 @@ export async function orderHistoryApi(memberId: number) {
 
     return response.json();
   } catch (e) {
-    console.log('orderHistoryApi POST error:', e);
+    console.log('orderHistoryApi  error:', e);
   }
 }
 
@@ -50,5 +50,16 @@ export async function orderHistoryGetCakeApi(keyword: string | undefined) {
     return response.json();
   } catch (e) {
     console.log('orderHistoryGetCakeApi error:', e);
+  }
+}
+
+export async function orderHistoryDetailApi(memberId: number, orderId: number) {
+  try {
+    const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/history/${memberId}/${orderId}`;
+    const response = await fetch(URL);
+
+    return response.json();
+  } catch (e) {
+    console.log('orderHistoryDetailApi error:', e);
   }
 }

@@ -11,7 +11,9 @@ import { cakeSearch, OrderType } from 'types/relatedCake';
 import LoadingSpinner from '../_components/Loading';
 
 export default function OrderList() {
-  const [activeTab, setActiveTab] = useState<'준비중' | '픽업 완료'>('준비중');
+  const [activeTab, setActiveTab] = useState<'제작 중' | '픽업 완료'>(
+    '제작 중'
+  );
   const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
     queryKey: ['cakeOrders'],
     queryFn: () => orderHistoryApi(1),
@@ -36,7 +38,7 @@ export default function OrderList() {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  const handleTabChange = (tab: '준비중' | '픽업 완료') => {
+  const handleTabChange = (tab: '제작 중' | '픽업 완료') => {
     setActiveTab(tab);
   };
 
@@ -55,13 +57,13 @@ export default function OrderList() {
         />
         <div className="flex gap-[18px]">
           <motion.button
-            layoutId={activeTab === '준비중' ? 'active-tab' : undefined}
+            layoutId={activeTab === '제작 중' ? 'active-tab' : undefined}
             className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
-              activeTab === '준비중'
+              activeTab === '제작 중'
                 ? 'border-black text-black'
                 : 'border-transparent text-gray-400'
             }`}
-            onClick={() => handleTabChange('준비중')}
+            onClick={() => handleTabChange('제작 중')}
           >
             준비중
           </motion.button>
@@ -81,7 +83,7 @@ export default function OrderList() {
 
       {/* Order List */}
       <div className="p-4">
-        {activeTab === '준비중' && (
+        {activeTab === '제작 중' && (
           <div className="space-y-4">
             {readyCake?.length === 0 ? (
               <div className="text-center text-gray-500 text-sm py-10">

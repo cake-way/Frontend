@@ -228,9 +228,9 @@ const CategorySearch = () => {
                   <Image
                     src={cake.cakeImage}
                     alt={cake.cakeName}
-                    width={0}
-                    height={0}
-                    className="w-full   object-cover"
+                    width={300}
+                    height={300}
+                    className="w-full  object-cover"
                   />
                   <div className="absolute top-2 right-2 p-1">
                     {cake.isScraped ? (

@@ -2,7 +2,7 @@
 import Header from '@/app/_components/Header';
 import LoadingSpinner from '@/app/_components/Loading';
 import OrderCard from '@/app/_components/order/OrderCard';
-import { orders } from 'constants/mockData';
+
 import back from '@/../public/header-images/back.svg';
 import Image from 'next/image';
 

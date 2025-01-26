@@ -46,7 +46,7 @@ export default function CakeDetail() {
     queryFn: () => getShopAdress(data?.shopId),
   });
 
-  console.log(shopDetail);
+  console.log(data);
 
   return (
     <div className="w-full  mx-auto">
@@ -117,12 +117,13 @@ export default function CakeDetail() {
         <div className="flex gap-[5px] overflow-x-auto no-scrollbar">
           {(data?.otherCakes || cakes).map((design) => (
             <div key={design.cakeId}>
-              <div className="relative  h-40  aspect-square">
+              <div className="relative  h-40 overflow-hidden aspect-square">
                 <Image
                   src={design.imageUrl}
                   alt={design.name}
-                  fill
-                  className="object-cover "
+                  width={300}
+                  height={300}
+                  className="w-full h-auto object-cover s"
                 />
               </div>
               <p className="mt-[2px] text-sm font-medium">{design.name}</p>
