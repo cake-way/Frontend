@@ -1,5 +1,5 @@
 'use client';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { amTimes, pmTimes } from '../../../../constants/constants';
 import { TimeSlotResponse } from 'types/relatedCake';
@@ -15,10 +15,13 @@ interface CalendarComponentProps {
   setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
   shopId?: number;
-  cakeShopId?: number; // 추가
+  cakeShopId?: number;
+  availableTimes?: string[];
+  tileDisabled?: (props: { date: Date }) => boolean;
+  onActiveStartDateChange?: (args: OnArgs) => void;
 }
 interface WithTimeSlotsProps {
-  cakeShopId: number;
+  cakeShopId?: number;
   selectedDate: Date;
   selectedTime: string | null;
   selectedPeriod: string;
@@ -61,10 +64,28 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
       enabled: !!cakeShopId,
     });
     console.log(timeSlots);
+    const getAvailableTimesForDate = (date: Date) => {
+      if (!timeSlots?.availableTimes) return [];
+
+      return timeSlots.availableTimes
+        .filter((timeStr) => {
+          const timeSlot = new Date(timeStr);
+          return (
+            timeSlot.getDate() === date.getDate() &&
+            timeSlot.getMonth() === date.getMonth() &&
+            timeSlot.getFullYear() === date.getFullYear()
+          );
+        })
+        .map((timeStr) => {
+          const timeSlot = new Date(timeStr);
+          const hours = timeSlot.getHours();
+          const minutes = timeSlot.getMinutes();
+          return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        });
+    };
 
     const tileDisabled = ({ date }: { date: Date }) => {
       if (!timeSlots?.availableTimes) return false;
-
       return !timeSlots.availableTimes.some((timeStr) => {
         const timeSlot = new Date(timeStr);
         return (
@@ -74,7 +95,6 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
         );
       });
     };
-
     return (
       <WrappedComponent
         {...props}
@@ -88,6 +108,7 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
             setCurrentViewDate(activeStartDate);
           }
         }}
+        availableTimes={getAvailableTimesForDate(props.selectedDate)}
       />
     );
   };
@@ -100,6 +121,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   setSelectedDate,
   setSelectedPeriod,
   setSelectedTime,
+  availableTimes,
+  tileDisabled,
+  onActiveStartDateChange,
 }) => {
   return (
     <div className=" w-full  relative bg-[#ffffff] rounded-lg  overflow-hidden max-w-[480px]">
@@ -146,6 +170,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             next2Label={null} // 더블 화살표 제거
             prev2Label={null} // 더블 화살표 제거
             tileClassName="rounded"
+            tileDisabled={tileDisabled}
+            onActiveStartDateChange={onActiveStartDateChange}
           />
         </div>
 
@@ -171,20 +197,22 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           </span>
         </div>
         <div className="flex   max-w-full overflow-x-auto gap-2 mt-2">
-          {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
-            <button
-              key={time}
-              className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
-                selectedTime === time
-                  ? 'bg-primaryRed1 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              onClick={() => setSelectedTime(time)}
-            >
-              {selectedPeriod}&nbsp;
-              {time}
-            </button>
-          ))}
+          {(selectedPeriod === '오후' ? pmTimes : amTimes)
+            .filter((time) => availableTimes?.includes(time))
+            .map((time) => (
+              <button
+                key={time}
+                className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
+                  selectedTime === time
+                    ? 'bg-primaryRed1 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                onClick={() => setSelectedTime(time)}
+              >
+                {selectedPeriod}&nbsp;
+                {time}
+              </button>
+            ))}
         </div>
       </section>
     </div>
