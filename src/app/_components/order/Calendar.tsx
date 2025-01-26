@@ -1,16 +1,118 @@
 'use client';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { amTimes, pmTimes } from '../../../../constants/constants';
+import { TimeSlotResponse } from 'types/relatedCake';
+import { useQuery } from '@tanstack/react-query';
+import { orderTimeSlotApi } from '@/app/_lib/shopApi';
+import { ComponentType, useState } from 'react';
 
 interface CalendarComponentProps {
   selectedDate: Date;
-  selectedTime: string;
+  selectedTime: string | null;
   selectedPeriod: string;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
-  setSelectedTime: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
+  shopId?: number;
+  cakeShopId?: number;
+  availableTimes?: string[];
+  tileDisabled?: (props: { date: Date }) => boolean;
+  onActiveStartDateChange?: (args: OnArgs) => void;
+}
+interface WithTimeSlotsProps {
+  cakeShopId?: number;
+  selectedDate: Date;
+  selectedTime: string | null;
+  selectedPeriod: string;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
 }
+export const withTimeSlots = <P extends WithTimeSlotsProps>(
+  WrappedComponent: ComponentType<
+    P & { tileDisabled?: (props: { date: Date }) => boolean }
+  >
+) => {
+  return function WithTimeSlotsComponent(props: P) {
+    const { cakeShopId } = props;
+    const [currentViewDate, setCurrentViewDate] = useState(new Date());
+    const { data: timeSlots } = useQuery<TimeSlotResponse>({
+      queryKey: ['timeSlots', cakeShopId, currentViewDate],
+      queryFn: async () => {
+        if (!cakeShopId) {
+          return null;
+        }
+        let monthStart = new Date(
+          currentViewDate.getFullYear(),
+          currentViewDate.getMonth(),
+          1
+        );
+        if (monthStart.getMonth() === new Date().getMonth())
+          monthStart = new Date();
+        const monthEnd = new Date(
+          currentViewDate.getFullYear(),
+          currentViewDate.getMonth() + 1,
+          0
+        );
+        return await orderTimeSlotApi(
+          cakeShopId,
+          monthStart.toISOString(),
+          monthEnd.toISOString()
+        );
+      },
+      enabled: !!cakeShopId,
+    });
+    console.log(timeSlots);
+    const getAvailableTimesForDate = (date: Date) => {
+      if (!timeSlots?.availableTimes) return [];
+
+      return timeSlots.availableTimes
+        .filter((timeStr) => {
+          const timeSlot = new Date(timeStr);
+          return (
+            timeSlot.getDate() === date.getDate() &&
+            timeSlot.getMonth() === date.getMonth() &&
+            timeSlot.getFullYear() === date.getFullYear()
+          );
+        })
+        .map((timeStr) => {
+          const timeSlot = new Date(timeStr);
+          const hours = timeSlot.getHours();
+          const minutes = timeSlot.getMinutes();
+          return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        });
+    };
+
+    const tileDisabled = ({ date }: { date: Date }) => {
+      if (!timeSlots?.availableTimes) return false;
+      return !timeSlots.availableTimes.some((timeStr) => {
+        const timeSlot = new Date(timeStr);
+        return (
+          timeSlot.getDate() === date.getDate() &&
+          timeSlot.getMonth() === date.getMonth() &&
+          timeSlot.getFullYear() === date.getFullYear()
+        );
+      });
+    };
+    return (
+      <WrappedComponent
+        {...props}
+        tileDisabled={cakeShopId ? tileDisabled : undefined}
+        onActiveStartDateChange={({
+          activeStartDate,
+        }: {
+          activeStartDate: Date;
+        }) => {
+          if (activeStartDate) {
+            setCurrentViewDate(activeStartDate);
+          }
+        }}
+        availableTimes={getAvailableTimesForDate(props.selectedDate)}
+      />
+    );
+  };
+};
 
 const CalendarComponent: React.FC<CalendarComponentProps> = ({
   selectedDate,
@@ -19,6 +121,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   setSelectedDate,
   setSelectedPeriod,
   setSelectedTime,
+  availableTimes,
+  tileDisabled,
+  onActiveStartDateChange,
 }) => {
   return (
     <div className=" w-full  relative bg-[#ffffff] rounded-lg  overflow-hidden max-w-[480px]">
@@ -65,6 +170,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             next2Label={null} // 더블 화살표 제거
             prev2Label={null} // 더블 화살표 제거
             tileClassName="rounded"
+            tileDisabled={tileDisabled}
+            onActiveStartDateChange={onActiveStartDateChange}
           />
         </div>
 
@@ -90,20 +197,43 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           </span>
         </div>
         <div className="flex   max-w-full overflow-x-auto gap-2 mt-2">
-          {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
-            <button
-              key={time}
-              className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
-                selectedTime === time
-                  ? 'bg-primaryRed1 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              onClick={() => setSelectedTime(time)}
-            >
-              {selectedPeriod}&nbsp;
-              {time}
-            </button>
-          ))}
+          {availableTimes ? (
+            <>
+              {(selectedPeriod === '오후' ? pmTimes : amTimes)
+                .filter((time) => availableTimes?.includes(time))
+                .map((time) => (
+                  <button
+                    key={time}
+                    className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
+                      selectedTime === time
+                        ? 'bg-primaryRed1 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                    onClick={() => setSelectedTime(time)}
+                  >
+                    {selectedPeriod}&nbsp;
+                    {time}
+                  </button>
+                ))}
+            </>
+          ) : (
+            <>
+              {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
+                <button
+                  key={time}
+                  className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
+                    selectedTime === time
+                      ? 'bg-primaryRed1 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                  onClick={() => setSelectedTime(time)}
+                >
+                  {selectedPeriod}&nbsp;
+                  {time}
+                </button>
+              ))}
+            </>
+          )}
         </div>
       </section>
     </div>
@@ -111,3 +241,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 };
 
 export default CalendarComponent;
+
+// Usage
+const TimeSlotCalendar = withTimeSlots(CalendarComponent);
+export { TimeSlotCalendar };

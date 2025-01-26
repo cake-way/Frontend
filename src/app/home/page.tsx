@@ -12,10 +12,18 @@ import CurrentPosition from '../_components/home/CurrentPosition';
 import useHomeLocationStore from '../store/homeLocationStore';
 import { useEffect } from 'react';
 import SearchResults from '../_components/home/SearchResults';
+import { useQuery } from '@tanstack/react-query';
+import { homeRecommendApi } from '../_lib/homeApi';
+import { HomeRecommend } from 'types/relatedCake';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
+
+  const { data } = useQuery<HomeRecommend>({
+    queryKey: ['recommend'],
+    queryFn: () => homeRecommendApi(),
+  });
 
   const clickedCurrentPosition = () => {
     setIsOpen(true);
@@ -30,8 +38,6 @@ export default function Home() {
     setCurrentLocationLatLng,
     setCurrentLocationString,
   } = useHomeLocationStore();
-
-  console.log('내 위치', homeLocation);
 
   //카카오맵 로드
   useEffect(() => {
@@ -127,8 +133,6 @@ export default function Home() {
         }
         rightButtonImage={[<Image key="Alarm" src={Alarm} alt="Alarm" />]}
       />
-
-      {/* 검색어가 있을 때 */}
       {searchKeyword ? (
         <div className="absolute top-15 left-0 w-full bg-white z-10 min-h-screen">
           {currentLocationLatLng?.lat && currentLocationLatLng?.lng && (
@@ -140,13 +144,10 @@ export default function Home() {
           )}
         </div>
       ) : (
-        // 기본 홈 화면
         <>
           <CakePick />
           <CategoryCake />
           <div className="my-7 h-2 bg-[#f4f4f4]"></div>
-
-          {/* 위치 설정 */}
           <div
             className="flex gap-1.5 px-5 cursor-pointer"
             onClick={clickedCurrentPosition}
@@ -158,17 +159,17 @@ export default function Home() {
               height={16}
             />
             <div className="text-[#4f4f4f] text-sm font-medium">
-              {homeLocation}
+              {homeLocation ? homeLocation : '위치를 선택해주세요'}
             </div>
             <Image
               src={'/order/arrow_down.svg'}
               alt="position_icon"
               width={14}
               height={14}
-              className={`transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+              className={` transition ${isOpen ? 'rotate-180' : 'rotate-0'}`}
             />
           </div>
-          <CakeRecommend />
+          {data && <CakeRecommend data={data} />}
           {isOpen && (
             <CurrentPosition
               setIsOpen={setIsOpen}
