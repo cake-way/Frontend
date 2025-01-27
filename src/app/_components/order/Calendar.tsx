@@ -21,7 +21,7 @@ interface CalendarComponentProps {
   onActiveStartDateChange?: (args: OnArgs) => void;
 }
 interface WithTimeSlotsProps {
-  cakeShopId: number;
+  cakeShopId?: number;
   selectedDate: Date;
   selectedTime: string | null;
   selectedPeriod: string;
@@ -134,7 +134,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   tileDisabled,
   onActiveStartDateChange,
 }) => {
-  const onClickedTime = (time) => {
+  const onClickedTime = (time: string) => {
     if (!availableTimes?.includes(time)) return;
     setSelectedTime(time);
   };
