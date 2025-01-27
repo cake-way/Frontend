@@ -2,14 +2,18 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import CakeShopCard from './CakeShopCard';
-import { cakeShops } from '../../../../constants/mockData';
 import Image from 'next/image';
+import { MapShops } from 'types/relatedCake';
 
 interface IDraggableBottomSheet {
   getCoordinates: () => void;
+  shops?: MapShops[] | undefined | null;
 }
 
-const DraggableBottomSheet = ({ getCoordinates }: IDraggableBottomSheet) => {
+const DraggableBottomSheet = ({
+  getCoordinates,
+  shops,
+}: IDraggableBottomSheet) => {
   const [position, setPosition] = useState(0); // Bottom Sheet의 Y 위치
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
   const startYRef = useRef(0); //  드래그 시작 위치
@@ -139,7 +143,7 @@ const DraggableBottomSheet = ({ getCoordinates }: IDraggableBottomSheet) => {
         >
           {/* Example items */}
 
-          {cakeShops.map((shop, index) => (
+          {shops?.map((shop, index) => (
             <CakeShopCard key={index} shop={shop} />
           ))}
         </div>

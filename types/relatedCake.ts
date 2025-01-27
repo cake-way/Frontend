@@ -204,3 +204,19 @@ export type priceObject = {
   min: number | undefined;
   max: number | undefined;
 };
+
+export interface MapShops {
+  shopId: number;
+  name: string;
+  address: string;
+  contact: string;
+  thumbnailImage: string;
+  distance: number;
+  cakes: MapShop[];
+}
+export interface MapShop {
+  shopId: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}

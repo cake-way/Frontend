@@ -5,14 +5,12 @@ import SearchIcon from './Icons/SearchIcon';
 
 interface InputFieldProps {
   placeholder?: string;
-  map?: boolean; // 맵 관련 스타일 적용 여부
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 입력 변화 시 호출
   onSubmit?: (keyword: string) => void; // 폼 제출 시 호출
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   placeholder,
-  map = false,
   onChange = () => {},
   onSubmit = () => {},
 }) => {
@@ -42,9 +40,7 @@ const InputField: React.FC<InputFieldProps> = ({
     >
       <label
         htmlFor="search-input"
-        className={`${
-          map ? 'bg-[#ffffff] shadow' : 'bg-[#F4F4F4]'
-        } flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
+        className={`${'bg-[#F4F4F4]'} flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
       >
         {/* 아이콘 */}
         <div className="flex-shrink flex items-center">
@@ -60,9 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
           onChange={handleChange} // 입력 변화 핸들러
           onFocus={handleFocus} // 포커스 핸들러
           onBlur={handleBlur} // 블러 핸들러
-          className={`${
-            map ? 'placeholder-gray-500' : 'placeholder-gray-400'
-          } flex-grow flex-shrink text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1`}
+          className={`${'placeholder-gray-400'} flex-grow flex-shrink text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1`}
           aria-label="검색어 입력"
         />
       </label>

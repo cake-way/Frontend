@@ -16,13 +16,13 @@ const CakeRecommend = ({ data }: ICakeRecommend) => {
   console.log(ref2);
   const isInView1 = useInView(ref1, {
     once: false,
-    amount: 0.3,
-    margin: '0px 0px -20% 0px',
+    amount: 0.1,
+    margin: '0px 0px -10% 0px',
   });
   const isInView2 = useInView(ref2, {
     once: false,
-    amount: 0.3,
-    margin: '0px 0px -20% 0px',
+    amount: 0.1,
+    margin: '0px 0px -10% 0px',
   });
 
   const variants = {

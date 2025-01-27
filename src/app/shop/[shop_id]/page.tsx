@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import shopDetailApi, { shopLogApi } from '@/app/_lib/shopApi';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
-  const [subTab, setSubTab] = useState<string | null>(null);
+
   const router = useRouter();
 
   if (!shop_id || Array.isArray(shop_id)) {
@@ -27,7 +27,7 @@ const Shop = () => {
       </div>
     );
   }
-
+  const [subTab, setSubTab] = useState<string | null | undefined>(null);
   const { data: shopDetail } = useQuery<IShopDetail>({
     queryKey: ['shopDetail', shop_id, subTab],
     queryFn: () => shopDetailApi(+shop_id, subTab),
@@ -35,10 +35,19 @@ const Shop = () => {
   const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(
     (item) => item.categoryName
   );
+
   const { data: shopLogs } = useQuery<shopLogs>({
     queryKey: ['shopLogs', shop_id],
     queryFn: () => shopLogApi(shop_id),
   });
+
+  // useEffect를 통해 shopDetail이 업데이트될 때만 subTab을 설정
+  useEffect(() => {
+    if (shopDetail?.cakes.name) {
+      setSubTab(shopDetail?.cakes.name);
+    }
+  }, [shopDetail?.cakes.name]);
+
   // const { data: shopCategory } = useQuery({
   //   queryKey: ['shopCategory', shop_id],
   //   queryFn: () => shopCategoryApi(shop_id),
@@ -88,7 +97,7 @@ const Shop = () => {
           <h1 className="text-[22px] font-bold">{shopDetail?.name}</h1>
           <div className="mt-2 text-sm flex flex-col items-center">
             <p className="flex items-center text-grayscale700 text-xs font-bold">
-              {`케이크 로그 ${shopDetail?.scrapCount}개 |`}
+              {`케이크 로그 ${!shopLogs?.cakelogs ? 0 : shopLogs?.cakelogs}개 |`}
               <span className="mr-2 flex">
                 <Image
                   src="/shop/bookMark.svg"
@@ -128,19 +137,25 @@ const Shop = () => {
                     alt="runtime_icon"
                   />
                 </span>
-                {runTime !== null
-                  ? runTime > 0
-                    ? '영업 중'
-                    : '마감'
-                  : '정보없음'}
-                &nbsp;&nbsp;
-                {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
-                {shopDetail?.operatingHour?.openTime !== undefined &&
-                  (hour <= 11 ? '오전' : '오후')}
-                &nbsp;
-                {shopDetail?.operatingHour.openTime.split(':')[0]}:
-                {shopDetail?.operatingHour?.openTime?.split(':')[1]} -&nbsp;
-                {hour}:{minutes}
+                {shopDetail?.operatingHour ? (
+                  <>
+                    {runTime !== null
+                      ? runTime > 0
+                        ? '영업 중'
+                        : '마감'
+                      : '정보없음'}
+                    &nbsp;&nbsp;
+                    {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
+                    {shopDetail?.operatingHour?.openTime !== undefined &&
+                      (hour <= 11 ? '오전' : '오후')}
+                    &nbsp;
+                    {shopDetail?.operatingHour.openTime.split(':')[0]}:
+                    {shopDetail?.operatingHour?.openTime?.split(':')[1]} -&nbsp;
+                    {hour}:{minutes}
+                  </>
+                ) : (
+                  '휴무'
+                )}
               </p>
               <p className="flex items-center text-gray-600">
                 <a
