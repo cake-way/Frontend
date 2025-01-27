@@ -10,8 +10,10 @@ interface ICakeRecommend {
 const CakeRecommend = ({ data }: ICakeRecommend) => {
   const special = data.special;
   const trendy = data.trendy;
+  console.log(trendy);
   const ref1 = useRef(null);
   const ref2 = useRef(null);
+  console.log(ref2);
   const isInView1 = useInView(ref1, {
     once: false,
     amount: 0.3,
@@ -75,9 +77,9 @@ const CakeRecommend = ({ data }: ICakeRecommend) => {
           <h2 className="title-2 mb-4">지금 가장 트렌디한 케이크</h2>
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
-            {trendy.map((cake, index) => (
+            {trendy.map((cake) => (
               <CakeCard
-                key={index}
+                key={cake.shopId}
                 image={cake.shopImg}
                 title={cake.shopName}
                 operatingHours={cake.operatingHours}

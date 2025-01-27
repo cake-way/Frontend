@@ -60,7 +60,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
         }}
       ></div>
       <Image
-        src={image}
+        src={`home/cake.svg`}
         alt={title}
         width={0}
         height={0}
