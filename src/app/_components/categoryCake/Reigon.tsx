@@ -8,7 +8,7 @@ export default function Reigon() {
 
   const regions = ['서울'];
   const subRegions: Record<string, string[]> = {
-    서울: ['신촌/이대', '성수/합정/망원'],
+    서울: ['신촌/이대', '상수/합정/망원'],
   };
 
   console.log(selectedSub);

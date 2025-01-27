@@ -6,9 +6,12 @@ import back from '@/../public/header-images/back.svg';
 import Image from 'next/image';
 
 import { useParams, useRouter } from 'next/navigation';
-import { orderHistoryDetailApi } from '@/app/_lib/orderApi';
+import {
+  orderHistoryDetailApi,
+  orderHistoryGetCakeApi,
+} from '@/app/_lib/orderApi';
 import { useQuery } from '@tanstack/react-query';
-import { OrderhistoryDetail } from 'types/relatedCake';
+import { cakeSearch, OrderhistoryDetail } from 'types/relatedCake';
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -32,7 +35,10 @@ export default function OrderDetail() {
     queryKey: ['orderDetail', id],
     queryFn: () => orderHistoryDetailApi(1, +id),
   });
-
+  const { data: cakeSearch } = useQuery<cakeSearch[]>({
+    queryKey: ['cakeSearch', orderDetail],
+    queryFn: () => orderHistoryGetCakeApi(orderDetail?.cakeName),
+  });
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -45,7 +51,6 @@ export default function OrderDetail() {
     <>
       {orderDetail ? (
         <>
-          {' '}
           {/* Header */}
           <Header
             leftButtonImage={<Image src={back} alt="back" />}
@@ -55,7 +60,11 @@ export default function OrderDetail() {
           />
           <div className="w-full ">
             <div className="pt-9 px-5 ">
-              <OrderCard order={orderDetail} detail={true} />
+              <OrderCard
+                order={orderDetail}
+                detail={true}
+                cakeSearch={cakeSearch}
+              />
             </div>
 
             {/* 주문 정보 섹션 */}

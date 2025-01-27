@@ -26,6 +26,7 @@ import { days } from 'constants/constants';
 //카테고리 없는 ui
 const CategorySearch = () => {
   const { category } = useParams();
+  const router = useRouter();
 
   // 유효한 카테고리인지 확인하는 함수
   const isValidCategory = (cat: string | string[] | undefined) => {
@@ -60,7 +61,6 @@ const CategorySearch = () => {
     );
   }
 
-  const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterName, setFilterName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +70,7 @@ const CategorySearch = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<ICategoryData[]>({
     queryKey: [
       'categoryCake',
       category,
@@ -217,40 +217,42 @@ const CategorySearch = () => {
         ) : (
           <>
             {/* Cake Grid */}
-            {data.length > 0 ? (
+            {data && data?.length > 0 ? (
               <>
                 <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
-                  {data.map((cake: ICategoryData) => (
-                    <div
-                      key={cake.cakeId}
-                      className=" relative cursor-pointer   overflow-hidden mb-2.5"
-                      onClick={() => onOrder(cake.cakeId)}
-                    >
-                      <Image
-                        src={cake.cakeImage}
-                        alt={cake.cakeName}
-                        width={300}
-                        height={300}
-                        className="w-full  object-cover"
-                      />
-                      <div className="absolute top-2 right-2 p-1">
-                        {cake.isScraped ? (
-                          <MarkIcon />
-                        ) : (
-                          <Image src={mark} alt="mark" />
-                        )}
-                      </div>
+                  {data
+                    .toSorted((a, b) => b.scrapCount - a.scrapCount)
+                    .map((cake: ICategoryData) => (
+                      <div
+                        key={cake.cakeId}
+                        className=" relative cursor-pointer   overflow-hidden mb-2.5"
+                        onClick={() => onOrder(cake.cakeId)}
+                      >
+                        <Image
+                          src={cake.cakeImage}
+                          alt={cake.cakeName}
+                          width={300}
+                          height={300}
+                          className="w-full  object-cover"
+                        />
+                        <div className="absolute top-2 right-2 p-1">
+                          {cake.isScraped ? (
+                            <MarkIcon />
+                          ) : (
+                            <Image src={mark} alt="mark" />
+                          )}
+                        </div>
 
-                      <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
-                        <h3 className="font-bold text-xs text-grayscale900">
-                          {cake.cakeName}
-                        </h3>
-                        <p className=" text-xs text-grayscale900 font-semibold">
-                          {cake.cakePrice?.toLocaleString()}원
-                        </p>
+                        <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
+                          <h3 className="font-bold text-xs text-grayscale900">
+                            {cake.cakeName}
+                          </h3>
+                          <p className=" text-xs text-grayscale900 font-semibold">
+                            {cake.cakePrice?.toLocaleString()}원
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </>
             ) : (

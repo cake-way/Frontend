@@ -16,6 +16,7 @@ const OrderCard = ({
   };
 
   const cakeDetail = cakeSearch?.find((item) => item.name === order.cakeName);
+
   const cardColor = getDday() <= 3 ? '#E7363F' : '#C8C400';
   const pickupDate = new Date(order.pickupDate);
   return (
@@ -31,7 +32,9 @@ const OrderCard = ({
         {/* 이미지 섹션 */}
 
         <div
-          className={`relative  flex-1 h-auto bg-[${cardColor}]  inset-0 p-2`}
+          className={`relative flex-1 h-auto inset-0 p-2 ${
+            getDday() <= 3 ? 'bg-[#E7363F]' : 'bg-[#C8C400]'
+          }`}
         >
           <div className="relative w-full h-full">
             <svg
@@ -49,13 +52,11 @@ const OrderCard = ({
               <path d="M100 0 L100 100 L0 100 Z" fill={`${cardColor}`} />
             </svg>
             <Image
-              src={
-                order.imageUrl || cakeDetail?.imageUrl || '/home/cake-pick.svg'
-              }
+              src={order.imageUrl || cakeDetail?.imageUrl || 'home/cake.svg'}
               //여기 왜이러지?ㅜ
               alt={order.cakeName}
               fill
-              className="object-cover"
+              className="object-cover object-center"
             />
             {orderList && (
               <div className="absolute top-2 right-1.5 border text-white text-[10px] px-2  rounded-full">
@@ -69,14 +70,14 @@ const OrderCard = ({
         <div className="flex-1 pt-2.5 border solid flex flex-col">
           <div className="border-b  flex-[2] solid  px-2.5">
             <h3 className="font-semibold ">
-              {order.shopName || cakeDetail?.shopName}
+              {order.cakeShopName || cakeDetail?.cakeShopName}
             </h3>
             <p className="text-grayscale900 text-xs font-medium mb-2">
               {order.cakeName}
-              {order.size}
-              {order.selectedTastes}
-              {order.color}
-              {order.lettercolor}
+              <br />
+              {order.size} <br />
+              {order.selectedTastes} <br />
+              {order.color} <br />
             </p>
           </div>
 

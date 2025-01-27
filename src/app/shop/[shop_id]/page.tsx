@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import shopDetailApi, { shopLogApi } from '@/app/_lib/shopApi';
 import { IShopDetail, shopLogs } from 'types/relatedCake';
 import Link from 'next/link';
-import LoadingSpinner from '@/app/_components/Loading';
 
 const Shop = () => {
   const { shop_id } = useParams();
@@ -29,14 +28,14 @@ const Shop = () => {
     );
   }
 
-  const { data: shopDetail, isLoading } = useQuery<IShopDetail>({
+  const { data: shopDetail } = useQuery<IShopDetail>({
     queryKey: ['shopDetail', shop_id, subTab],
     queryFn: () => shopDetailApi(+shop_id, subTab),
   });
   const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(
     (item) => item.categoryName
   );
-  const { data: shopLogs, isLoading: shopLogsLoading } = useQuery<shopLogs>({
+  const { data: shopLogs } = useQuery<shopLogs>({
     queryKey: ['shopLogs', shop_id],
     queryFn: () => shopLogApi(shop_id),
   });
@@ -51,9 +50,6 @@ const Shop = () => {
 
   // const shop = getShopData();
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
   const getRunTime = () => {
     const nowHours = new Date().getHours();
     const nowMinutes = new Date().getMinutes();
@@ -138,19 +134,24 @@ const Shop = () => {
                 {shopDetail?.operatingHour?.openTime?.minute} -&nbsp;
                 {shopDetail?.operatingHour?.closeTime?.hour}:
                 {shopDetail?.operatingHour?.openTime?.minute
-                  .toString()
+                  ?.toString()
                   .padStart(2, '0')}
               </p>
               <p className="flex items-center text-gray-600">
-                <span className="mr-2">
-                  <Image
-                    src="/shop/insta.svg"
-                    width={20}
-                    height={20}
-                    alt="instagram_link_icon"
-                  />
-                </span>
-                {shopDetail?.contact}
+                <a
+                  href={`tel:${shopDetail?.contact}`}
+                  className="flex items-center text-gray-600 cursor-pointer"
+                >
+                  <span className="mr-2">
+                    <Image
+                      src="/shop/insta.svg"
+                      width={20}
+                      height={20}
+                      alt="instagram_link_icon"
+                    />
+                  </span>
+                  {shopDetail?.contact}
+                </a>
               </p>
             </div>
           </div>
@@ -228,14 +229,20 @@ const Shop = () => {
           {/* 케이크 메뉴 그리드 */}
           <div className="grid grid-cols-2 gap-4 mt-4">
             {shopDetail?.cakes?.cakes?.map((item) => (
-              <div key={item.cakeId} className="space-y-1 aspect-square ">
+              <div
+                key={item.cakeId}
+                className="space-y-1 aspect-square cursor-pointer "
+                onClick={() => router.push(`/cakeDetail/${item.cakeId}`)}
+              >
                 <Image
+                  width={300}
+                  height={300}
                   src={item.thumnailUrl}
                   alt={item.cakeName}
                   className="w-full aspect-square object-cover rounded-lg"
                 />
                 <p className="text-sm">{item.cakeName}</p>
-                <p className="text-xs">{item.price}</p>
+                <p className="text-xs">{item.price.toLocaleString()}원</p>
               </div>
             ))}
           </div>
@@ -244,8 +251,10 @@ const Shop = () => {
 
       {activeTab === '케이크로그' && (
         <>
-          {shopLogsLoading ? (
-            <LoadingSpinner />
+          {!shopLogs?.cakelogs ? (
+            <div className="text-center text-gray-500 text-sm py-10">
+              작성된 케이크 로그가 없습니다.
+            </div>
           ) : (
             <div className=" pb-[var(--bottom-nav-height)]">
               <div className="px-5 py-7 overflow-x-scroll flex gap-1">

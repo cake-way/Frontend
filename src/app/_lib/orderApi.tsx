@@ -21,6 +21,7 @@ export default async function orderApi(body: OrderRequestBody) {
 
       body: JSON.stringify(body),
     });
+    console.log(response);
 
     return response.json();
   } catch (e) {

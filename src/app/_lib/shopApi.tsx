@@ -17,7 +17,7 @@ export default async function shopDetailApi(
 }
 
 export async function getShopAdress(shopId: number | undefined) {
-  if (!shopId) return;
+  if (!shopId) return null;
   return await shopDetailApi(shopId);
 }
 
@@ -32,7 +32,7 @@ export async function shopCategoryApi(shopId: string) {
 }
 export async function shopLogApi(shopId: string) {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/${shopId}/cakelog`;
+    const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/shop/${shopId}/cakelog`;
     const response = await fetch(URL);
     return await response.json();
   } catch (e) {
