@@ -222,3 +222,8 @@ export interface MapShop {
   price: number;
   imageUrl: string;
 }
+
+export interface OrderOption {
+  optionId: number;
+  taste: string;
+}
