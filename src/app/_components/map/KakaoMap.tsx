@@ -43,7 +43,7 @@ const KakaoMap = ({ mapRef, coordinates, shops }: IKakaoMap) => {
                 src: '/map/mapMark.svg',
                 size: { width: 24, height: 35 },
               }}
-              position={{ lat: 37.5552, lng: 126.9368 }}
+              position={{ lat: shop.latitude, lng: shop.longitude }}
             ></MapMarker>
           ))}
       </Map>
