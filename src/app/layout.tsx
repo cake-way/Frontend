@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ClientWrapper from './clientLayout';
 import Script from 'next/script';
+import Providers from './provider';
 
 export const metadata: Metadata = {
   title: 'CAKEWAY',
@@ -32,10 +33,12 @@ export default function RootLayout({
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY}&libraries=services,clusterer,drawing&autoload=false`}
           strategy="beforeInteractive"
         />
-        <div className="w-full h-full relative overflow-hidden">
-          {/* 클라이언트 컴포넌트로 분리된 ClientWrapper 사용 */}
-          <ClientWrapper>{children}</ClientWrapper>
-        </div>
+        <Providers>
+          <div className="w-full h-full relative overflow-hidden">
+            {/* 클라이언트 컴포넌트로 분리된 ClientWrapper 사용 */}
+            <ClientWrapper>{children}</ClientWrapper>
+          </div>
+        </Providers>
       </body>
     </html>
   );

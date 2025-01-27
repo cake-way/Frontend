@@ -2,17 +2,48 @@
 
 import { useState } from 'react';
 import OrderCard from '../_components/order/OrderCard';
-import { orders } from 'constants/mockData';
+
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { orderHistoryApi, orderHistoryGetCakeApi } from '../_lib/orderApi';
+import { cakeSearch, OrderType } from 'types/relatedCake';
+import LoadingSpinner from '../_components/Loading';
 
 export default function OrderList() {
-  const [activeTab, setActiveTab] = useState<'준비중' | '픽업 완료'>('준비중');
+  const [activeTab, setActiveTab] = useState<'제작 중' | '픽업 완료'>(
+    '제작 중'
+  );
+  const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
+    queryKey: ['cakeOrders'],
+    queryFn: () => orderHistoryApi(1),
+    select: (data) => {
+      // NOT_FOUND인 경우 빈 배열 반환
+      return 'status' in data && data.status === 'NOT_FOUND' ? [] : data;
+    },
+  });
 
-  const handleTabChange = (tab: '준비중' | '픽업 완료') => {
+  const { data: cakeSearch } = useQuery<cakeSearch[]>({
+    queryKey: ['cakeSearch', cakeOrders],
+    queryFn: async () => {
+      const cakeNames = cakeOrders?.map((item) => item.cakeName);
+      return cakeNames
+        ? await Promise.all(
+            cakeNames.map((item) => orderHistoryGetCakeApi(item))
+          )
+        : [];
+    },
+  });
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  const handleTabChange = (tab: '제작 중' | '픽업 완료') => {
     setActiveTab(tab);
   };
 
+  const readyCake = cakeOrders?.filter((item) => item.status === '준비중');
+  const doneCake = cakeOrders?.filter((item) => item.status === '픽업완료');
   return (
     <>
       {/* Tabs */}
@@ -26,13 +57,13 @@ export default function OrderList() {
         />
         <div className="flex gap-[18px]">
           <motion.button
-            layoutId={activeTab === '준비중' ? 'active-tab' : undefined}
+            layoutId={activeTab === '제작 중' ? 'active-tab' : undefined}
             className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
-              activeTab === '준비중'
+              activeTab === '제작 중'
                 ? 'border-black text-black'
                 : 'border-transparent text-gray-400'
             }`}
-            onClick={() => handleTabChange('준비중')}
+            onClick={() => handleTabChange('제작 중')}
           >
             준비중
           </motion.button>
@@ -52,17 +83,45 @@ export default function OrderList() {
 
       {/* Order List */}
       <div className="p-4">
-        {activeTab === '준비중' && (
+        {activeTab === '제작 중' && (
           <div className="space-y-4">
-            {orders.map((order) => (
-              <OrderCard key={order.id} order={order} orderList={true} />
-            ))}
+            {readyCake?.length === 0 ? (
+              <div className="text-center text-gray-500 text-sm py-10">
+                주문 내역이 없습니다.
+              </div>
+            ) : (
+              <>
+                {readyCake?.map((order) => (
+                  <OrderCard
+                    key={order.orderId}
+                    order={order}
+                    orderList={true}
+                    cakeSearch={cakeSearch}
+                  />
+                ))}
+              </>
+            )}
           </div>
         )}
 
         {activeTab === '픽업 완료' && (
-          <div className="text-center text-gray-500 text-sm py-10">
-            픽업 완료된 주문이 없습니다.
+          <div className="space-y-4">
+            {doneCake?.length === 0 ? (
+              <div className="text-center text-gray-500 text-sm py-10">
+                픽업 완료된 주문이 없습니다.
+              </div>
+            ) : (
+              <>
+                {doneCake?.map((order) => (
+                  <OrderCard
+                    key={order.orderId}
+                    order={order}
+                    orderList={true}
+                    cakeSearch={cakeSearch}
+                  />
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>
