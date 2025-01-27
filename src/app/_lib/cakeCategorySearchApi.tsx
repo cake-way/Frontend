@@ -18,7 +18,7 @@ export default async function cakeCategorySearchApi(
     }
 
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/cake/category/${categoryName}${params.toString() ? `?${params}` : ''}`;
-
+    console.log(URL);
     const response = await fetch(URL);
 
     return await response.json();

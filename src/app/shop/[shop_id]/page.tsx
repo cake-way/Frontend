@@ -50,16 +50,19 @@ const Shop = () => {
 
   // const shop = getShopData();
 
+  const hour = Number(shopDetail?.operatingHour?.closeTime.split(':')[0]);
+  const minutes = Number(shopDetail?.operatingHour?.closeTime.split(':')[1]);
   const getRunTime = () => {
-    const nowHours = new Date().getHours();
-    const nowMinutes = new Date().getMinutes();
-    const totalNowMinutes = nowHours * 60 + nowMinutes;
-    const hour = shopDetail?.operatingHour?.closeTime?.hour;
-    const minutes = shopDetail?.operatingHour?.closeTime?.minute;
+    if (hour && minutes) {
+      const nowHours = new Date().getHours();
+      const nowMinutes = new Date().getMinutes();
+      const totalNowMinutes = nowHours * 60 + nowMinutes;
 
-    const totalMinutes = hour! * 60 + minutes!; //
+      const totalMinutes = hour * 60 + minutes; //
 
-    return totalNowMinutes - totalMinutes;
+      return totalMinutes - totalNowMinutes;
+    }
+    return null;
   };
   const onClickedSubTap = (tab: string) => {
     if (tab === subTab) {
@@ -69,6 +72,7 @@ const Shop = () => {
     setSubTab(tab);
   };
 
+  const runTime = getRunTime();
   return (
     <div className=" min-h-screen h-full mb-[var(--bottom-nav-height)]">
       <div
@@ -124,18 +128,19 @@ const Shop = () => {
                     alt="runtime_icon"
                   />
                 </span>
-                {getRunTime() > 0 ? '영업 중' : '마감'}{' '}
-                {shopDetail?.operatingHour?.dayOfWeek}
-                {shopDetail?.operatingHour?.openTime?.hour !== undefined &&
-                  (shopDetail.operatingHour.openTime.hour <= 11
-                    ? '오전'
-                    : '오후')}
-                {shopDetail?.operatingHour?.openTime?.hour}:
-                {shopDetail?.operatingHour?.openTime?.minute} -&nbsp;
-                {shopDetail?.operatingHour?.closeTime?.hour}:
-                {shopDetail?.operatingHour?.openTime?.minute
-                  ?.toString()
-                  .padStart(2, '0')}
+                {runTime !== null
+                  ? runTime > 0
+                    ? '영업 중'
+                    : '마감'
+                  : '정보없음'}
+                &nbsp;&nbsp;
+                {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
+                {shopDetail?.operatingHour?.openTime !== undefined &&
+                  (hour <= 11 ? '오전' : '오후')}
+                &nbsp;
+                {shopDetail?.operatingHour.openTime.split(':')[0]}:
+                {shopDetail?.operatingHour?.openTime?.split(':')[1]} -&nbsp;
+                {hour}:{minutes}
               </p>
               <p className="flex items-center text-gray-600">
                 <a

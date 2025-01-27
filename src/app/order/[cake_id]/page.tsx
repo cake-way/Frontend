@@ -12,9 +12,10 @@ import OrderCard from '@/app/_components/order/OrderCard';
 import Dropdown from '@/app/_components/order/Dropdwon';
 import orderApi from '@/app/_lib/orderApi';
 import { getHoursMinutes } from 'utils/utils';
-import { ICakeDetail } from 'types/relatedCake';
+import { ICakeDetail, IShopDetail, OrderType } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
+import shopDetailApi, { shopCategoryApi } from '@/app/_lib/shopApi';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -32,6 +33,16 @@ const Order: React.FC = () => {
   const { data, isLoading } = useQuery<ICakeDetail>({
     queryKey: ['cakeDetail', cake_id],
   });
+  const shopId = data?.shopId || null;
+  const { data: shopDetail } = useQuery<IShopDetail>({
+    queryKey: ['shopDetail', shopId],
+    queryFn: async () => {
+      if (!shopId) return;
+      return await shopDetailApi(+shopId);
+    },
+    enabled: !!shopId,
+  });
+  console.log(shopDetail);
 
   const sizes = [
     {
@@ -129,6 +140,7 @@ const Order: React.FC = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <div className="   flex flex-col">
       {!nextPage ? (
@@ -223,7 +235,7 @@ const Order: React.FC = () => {
           <div className="p-5">
             <h2 className="text-lg font-bold mb-2">꼭 확인해주세요!</h2>
             <p className="rounded-md text-grayscale900 bg-[#f4f4f4] px-3 py-1.5">
-              공지내용
+              {shopDetail?.notice}
             </p>
           </div>
           {/* Next Button */}
@@ -262,7 +274,7 @@ const Order: React.FC = () => {
           <div className="p-4 mt-32">
             <h2 className="text-lg font-bold mb-2">취소 및 환불 규정</h2>
             <p className="rounded-md text-grayscale900 bg-[#f4f4f4] px-3 py-1.5">
-              환불규정에 관해서 나타내기
+              {shopDetail?.cautions}
             </p>
           </div>
           {/* Reservation Button */}

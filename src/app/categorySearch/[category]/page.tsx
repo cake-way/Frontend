@@ -81,16 +81,15 @@ const CategorySearch = () => {
       filteringDate,
     ],
     queryFn: () => {
-      const localISOString = filteringDate
-        ? dayjs(filteringDate).format('YYYY-MM-DDTHH:mm')
-        : undefined;
-      console.log(localISOString);
+      const realConfirmDesigon = confirmDesgin?.map((key) =>
+        key.replace('케이크', '')
+      );
       return cakeCategorySearchApi(
         getCategoryName(category),
-        localISOString,
+        filteringDate?.toISOString(),
         confirmPrice?.max,
         confirmReigon,
-        confirmDesgin
+        realConfirmDesigon
       );
     },
   });

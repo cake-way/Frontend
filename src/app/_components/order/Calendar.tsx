@@ -21,7 +21,7 @@ interface CalendarComponentProps {
   onActiveStartDateChange?: (args: OnArgs) => void;
 }
 interface WithTimeSlotsProps {
-  cakeShopId?: number;
+  cakeShopId: number;
   selectedDate: Date;
   selectedTime: string | null;
   selectedPeriod: string;
@@ -36,13 +36,11 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
 ) => {
   return function WithTimeSlotsComponent(props: P) {
     const { cakeShopId } = props;
+    console.log('cakeShopId:', cakeShopId);
     const [currentViewDate, setCurrentViewDate] = useState(new Date());
     const { data: timeSlots } = useQuery<TimeSlotResponse>({
       queryKey: ['timeSlots', cakeShopId, currentViewDate],
       queryFn: async () => {
-        if (!cakeShopId) {
-          return null;
-        }
         let monthStart = new Date(
           currentViewDate.getFullYear(),
           currentViewDate.getMonth(),
@@ -55,15 +53,25 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
           currentViewDate.getMonth() + 1,
           0
         );
+        console.log('Start Date:', monthStart.toISOString());
+        console.log('End Date:', monthEnd.toISOString());
+        console.log('Calling API with shopId:', cakeShopId);
+
+        const response = await orderTimeSlotApi(
+          cakeShopId,
+          monthStart.toISOString().replace('Z', ''),
+          monthEnd.toISOString().replace('Z', '')
+        );
+        console.log('API Response:', response);
         return await orderTimeSlotApi(
           cakeShopId,
-          monthStart.toISOString(),
-          monthEnd.toISOString()
+          monthStart.toISOString().replace('Z', ''),
+          monthEnd.toISOString().replace('Z', '')
         );
       },
       enabled: !!cakeShopId,
     });
-    console.log(timeSlots);
+
     const getAvailableTimesForDate = (date: Date) => {
       if (!timeSlots?.availableTimes) return [];
 
@@ -78,9 +86,10 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
         })
         .map((timeStr) => {
           const timeSlot = new Date(timeStr);
-          const hours = timeSlot.getHours();
+          let hours = timeSlot.getHours();
+          if (hours >= 12) hours = +hours.toString().replace('1', '');
           const minutes = timeSlot.getMinutes();
-          return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+          return `${hours}:${String(minutes).padStart(2, '0')}`;
         });
     };
 
@@ -125,6 +134,10 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   tileDisabled,
   onActiveStartDateChange,
 }) => {
+  const onClickedTime = (time) => {
+    if (!availableTimes?.includes(time)) return;
+    setSelectedTime(time);
+  };
   return (
     <div className=" w-full  relative bg-[#ffffff] rounded-lg  overflow-hidden max-w-[480px]">
       <section className="mb-6 p-4">
@@ -200,18 +213,20 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           {availableTimes ? (
             <>
               {(selectedPeriod === '오후' ? pmTimes : amTimes).map((time) => (
-                <button
+                <span
                   key={time}
                   className={`whitespace-nowrap px-3 py-2 text-sm rounded-md ${
                     selectedTime === time
-                      ? 'bg-primaryRed1 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-primaryRed1 text-white cursor-pointer'
+                      : availableTimes?.includes(time)
+                        ? 'bg-grayscale100 text-grayscale700 hover:bg-gray-200 cursor-pointer'
+                        : 'bg-grayscale500 text-grayscale700 line-through '
                   }`}
-                  onClick={() => setSelectedTime(time)}
+                  onClick={() => onClickedTime(time)}
                 >
                   {selectedPeriod}&nbsp;
                   {time}
-                </button>
+                </span>
               ))}
             </>
           ) : (
