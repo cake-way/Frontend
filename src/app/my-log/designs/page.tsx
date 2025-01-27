@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
 
 import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm.svg';
+import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
 
 interface CakeDesign {
@@ -73,7 +73,15 @@ const CakeDesigns = () => {
           router.back();
         }}
         centerText="저장한 디자인"
-        rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
+        rightButtonImage={[
+          <Image
+            width={24}
+            height={24}
+            key="Alarm"
+            src={AlarmIcon}
+            alt="Alarm"
+          />,
+        ]}
         onRightButtonClick={[handleAlarmIconClick]}
         borderBottom={true}
       />

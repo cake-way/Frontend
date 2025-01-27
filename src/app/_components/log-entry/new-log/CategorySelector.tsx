@@ -1,28 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import DropDownIcon from '../../../../../public/log-entry/dropdown.svg';
+import { getCategories } from '@/app/_lib/api/getCategories';
 
 interface Category {
-  id: number;
-  name: string;
+  categoryId: number;
+  categoryName: string;
 }
 
 interface CategorySelectorProps {
-  categories: Category[];
-  selectedCategoryId: number | null;
+  selectedShopId: number | null;
   onSelectCategory: (categoryId: number) => void;
 }
 
 const CategorySelector = ({
-  categories,
-  selectedCategoryId,
+  selectedShopId,
   onSelectCategory,
 }: CategorySelectorProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (selectedShopId !== null) {
+      const fetchCategories = async () => {
+        try {
+          const response = await getCategories(selectedShopId);
+          setCategories(response); // 카테고리 데이터 저장
+        } catch (error) {
+          console.error('카테고리 불러오기 실패:', error);
+        }
+      };
+
+      fetchCategories();
+    }
+  }, [selectedShopId]); // 선택되는 가게가 바뀔 때마다 변경
 
   const handleSelectCategory = (categoryId: number) => {
+    setSelectedCategoryId(categoryId); // 선택된 카테고리 ID 저장
     onSelectCategory(categoryId); // 부모 컴포넌트로 선택된 ID 전달
     setIsDropdownOpen(false); // 드롭다운 닫기
   };
@@ -37,39 +56,38 @@ const CategorySelector = ({
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         aria-expanded={isDropdownOpen}
       >
-        {selectedCategoryId
-          ? categories.find((cat) => cat.id === selectedCategoryId)?.name
+        {categories.length > 0
+          ? categories.find((cat) => cat.categoryId === selectedCategoryId)
+              ?.categoryName || '선택하기'
           : '선택하기'}
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
           <Image src={DropDownIcon} alt="dropdown" />
         </span>
       </div>
-      <div
-        className={`absolute top-full left-5 w-11/12 bg-white border border-gray-300 rounded-b-[4px] z-10 overflow-hidden transition-all duration-300 ease-in-out ${
-          isDropdownOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-        style={{
-          marginTop: '-1px',
-        }}
-      >
-        <ul className="w-full">
-          {categories.map((category, index) => (
-            <li
-              key={category.id}
-              className={`p-3 text-sm text-gray-700 cursor-pointer ${
-                selectedCategoryId === category.id
-                  ? 'bg-gray-200 font-semibold'
-                  : ''
-              } ${
-                index < categories.length - 1 ? 'border-b border-gray-300' : ''
-              } hover:bg-gray-100`}
-              onClick={() => handleSelectCategory(category.id)}
-            >
-              {category.name}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {isDropdownOpen && (
+        <div
+          className="absolute top-full left-5 w-[335px] bg-white border border-gray-300 rounded-b-[4px] z-10 overflow-hidden transition-all duration-300 ease-in-out"
+          style={{
+            marginTop: '-1px',
+          }}
+        >
+          <ul className="w-full max-h-60 overflow-y-auto">
+            {categories.map((category, index) => (
+              <li
+                key={category.categoryId}
+                className={`p-3 text-sm text-gray-700 cursor-pointer ${
+                  selectedCategoryId === category.categoryId
+                    ? 'bg-gray-200 font-semibold'
+                    : ''
+                } ${index < categories.length - 1 ? 'border-b border-gray-300' : ''} hover:bg-gray-100`}
+                onClick={() => handleSelectCategory(category.categoryId)}
+              >
+                {category.categoryName}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 };

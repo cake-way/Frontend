@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import BackIcon from '../../../public/header-images/back.svg';
-import AlarmIcon from '../../../public/header-images/alarm.svg';
+import AlarmIcon from '../../../public/header-images/alarm-fill.svg';
 
 import Header from '../_components/Header';
 import CreateLog from '../_components/log-entry/CreateLog';
@@ -60,7 +60,13 @@ const LogEntry = () => {
         onLeftButtonClick={handleLeftButtonClick}
         centerText="케이크 로그 작성"
         rightButtonImage={[
-          <Image key="Alarm" src={AlarmIcon} alt="Alarm Icon" />,
+          <Image
+            key="Alarm"
+            width={24}
+            height={24}
+            src={AlarmIcon}
+            alt="Alarm Icon"
+          />,
         ]}
         onRightButtonClick={[handleRightButtonClick]}
         borderBottom={true}

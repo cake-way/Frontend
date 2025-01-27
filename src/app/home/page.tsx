@@ -1,7 +1,7 @@
 'use client';
 import Header from '../_components/Header';
 import CakeWay from '../../../public/header-images/cake-way.svg';
-import Alarm from '../../../public/header-images/alarm.svg';
+import Alarm from '../../../public/header-images/alarm-fill.svg';
 import Image from 'next/image';
 import InputField from '../_components/InputField';
 import CakePick from '../_components/home/CakePick';
@@ -125,7 +125,9 @@ export default function Home() {
             }
           />
         }
-        rightButtonImage={[<Image key="Alarm" src={Alarm} alt="Alarm" />]}
+        rightButtonImage={[
+          <Image key="Alarm" src={Alarm} width={24} height={24} alt="Alarm" />,
+        ]}
       />
 
       {/* 검색어가 있을 때 */}

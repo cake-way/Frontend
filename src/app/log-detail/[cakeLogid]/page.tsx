@@ -27,11 +27,6 @@ interface LogData {
   imageList: string[];
 }
 
-interface LogResponse {
-  latestOrderShop: string;
-  cakelogs: LogData[];
-}
-
 const currentUser = 'mimizae'; // 현재 로그인된 사용자 ID
 
 // 스크랩 아이콘 버튼 컴포넌트
@@ -58,15 +53,17 @@ const BackButton = () => (
 const ProfileInfo = ({
   username,
   createAt,
+  userProfile,
 }: {
   username: string;
   createAt: string;
+  userProfile: string;
 }) => (
   <footer className="absolute bottom-4 left-3 flex items-center gap-2 text-white">
     <Image
       width={40}
       height={40}
-      src="/my-log-images/profile-photo.svg"
+      src={userProfile}
       className="rounded-full"
       alt="프로필 사진"
     />
@@ -76,6 +73,15 @@ const ProfileInfo = ({
     </div>
   </footer>
 );
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
 
 // 이미지 슬라이더 컴포넌트
 const ImageSlider = ({ images }: { images: string[] }) => (
@@ -98,21 +104,21 @@ const LogDetail = () => {
   const [isScraped, setIsScraped] = useState(false); // 스크랩 여부 상태
 
   useEffect(() => {
-    if (cakeLogid && typeof cakeLogid === 'string') {
-      // cakeLogid가 string인 경우에만 처리
+    if (cakeLogid && !isNaN(Number(cakeLogid))) {
+      const logId = Number(cakeLogid); // cakeLogid를 number로 변환
       const fetchLog = async () => {
         try {
-          const data: LogResponse = await fetchLogDetail(cakeLogid); // API 호출
+          const data: LogData = await fetchLogDetail(logId); // API 호출
+          console.log('API Response:', data); // 응답 확인
 
-          // cakelogs 배열에서 해당 cakeLogid에 맞는 데이터 찾기
-          const logData = data.cakelogs.find(
-            (log) => log.cakeLogid === Number(cakeLogid)
-          );
-
-          setLog(logData || null); // 데이터가 없으면 null로 설정
+          if (data) {
+            setLog(data); // 데이터를 직접 setLog로 설정
+          } else {
+            console.error('No logs found.');
+            setLog(null); // 데이터가 없으면 null로 설정
+          }
         } catch (error) {
-          console.log(error);
-          console.error('로그 데이터를 가져오는 데 실패했습니다.');
+          console.error('로그 데이터를 가져오는 데 실패했습니다.', error);
         }
       };
 
@@ -121,10 +127,11 @@ const LogDetail = () => {
   }, [cakeLogid]);
 
   if (!log) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />; // 로딩 중일 때
   }
 
   const isOwner = log.username === currentUser; // 현재 로그인된 사용자가 작성자인지 확인
+  const formattedDate = formatDate(log.createAt); // 날짜 포맷팅
 
   const handleScrapToggle = () => {
     setIsScraped((prev) => !prev); // 스크랩 상태 토글
@@ -157,7 +164,11 @@ const LogDetail = () => {
         </h1>
 
         {/* 프로필 사진, 이름, 날짜 */}
-        <ProfileInfo username={log.username} createAt={log.createAt} />
+        <ProfileInfo
+          username={log.username}
+          userProfile={log.userProfile}
+          createAt={formattedDate}
+        />
       </div>
 
       {/* 본문 내용 */}

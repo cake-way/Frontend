@@ -2,7 +2,7 @@ import { getAuthHeaders } from './getAuthHeader';
 
 export const fetchRecentOrders = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/preCakelog`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/preCakeLog`,
     {
       method: 'GET',
       headers: getAuthHeaders(),
@@ -14,5 +14,5 @@ export const fetchRecentOrders = async () => {
   }
 
   const data = await response.json();
-  return data.recentOrderList || []; // 데이터가 없으면 빈 배열 반환
+  return data;
 };

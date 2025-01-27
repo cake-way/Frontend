@@ -4,14 +4,10 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
 
 import LoadingSpinner from '@/app/_components/Loading';
-import useUserStore from '@/app/store/userStore';
-import { fetchUserInfo } from '@/app/_lib/api/userInfo';
 
 const LoginCallback = () => {
   const searchParams = useSearchParams(); // 카카오 인증 코드 추출
   const router = useRouter();
-  const setUserInfo = useUserStore((state) => state.setUserInfo); // 로그인한 사용자 관리
-
   useEffect(() => {
     const code = searchParams.get('code');
     if (!code) {
@@ -36,18 +32,13 @@ const LoginCallback = () => {
           throw new Error('서버 요청 실패');
         }
 
-        const { token } = await response.json();
+        const { token, memberId } = await response.json();
 
-        if (token) {
-          localStorage.setItem('token', token); // 액세스 토큰 저장 -> 추후 보안 고려해서 저장 방식 수정
+        if (token && memberId) {
+          // 각각 개별적으로 저장
+          localStorage.setItem('token', token);
+          localStorage.setItem('memberId', memberId);
           alert('로그인이 완료되었습니다!');
-
-          // 마이페이지 api 호출해서 memberId get
-          const userData = await fetchUserInfo();
-
-          // Zustand에 사용자 정보 저장 (현재 로그인한 사용자 전역 관리)
-          setUserInfo(userData);
-
           router.push('/home'); // 홈 페이지로 이동
         }
       } catch (error) {
@@ -58,7 +49,7 @@ const LoginCallback = () => {
     };
 
     fetchKaKaoAccessToken();
-  }, [searchParams, router, setUserInfo]);
+  }, [searchParams, router]);
 
   return <LoadingSpinner />;
 };

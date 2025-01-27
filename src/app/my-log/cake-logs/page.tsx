@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Header from '@/app/_components/Header';
 import { useRouter } from 'next/navigation';
 import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm.svg';
+import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
 import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
 import useUserStore from '@/app/store/userStore';
@@ -73,7 +73,15 @@ const CakeLogs = () => {
           router.back();
         }}
         centerText="저장한 케이크로그"
-        rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
+        rightButtonImage={[
+          <Image
+            key="Alarm"
+            width={24}
+            height={24}
+            src={AlarmIcon}
+            alt="Alarm"
+          />,
+        ]}
         onRightButtonClick={[handleAlarmIconClick]}
         borderBottom={true}
       />

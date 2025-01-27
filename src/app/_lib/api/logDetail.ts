@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './getAuthHeader';
 
-export const fetchLogDetail = async (cakeLogid: string) => {
+export const fetchLogDetail = async (cakeLogid: number) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/cakelog/${cakeLogid}`,

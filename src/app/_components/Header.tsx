@@ -41,9 +41,7 @@ const Header: React.FC<HeaderProps> = ({
       </button>
 
       <div
-        className={`flex-1 text-center ${
-          isTwoIcons ? 'translate-x-[20px]' : ''
-        }`}
+        className={`flex-1 text-center ${isTwoIcons ? 'translate-x-2' : ''}`}
       >
         {centerComponent ? (
           centerComponent
