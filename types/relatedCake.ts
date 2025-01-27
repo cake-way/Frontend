@@ -218,3 +218,8 @@ export interface HomeRecommend {
     },
   ];
 }
+
+export type priceObject = {
+  min: number | undefined;
+  max: number | undefined;
+};

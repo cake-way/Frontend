@@ -2,24 +2,30 @@ import { useState } from 'react';
 import Price from './Price';
 import Design from './Design';
 import Reigon from './Reigon';
-import useFilteringStore from '@/app/store/filteringStore';
+
 import useSelectedStore from '@/app/store/selectedStore';
+import { priceObject } from 'types/relatedCake';
 
 interface BottomSheetProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
   initName: string;
+  setConfirmPrice: React.Dispatch<React.SetStateAction<priceObject | null>>;
+  setConfirmReigon: React.Dispatch<React.SetStateAction<string[] | null>>;
+  setConfirmDesgin: React.Dispatch<React.SetStateAction<string[] | null>>;
 }
 
 export default function BottomSheet({
   isOpen,
   setIsOpen,
   initName,
+  setConfirmPrice,
+  setConfirmDesgin,
+  setConfirmReigon,
 }: BottomSheetProps) {
   const closeBottomSheet = () => setIsOpen(false);
   const [filterName, setFilterName] = useState(initName); // 초기값은 빈 문자열
-  const { setConfirmDesgin, setConfirmPrice, setConfirmReigon } =
-    useFilteringStore();
+
   const { selectedDesign, selectedSub, selectedMaxPrice, selectedMinPrice } =
     useSelectedStore();
 

@@ -38,6 +38,7 @@ export default function OrderDetail() {
   const { data: cakeSearch } = useQuery<cakeSearch[]>({
     queryKey: ['cakeSearch', orderDetail],
     queryFn: () => orderHistoryGetCakeApi(orderDetail?.cakeName),
+    enabled: !!orderDetail,
   });
   if (isLoading) {
     return <LoadingSpinner />;
@@ -105,7 +106,7 @@ export default function OrderDetail() {
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base">총금액</span>
                 <span className="text-base font-bold">
-                  {orderDetail?.totalPrice}
+                  {orderDetail?.totalPrice.toLocaleString()}원
                 </span>
               </div>
               <div className="flex justify-between items-center">
