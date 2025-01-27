@@ -3,7 +3,7 @@
 import Header from '@/app/_components/Header';
 import { useParams, useRouter } from 'next/navigation';
 import back from '../../../../public/header-images/back.svg';
-import alarm from '@/../public/header-images/alarm.svg';
+import alarm from '@/../public/header-images/alarm-fill.svg';
 import calendar from '@/../public/order/calendar.svg';
 import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';

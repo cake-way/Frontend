@@ -22,18 +22,8 @@ interface StoreScrap {
   address: string;
   operatingHours: {
     dayOfWeek: string;
-    openTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
-    closeTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
+    openTime: string;
+    closeTime: string;
     active: boolean;
   };
   sameDay: boolean;

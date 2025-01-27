@@ -6,8 +6,8 @@ import DefaultProfile from '../../../../../public/my-log-images/profile-photo.sv
 import { useRouter } from 'next/navigation';
 
 interface ThumbnailProps {
-  thumbnailImage: string | null;
-  setThumbnailImage: (value: string | null) => void;
+  thumbnailImage: string | File | null; // File 타입 추가
+  setThumbnailImage: (value: string | File | null) => void; // File 타입 지원
   logTitle: string;
   setLogTitle: (value: string) => void;
   userProfileImage: string; // 프로필 사진 URL
@@ -23,23 +23,23 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   username,
 }) => {
   const router = useRouter();
-  const today = new Date().toLocaleDateString(); // 오늘 날짜 포맷팅
+  const today = new Date().toLocaleDateString();
 
-  // 이미지 업로드 핸들러
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setThumbnailImage(URL.createObjectURL(file));
+      setThumbnailImage(file); // File 객체 저장
     }
   };
 
   return (
     <article
-      className={`w-full max-w-lg h-[418px] p-5 flex flex-col cursor-pointer bg-gray-100 ${
-        thumbnailImage ? 'bg-cover bg-center' : ''
-      }`}
+      className={`w-full h-[418px] p-5 flex flex-col cursor-pointer bg-gray-100 ${thumbnailImage ? 'bg-cover bg-center' : ''}`}
       style={{
-        backgroundImage: thumbnailImage ? `url(${thumbnailImage})` : 'none',
+        backgroundImage:
+          thumbnailImage && typeof thumbnailImage !== 'string'
+            ? `url(${URL.createObjectURL(thumbnailImage)})` // File 객체일 경우 URL 생성
+            : `url(${thumbnailImage})`, // string일 경우 string을 그대로 사용
       }}
       onClick={() => document.getElementById('imageInput')?.click()}
     >
@@ -53,11 +53,15 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           }}
         />
       </div>
-      {!thumbnailImage && (
-        <p className="text-gray-400 mx-auto font-bold mb-8">
-          대표 사진 추가하기
-        </p>
-      )}
+
+      {/* 사진 추가 버튼 영역 */}
+      <div
+        className={`${
+          thumbnailImage ? 'invisible' : 'visible'
+        } text-gray-400 mx-auto font-semibold h-6 flex items-center justify-center`}
+      >
+        대표 사진 추가하기
+      </div>
 
       <input
         id="imageInput"
@@ -72,7 +76,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         <h1>
           <textarea
             placeholder="케이크 로그 제목을 입력해 주세요."
-            className="w-[243px] font-bold text-[24px] text-white py-3 bg-transparent border-none outline-none resize-none"
+            className="w-3/5 font-semibold mt-8 text-[24px] text-white py-3 bg-transparent border-none outline-none resize-none"
             value={logTitle}
             onChange={(e) => setLogTitle(e.target.value)}
             onClick={(e) => e.stopPropagation()}
@@ -81,7 +85,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       </header>
 
       <footer
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 mt-auto" // footer를 항상 아래로 고정
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-10 h-10 rounded-full overflow-hidden">

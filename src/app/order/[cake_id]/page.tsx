@@ -12,10 +12,10 @@ import OrderCard from '@/app/_components/order/OrderCard';
 import Dropdown from '@/app/_components/order/Dropdwon';
 import orderApi from '@/app/_lib/orderApi';
 import { getHoursMinutes } from 'utils/utils';
-import { ICakeDetail, IShopDetail, OrderType } from 'types/relatedCake';
+import { ICakeDetail, IShopDetail } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
-import shopDetailApi, { shopCategoryApi } from '@/app/_lib/shopApi';
+import shopDetailApi from '@/app/_lib/shopApi';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();

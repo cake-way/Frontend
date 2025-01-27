@@ -5,21 +5,16 @@ import Thumbnail from '@/app/_components/log-entry/new-log/Thumbnail';
 import AddPhotos from '@/app/_components/log-entry/new-log/AddPhotos';
 import CategorySelector from '@/app/_components/log-entry/new-log/CategorySelector';
 import LocationSearch from '@/app/_components/log-entry/new-log/LocationSearch';
-import { getAuthHeaders } from '@/app/_lib/api/getAuthHeader';
-import useUserStore from '@/app/store/userStore';
 
-// TODO: 카테고리 목록 알아오기, 리뷰 작성 api 연결하기
-const categories = [
-  { id: 1, name: '생일' },
-  { id: 2, name: '기념일' },
-  { id: 3, name: '파티' },
-  { id: 4, name: '기타' },
-];
+import useUserStore from '@/app/store/userInfoStore';
+import { useRouter } from 'next/navigation';
 
 const NewLog = () => {
   const { userInfo } = useUserStore(); // 현재 사용자 정보 가져오기
 
-  const [thumbnailImage, setThumbnailImage] = useState<string | null>(null); // 대표 사진
+  const [thumbnailImage, setThumbnailImage] = useState<string | File | null>(
+    null
+  ); // 대표 사진
   const [logTitle, setLogTitle] = useState(''); // 로그 제목
   const [logBody, setLogBody] = useState(''); // 본문 작성
   const [photos, setPhotos] = useState<File[]>([]); // 등록된 사진들
@@ -28,6 +23,10 @@ const NewLog = () => {
     null
   ); // 선택된 카테고리 ID
   const [isTooltipVisible, setIsTooltipVisible] = useState(false); // 말풍선 모달 표시 여부
+
+  const [selectedShopId, setSelectedShopId] = useState<number | null>(null); // shopId 상태 관리
+
+  const router = useRouter();
 
   const handleTogglePublic = () => {
     const nextPublicState = !isPublic; // 다음 상태 미리 계산
@@ -42,30 +41,26 @@ const NewLog = () => {
   const handleCloseTooltip = () => {
     setIsTooltipVisible(false); // 말풍선 모달 닫기
   };
-
   const handleSubmit = async () => {
     if (!selectedCategoryId) {
       alert('카테고리를 선택해주세요.');
       return;
     }
 
-    // FormData 생성
     const formData = new FormData();
 
     // 텍스트 데이터 추가
-    formData.append('categoryId', String(selectedCategoryId)); // 숫자는 문자열로 변환
+    formData.append('categoryId', String(selectedCategoryId));
     formData.append('title', logTitle);
     formData.append('body', logBody);
-    formData.append('isPublic', JSON.stringify(isPublic)); // boolean은 문자열로 변환
+    formData.append('isPublic', JSON.stringify(isPublic));
 
     // 대표 이미지 추가
     if (thumbnailImage) {
-      const thumbnailFile = photos.find(
-        (photo) => photo.name === thumbnailImage
-      );
-      if (thumbnailFile) {
-        formData.append('thumbnailImage', thumbnailFile);
-      }
+      formData.append('thumbnailImage', thumbnailImage); // File 객체를 직접 추가
+    } else {
+      alert('대표 이미지를 선택해주세요.');
+      return;
     }
 
     // 이미지 리스트 추가
@@ -73,19 +68,22 @@ const NewLog = () => {
       formData.append('imageList', photo);
     });
 
+    // FormData 전송
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/cakelog`,
         {
           method: 'POST',
-          body: formData, // FormData 전송
-          headers: getAuthHeaders(),
+          body: formData,
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       if (response.ok) {
         const data = await response.json();
         console.log('작성 완료:', data);
+        router.back();
       } else {
         console.error('작성 실패:', await response.text());
       }
@@ -94,24 +92,26 @@ const NewLog = () => {
     }
   };
 
+  // LocationSearch에서 shopId가 선택되면 호출되는 함수
+  const handleShopSelect = (shopId: number) => {
+    setSelectedShopId(shopId); // 선택된 shopId를 상태로 저장
+  };
+
   // 공통 클래스 정의
-  const commonSectionClass = 'w-full px-5 mt-5';
   const commonButtonClass =
     'w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none';
 
   return (
     <main className="w-full flex flex-col items-center">
       {/* 상단 대표사진 */}
-      <section className={commonSectionClass}>
-        <Thumbnail
-          thumbnailImage={thumbnailImage}
-          setThumbnailImage={setThumbnailImage}
-          logTitle={logTitle}
-          setLogTitle={setLogTitle}
-          username={userInfo?.username || ''}
-          userProfileImage={userInfo?.profileImage || ''}
-        />
-      </section>
+      <Thumbnail
+        thumbnailImage={thumbnailImage}
+        setThumbnailImage={setThumbnailImage}
+        logTitle={logTitle}
+        setLogTitle={setLogTitle}
+        username={userInfo?.username || ''}
+        userProfileImage={userInfo?.profileImage || ''}
+      />
 
       {/* 전체 공개 토글 */}
       <header className="flex w-full items-center justify-end px-5 gap-2 mt-5 mb-3 relative">
@@ -145,37 +145,30 @@ const NewLog = () => {
       </header>
 
       {/* 위치 검색 */}
-      <section className={commonSectionClass}>
-        <LocationSearch />
-      </section>
+
+      <LocationSearch onShopSelect={handleShopSelect} />
 
       {/* 카테고리 선택 */}
-      <section className={commonSectionClass}>
-        <CategorySelector
-          categories={categories}
-          selectedCategoryId={selectedCategoryId}
-          onSelectCategory={setSelectedCategoryId}
-        />
-      </section>
+      <CategorySelector
+        selectedShopId={selectedShopId}
+        onSelectCategory={setSelectedCategoryId}
+      />
 
       {/* 사진 첨부 */}
-      <section className={commonSectionClass}>
-        <AddPhotos photos={photos} setPhotos={setPhotos} />
-      </section>
+      <AddPhotos photos={photos} setPhotos={setPhotos} />
 
       {/* 본문 작성 */}
-      <section className={`w-full px-5 mt-14`}>
+      <section className="w-full px-5 mt-5">
         <p className="font-semibold">본문 작성</p>
         <textarea
           id="body"
           value={logBody}
           onChange={(e) => setLogBody(e.target.value)}
           placeholder="케이크와 함께한 경험과 정보를 자세하게 담아 다른 분들의 케이크 선택을 도와주세요!"
-          className="w-full h-40 p-3 mt-3 text-[12px] border border-gray-300 rounded-[4px] resize-none outline-none caret-primaryRed1"
+          className="w-full px-5 h-40 p-3 mt-3 text-[12px] border border-gray-300 rounded-[4px] resize-none outline-none caret-primaryRed1"
           aria-label="본문 입력란"
         />
       </section>
-
       {/* 버튼들 */}
       <footer className="w-full flex justify-between px-5 mt-16 mb-11">
         <button

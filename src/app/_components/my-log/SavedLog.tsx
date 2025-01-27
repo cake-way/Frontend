@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Title from './Title';
 import { useRouter } from 'next/navigation';
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
 
 const SavedLog: React.FC = () => {
   const router = useRouter();
@@ -17,15 +17,11 @@ const SavedLog: React.FC = () => {
   const savedLog = useUserStore((state) => state.logScrap);
 
   // 배열의 마지막 2개 항목 가져오기
-  const lastTwoLogs = savedLog.slice(-2);
+  const lastTwoLogs = savedLog.slice(0, 2);
 
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
-      <Title
-        title="저장한 케이크로그"
-        link="/my-log/cake-logs"
-        length={savedLog.length}
-      />
+      <Title title="저장한 케이크로그" link="/my-log/cake-logs" />
 
       {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 디자인 미리보기 */}
       {savedLog.length === 0 ? (

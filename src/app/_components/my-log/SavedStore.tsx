@@ -4,15 +4,15 @@ import React from 'react';
 
 import Status from '../../../../public/my-log-images/status.svg';
 import Title from './Title';
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
 
 const SavedStore: React.FC = () => {
   const stores = useUserStore((state) => state.storeScrap);
 
-  const lastTwoStore = stores.slice(-2);
+  const lastTwoStore = stores.slice(0, 2);
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
-      <Title title="저장한 가게" link="/my-log/stores" length={stores.length} />
+      <Title title="저장한 가게" link="/my-log/stores" />
 
       {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 가게 리스트 렌더링 */}
       {stores.length === 0 ? (
@@ -35,22 +35,30 @@ const SavedStore: React.FC = () => {
               {/* 오른쪽: 가게 정보 */}
               <div className="flex flex-col">
                 {/* 당일 예약 여부 */}
-                <span
-                  className={`px-2 py-[2px] mb-1 text-[12px] border rounded-full text-body2 w-fit ${
-                    store.sameDay
-                      ? 'bg-[#FFDDE2] text-primaryRed1 border-primaryRed2'
-                      : 'bg-red-200 text-red-800 border-red-500'
-                  }`}
-                >
-                  {store.sameDay ? '당일예약' : ''}
-                </span>
+                {store.sameDay && (
+                  <span
+                    className={`px-[10px] py-[2px] mb-1 text-[12px] border rounded-full text-body2 w-fit ${
+                      store.sameDay
+                        ? 'bg-[#FFDDE2] text-primaryRed1 border-primaryRed2'
+                        : 'bg-red-200 text-red-800 border-red-500'
+                    }`}
+                  >
+                    당일예약
+                  </span>
+                )}
 
                 {/* 가게 정보 */}
-                <h1 className="text-lg font-bold">{store.storeName}</h1>
+                <h1 className="text-lg pl-0.5 font-bold">{store.storeName}</h1>
                 <section className="flex gap-1 text-sm font-semibold text-black mb-3">
                   <Image src={Status} alt="상태 표시" />
-                  영업 중{' '}
-                  {`${store.operatingHours.openTime.hour}:${store.operatingHours.openTime.minute} ~ ${store.operatingHours.closeTime.hour}:${store.operatingHours.closeTime.minute}`}
+                  {store.operatingHours ? (
+                    <>
+                      영업 중{' '}
+                      {`${store.operatingHours.openTime.split(':').slice(0, 2).join(':')} ~ ${store.operatingHours.closeTime.split(':').slice(0, 2).join(':')}`}
+                    </>
+                  ) : (
+                    <span>오늘 휴무</span>
+                  )}
                 </section>
                 <p className="text-sm text-black"> {store.address}</p>
               </div>

@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { orderHistoryApi, orderHistoryGetCakeApi } from '../_lib/orderApi';
 import { cakeSearch, OrderType } from 'types/relatedCake';
 import LoadingSpinner from '../_components/Loading';
-import useUserStore from '../store/userStore';
+import useUserStore from '../store/userInfoStore';
 import { useRouter } from 'next/navigation';
 
 export default function OrderList() {

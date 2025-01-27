@@ -21,17 +21,17 @@ const Login = () => {
   };
 
   return (
-    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
+    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans relative">
       <section className="mt-[300px]">
         <Image src={CakeWayLogo} alt="cake-way 로고" />
       </section>
 
-      <section className="mb-[275px] text-center text-md">
+      <section className="text-center text-md">
         <p className="mt-[17px]">쉽고 빠른 케이크 주문은 케이크 웨이로</p>
       </section>
 
       <button
-        className="flex items-center justify-start gap-[60px] w-[330px] h-[50px] bg-[#F7E409] text-black rounded-[4px] px-[20px]"
+        className="fixed mb-28  bottom-5 flex items-center justify-start gap-[60px] w-[330px] h-[50px] bg-[#F7E409] text-black rounded-[4px] px-5"
         onClick={handleKakaoLogin}
       >
         <Image src={KakaoIcon} alt="카카오 아이콘" />

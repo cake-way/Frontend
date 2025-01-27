@@ -4,27 +4,21 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import BackIcon from '../../../../public/header-images/back.svg';
+import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import Header from '@/app/_components/Header';
 
-import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm.svg';
-import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
-
-interface CakeDesign {
-  id: number;
-  scrapType: string;
-  imageUrl: string;
-  title: string;
-}
-
-import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
-import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import { getCakeDesigns, toggleMark } from '@/app/_lib/api/cakeDesigns';
+import EmptyState from '@/app/_components/my-log/store/EmptyState';
+import {
+  CakeDesign,
+  CakeDesignGrid,
+} from '@/app/_components/my-log/design/CakeDesignCard';
 
 const CakeDesigns = () => {
   const router = useRouter();
   const [cakeDesigns, setCakeDesigns] = useState<CakeDesign[]>([]);
-  const [marked, setMarked] = useState<boolean[]>([]); // 상태로 관리: 저장된 디자인과 마크 상태
+  const [marked, setMarked] = useState<boolean[]>([]);
 
   useEffect(() => {
     const fetchCakeDesignsData = async () => {
@@ -40,14 +34,6 @@ const CakeDesigns = () => {
     fetchCakeDesignsData();
   }, []);
 
-  const handleToDesignDetail = (cakeId: number) => {
-    router.push(`/cakeDetail/${cakeId}`);
-  };
-
-  const handleAlarmIconClick = () => {
-    router.push('/notice');
-  };
-
   const handleToggleMark = async (index: number, cakeId: number) => {
     try {
       const isSuccess = await toggleMark(cakeId);
@@ -58,73 +44,57 @@ const CakeDesigns = () => {
         );
 
         // 삭제된 디자인만 필터링
-        setCakeDesigns((prev) => prev.filter((design) => design.id !== cakeId));
+        setCakeDesigns((prev) => {
+          const updatedDesigns = prev.filter((design) => design.id !== cakeId);
+
+          // 새로운 마크 상태를 생성
+          const newMarked = updatedDesigns.map(
+            (design) => prev.some((pDesign) => pDesign.id === design.id) // 기존 디자인이 포함되어 있으면 true
+          );
+
+          setMarked(newMarked); // 마크 상태 업데이트
+          return updatedDesigns;
+        });
       }
     } catch (error) {
       console.error('Error toggling mark:', error);
     }
   };
 
+  const handleToDesignDetail = (cakeId: number) => {
+    router.push(`/cakeDetail/${cakeId}`);
+  };
+
+  const handleAlarmIconClick = () => {
+    router.push('/notice');
+  };
+
+  const headerProps = {
+    leftButtonImage: <Image src={BackIcon} alt="back" />,
+    onLeftButtonClick: () => {
+      router.back();
+    },
+    centerText: '저장한 디자인',
+    rightButtonImage: [
+      <Image width={24} height={24} key="Alarm" src={AlarmIcon} alt="Alarm" />,
+    ],
+    onRightButtonClick: [handleAlarmIconClick],
+    borderBottom: true,
+  };
+
   return (
     <main className="flex flex-col items-center">
-      <Header
-        leftButtonImage={<Image src={BackIcon} alt="back" />}
-        onLeftButtonClick={() => {
-          router.back();
-        }}
-        centerText="저장한 디자인"
-        rightButtonImage={[<Image key="Alarm" src={AlarmIcon} alt="Alarm" />]}
-        onRightButtonClick={[handleAlarmIconClick]}
-        borderBottom={true}
-      />
+      <Header {...headerProps} />
 
-      {/* 디자인이 없는 경우 */}
       {cakeDesigns.length === 0 ? (
-        <div className="flex flex-col gap-2 items-center justify-center mt-60">
-          <MarkIcon className="p-2" width={54} height={54} />
-          <p className="text-center font-bold text-[18px] text-gray-700">
-            저장한 디자인 없음
-          </p>
-          <p className="text-center text-sm text-gray-400">
-            CakeWay에서 케이크와 로그를
-            <br />
-            저장하고 컬렉션을 구성해보세요!
-          </p>
-        </div>
+        <EmptyState />
       ) : (
-        // 그리드 레이아웃을 이용한 이미지 배치
-        <div className="grid grid-cols-2 gap-2 w-full p-4">
-          {cakeDesigns.map((design, index) => (
-            <div
-              key={design.id}
-              className="relative w-full h-[226px] overflow-hidden bg-gray-200"
-            >
-              {/* 이미지 */}
-              <Image
-                src={design.imageUrl}
-                alt={`design-${design.id}`}
-                fill
-                style={{ objectFit: 'cover' }}
-                className="cursor-pointer"
-                onClick={() => {
-                  handleToDesignDetail(design.id);
-                }}
-              />
-
-              {/* 마크 토글 버튼 */}
-              <button
-                onClick={() => handleToggleMark(index, design.id)}
-                className="absolute top-2 right-2 z-10"
-              >
-                {marked[index] ? (
-                  <FilledMarkIcon /> // 채워진 마크
-                ) : (
-                  <Image src={MarkIconDefault} alt="Mark" /> // 비어 있는 마크
-                )}
-              </button>
-            </div>
-          ))}
-        </div>
+        <CakeDesignGrid
+          designs={cakeDesigns}
+          marked={marked}
+          onToggleMark={handleToggleMark}
+          onClickDetail={handleToDesignDetail}
+        />
       )}
     </main>
   );
