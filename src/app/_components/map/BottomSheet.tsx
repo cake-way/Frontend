@@ -143,9 +143,9 @@ const DraggableBottomSheet = ({
         >
           {/* Example items */}
 
-          {shops?.map((shop, index) => (
-            <CakeShopCard key={index} shop={shop} />
-          ))}
+          {shops
+            ?.toSorted((a, b) => a.distance - b.distance)
+            .map((shop) => <CakeShopCard key={shop.shopId} shop={shop} />)}
         </div>
       </div>
     </div>

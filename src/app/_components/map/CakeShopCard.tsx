@@ -59,7 +59,7 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
       </div>
 
       <div
-        className="cursor-pointer pt-2 grid grid-cols-4 gap-[2px]"
+        className=" overflow-x-auto cursor-pointer pt-2 grid gap-[2px] grid-flow-col auto-cols-[25%] "
         onClick={() => router.push(`/shop/${shop.shopId}`)}
       >
         {shop?.cakes?.map((i) => (

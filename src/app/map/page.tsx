@@ -70,34 +70,26 @@ export default function Map() {
     <>
       {/* 상단부분 */}
       <div className="w-full p-4 absolute z-50 flex gap-3  flex-col">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault(); // 폼 제출 기본 동작 방지
-            setKeyword(e.target.value);
-          }}
-          className="w-full"
+        <div
+          className={`${'bg-[#ffffff] shadow'} flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
         >
-          <div
-            className={`${'bg-[#ffffff] shadow'} flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
-          >
-            <div className="flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full bg-[#ffffff] shadow">
-              <SearchIcon focus={focus} />
-              <input
-                id="search-input"
-                type="text"
-                placeholder="지역, 공간, 주소 검색"
-                value={keyword}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setKeyword(e.target.value)
-                }
-                className="placeholder-gray-500 flex-grow text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1"
-                aria-label="검색어 입력"
-                onBlur={() => setFocus(false)}
-                onFocus={() => setFocus(true)}
-              />
-            </div>
+          <div className="flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full bg-[#ffffff] shadow">
+            <SearchIcon focus={focus} />
+            <input
+              id="search-input"
+              type="text"
+              placeholder="지역, 공간, 주소 검색"
+              value={keyword}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setKeyword(e.target.value)
+              }
+              className="placeholder-gray-500 flex-grow text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1"
+              aria-label="검색어 입력"
+              onBlur={() => setFocus(false)}
+              onFocus={() => setFocus(true)}
+            />
           </div>
-        </form>
+        </div>
 
         <div className="flex mb-2 ">
           <div
