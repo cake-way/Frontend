@@ -4,15 +4,15 @@ import Header from '@/app/_components/Header';
 
 import back from '@/../public/header-images/back.svg';
 import cakeIcon from '@/../public/order/cakeIcon.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { TimeSlotCalendar } from '@/app/_components/order/Calendar';
 import OrderCard from '@/app/_components/order/OrderCard';
 import Dropdown from '@/app/_components/order/Dropdwon';
-import orderApi from '@/app/_lib/orderApi';
+import orderApi, { orderOptionApi } from '@/app/_lib/orderApi';
 import { getHoursMinutes } from 'utils/utils';
-import { ICakeDetail, IShopDetail } from 'types/relatedCake';
+import { ICakeDetail, IShopDetail, OrderOption } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
 import shopDetailApi from '@/app/_lib/shopApi';
@@ -23,7 +23,7 @@ const Order: React.FC = () => {
   const [nextPage, setNextPage] = useState(false);
 
   const [selectedSize, setSelectedSize] = useState('미니사이즈');
-  const [selectedFlavor, setSelectedFlavor] = useState('초코맛');
+  const [selectedFlavor, setSelectedFlavor] = useState('');
   const [selectedBgColor, setSelectedBgColor] = useState<string | null>(null);
   const [letteringColor, setLetteringColor] = useState<string | null>(null);
   const [letteringText, setLetteringText] = useState<string | null>(null);
@@ -42,8 +42,15 @@ const Order: React.FC = () => {
     },
     enabled: !!shopId,
   });
-  console.log(shopDetail);
-
+  const { data: orderOpion } = useQuery<OrderOption[]>({
+    queryKey: ['orderOption', shopId],
+    queryFn: async () => {
+      if (!shopId) return;
+      return await orderOptionApi(+shopId);
+    },
+    enabled: !!shopId,
+  });
+  const flavors = orderOpion?.map((i) => i.taste) || [];
   const sizes = [
     {
       name: '미니사이즈',
@@ -62,7 +69,9 @@ const Order: React.FC = () => {
     },
   ];
 
-  const flavors = ['초코맛', '바닐라맛', '딸기맛'];
+  useEffect(() => {
+    setSelectedFlavor(flavors[0]);
+  }, [flavors]);
 
   const onclickedBack = () => {
     router.back();

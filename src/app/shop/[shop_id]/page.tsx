@@ -59,17 +59,18 @@ const Shop = () => {
 
   // const shop = getShopData();
 
-  const hour = Number(shopDetail?.operatingHour?.closeTime.split(':')[0]);
-  const minutes = Number(shopDetail?.operatingHour?.closeTime.split(':')[1]);
+  const hour = shopDetail?.operatingHour?.closeTime.split(':')[0];
+  const minutes = shopDetail?.operatingHour?.closeTime.split(':')[1];
+
   const getRunTime = () => {
     if (hour && minutes) {
       const nowHours = new Date().getHours();
       const nowMinutes = new Date().getMinutes();
       const totalNowMinutes = nowHours * 60 + nowMinutes;
 
-      const totalMinutes = hour * 60 + minutes; //
+      const totalMinutes = Number(hour) * 60 + Number(minutes); //
 
-      return totalMinutes - totalNowMinutes;
+      return totalNowMinutes - totalMinutes;
     }
     return null;
   };
@@ -81,7 +82,6 @@ const Shop = () => {
     setSubTab(tab);
   };
 
-  const runTime = getRunTime();
   return (
     <div className=" min-h-screen h-full mb-[var(--bottom-nav-height)]">
       <div
@@ -139,15 +139,13 @@ const Shop = () => {
                 </span>
                 {shopDetail?.operatingHour ? (
                   <>
-                    {runTime !== null
-                      ? runTime > 0
-                        ? '영업 중'
-                        : '마감'
-                      : '정보없음'}
+                    {getRunTime() > 0 ? '영업 중' : '마감'}
                     &nbsp;&nbsp;
                     {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
                     {shopDetail?.operatingHour?.openTime !== undefined &&
-                      (hour <= 11 ? '오전' : '오후')}
+                      (+shopDetail?.operatingHour?.openTime.split(':')[0] <= 12
+                        ? '오전'
+                        : '오후')}
                     &nbsp;
                     {shopDetail?.operatingHour.openTime.split(':')[0]}:
                     {shopDetail?.operatingHour?.openTime?.split(':')[1]} -&nbsp;

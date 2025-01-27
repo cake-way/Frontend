@@ -64,3 +64,14 @@ export async function orderHistoryDetailApi(memberId: number, orderId: number) {
     console.log('orderHistoryDetailApi error:', e);
   }
 }
+
+export async function orderOptionApi(cakeId: number) {
+  try {
+    const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/option/${cakeId}`;
+    const response = await fetch(URL);
+
+    return response.json();
+  } catch (e) {
+    console.log('orderOptionApi error:', e);
+  }
+}
