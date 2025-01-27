@@ -2,12 +2,14 @@ import { useRef } from 'react';
 import CakeCard from './CakeCard';
 import { motion, useInView } from 'framer-motion';
 import { HomeRecommend } from 'types/relatedCake';
+import { useRouter } from 'next/navigation';
 
 interface ICakeRecommend {
   data: HomeRecommend;
 }
 
 const CakeRecommend = ({ data }: ICakeRecommend) => {
+  const router = useRouter();
   const special = data.special;
   const trendy = data.trendy;
   console.log(trendy);
@@ -55,14 +57,20 @@ const CakeRecommend = ({ data }: ICakeRecommend) => {
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
             {special.map((cake) => (
-              <CakeCard
+              <div
+                className="cursor-pointer"
                 key={cake.shopId}
-                image={cake.shopImg}
-                title={cake.shopName}
-                operatingHours={cake.operatingHours}
-                location={cake.region}
-                sameDay={cake.sameDay}
-              />
+                onClick={() => router.push(`/shop/${cake.shopId}`)}
+              >
+                <CakeCard
+                  key={cake.shopId}
+                  image={cake.shopImg}
+                  title={cake.shopName}
+                  operatingHours={cake.operatingHours}
+                  location={cake.region}
+                  sameDay={cake.sameDay}
+                />
+              </div>
             ))}
           </div>
         </motion.div>
@@ -78,14 +86,20 @@ const CakeRecommend = ({ data }: ICakeRecommend) => {
 
           <div className="flex overflow-x-auto gap-4 w-full  ">
             {trendy.map((cake) => (
-              <CakeCard
+              <div
+                className="cursor-pointer"
                 key={cake.shopId}
-                image={cake.shopImg}
-                title={cake.shopName}
-                operatingHours={cake.operatingHours}
-                location={cake.region}
-                sameDay={cake.sameDay}
-              />
+                onClick={() => router.push(`/shop/${cake.shopId}`)}
+              >
+                <CakeCard
+                  key={cake.shopId}
+                  image={cake.shopImg}
+                  title={cake.shopName}
+                  operatingHours={cake.operatingHours}
+                  location={cake.region}
+                  sameDay={cake.sameDay}
+                />
+              </div>
             ))}
           </div>
         </motion.div>

@@ -212,6 +212,8 @@ export interface MapShops {
   contact: string;
   thumbnailImage: string;
   distance: number;
+  latitude: number;
+  longitude: number;
   cakes: MapShop[];
 }
 export interface MapShop {

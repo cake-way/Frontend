@@ -17,8 +17,8 @@ export default function OrderList() {
   const [activeTab, setActiveTab] = useState<'주문 접수' | '픽업 완료'>(
     '주문 접수'
   );
-  const router = useRouter();
   const [allowBack, setAllowBack] = useState(false);
+  const router = useRouter();
 
   const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
     queryKey: ['cakeOrders', userInfo],
@@ -46,6 +46,7 @@ export default function OrderList() {
       return results.flat();
     },
   });
+
   useEffect(() => {
     if (!userInfo) {
       alert('로그인이 필요한 서비스입니다.');
@@ -58,7 +59,7 @@ export default function OrderList() {
   }
   // 페이지 방문 시 뒤로가기 상태 설정
   useEffect(() => {
-    const previousPath = document.referrer;
+    const previousPath = document.referrer || '';
 
     if (previousPath.includes('/order/')) {
       setAllowBack(false); // 뒤로가기 비허용
