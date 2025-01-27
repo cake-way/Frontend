@@ -117,6 +117,7 @@ export default function Home() {
         );
       });
     }
+    useHomeLocationStore.setState({ oneShopsLocation: null });
   };
 
   return (

@@ -36,6 +36,8 @@ export interface ICakeDetail {
 
 export interface IShopDetail {
   name: string;
+  latitude: number;
+  longitude: number;
   address: string;
   contact: string;
   instagram: string;

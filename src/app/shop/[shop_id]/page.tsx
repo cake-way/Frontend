@@ -12,7 +12,7 @@ import useHomeLocationStore from '@/app/store/homeLocationStore';
 const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
-  const { setOneShops } = useHomeLocationStore();
+  const { setOneShopsLocation } = useHomeLocationStore();
 
   const router = useRouter();
 
@@ -76,11 +76,12 @@ const Shop = () => {
   const runtime = runTime();
 
   const onClickedMap = () => {
-    setOneShops((pre) => {
-      const foundShop = pre?.filter((i) => i.shopId === +shop_id);
-      if (!foundShop) return [];
-      return foundShop;
-    });
+    if (shopDetail) {
+      setOneShopsLocation({
+        lat: shopDetail?.latitude - 0.0012,
+        lng: shopDetail?.longitude,
+      });
+    }
 
     router.push('/map');
   };
@@ -127,12 +128,12 @@ const Shop = () => {
                   />
                 </span>
                 {shopDetail?.address}
-                <span
+                <button
                   className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top cursor-pointer"
                   onClick={onClickedMap}
                 >
                   지도보기
-                </span>
+                </button>
               </p>
               <p className="flex items-center text-gray-600">
                 <span className="mr-2">
