@@ -45,8 +45,6 @@ export default function Map() {
     fetchShops();
   }, [coordinates, todayPickUp, keyword]);
 
-  console.log(shops);
-
   //수정하기
   const getCoordinates = () => {
     const map = mapRef.current;

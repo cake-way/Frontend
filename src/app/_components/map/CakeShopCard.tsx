@@ -62,9 +62,9 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
         className=" overflow-x-auto cursor-pointer pt-2 grid gap-[2px] grid-flow-col auto-cols-[25%] "
         onClick={() => router.push(`/shop/${shop.shopId}`)}
       >
-        {shop?.cakes?.map((i) => (
+        {shop?.cakes?.map((i, index) => (
           <img
-            key={i.shopId}
+            key={index}
             src={i.imageUrl}
             alt={i.name}
             className="w-full object-cover "
