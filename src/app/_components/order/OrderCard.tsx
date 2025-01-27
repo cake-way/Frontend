@@ -18,7 +18,10 @@ const OrderCard = ({
   const cakeDetail = cakeSearch?.find((item) => item.name === order.cakeName);
 
   const cardColor = getDday() <= 3 ? '#E7363F' : '#C8C400';
-  const pickupDate = new Date(order.pickupDate);
+  const pickupDate = new Date(
+    new Date(order.pickupDate).getTime() + 9 * 60 * 60 * 1000
+  );
+
   return (
     <div
       className="w-full border min-h-[154px] flex"
@@ -93,7 +96,7 @@ const OrderCard = ({
               &nbsp;({days[new Date().getDay()]})&nbsp;&nbsp;
               {pickupDate.getHours() <= 11 ? '오전' : '오후'}
               &nbsp;
-              {pickupDate.getHours()}:
+              {pickupDate.getHours() - 9}:
               {pickupDate.getMinutes().toString().padStart(2, '0')}
             </span>
           </div>

@@ -54,19 +54,19 @@ export default function OrderList() {
     }
   }, [userInfo, router]);
 
+  // 페이지 방문 시 뒤로가기 상태 설정
+  useEffect(() => {
+    const previousPath = document.referrer;
+
+    if (previousPath.includes('order')) {
+      setAllowBack(false); // 뒤로가기 비허용
+    } else {
+      setAllowBack(true); // 뒤로가기 허용
+    }
+  }, []);
   if (!userInfo) {
     return null;
   }
-  // // 페이지 방문 시 뒤로가기 상태 설정
-  // useEffect(() => {
-  //   const previousPath = document.referrer || '';
-
-  //   if (previousPath.includes('/order/')) {
-  //     setAllowBack(false); // 뒤로가기 비허용
-  //   } else {
-  //     setAllowBack(true); // 뒤로가기 허용
-  //   }
-  // }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;

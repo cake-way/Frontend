@@ -140,8 +140,8 @@ export default function Home() {
           {currentLocationLatLng?.lat && currentLocationLatLng?.lng && (
             <SearchResults
               keyword={searchKeyword}
-              latitude={currentLocationLatLng.lat}
-              longitude={currentLocationLatLng.lng}
+              latitude={mapLocation?.lat}
+              longitude={mapLocation?.lng}
             />
           )}
         </div>

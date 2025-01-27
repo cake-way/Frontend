@@ -49,6 +49,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
 
     return start < now && now < end;
   };
+
   return (
     <div className="relative overflow-hidden min-w-[48%]">
       <div

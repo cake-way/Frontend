@@ -1,3 +1,5 @@
+import { getAuthHeaders } from './api/getAuthHeader';
+
 export default async function shopDetailApi(
   shopId: number,
   categoryName?: string | null
@@ -8,7 +10,10 @@ export default async function shopDetailApi(
     if (categoryName) param.append('categoryName', categoryName);
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/shop/${shopId}/menu${param.toString() ? `?${param}` : ''}`;
 
-    const response = await fetch(URL);
+    const response = await fetch(URL, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
 
     return await response.json();
   } catch (e) {
