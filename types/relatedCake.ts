@@ -40,20 +40,12 @@ export interface IShopDetail {
   contact: string;
   instagram: string;
   scrapCount: number;
+  notice: string;
+  cautions: string;
   operatingHour: {
     dayOfWeek: string;
-    openTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
-    closeTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
+    openTime: string;
+    closeTime: string;
     active: boolean;
   };
   cakes: {
@@ -81,7 +73,7 @@ export interface IShopDetail {
 export interface OrderType {
   orderId: number;
   cakeName: string;
-  cakeShopName: string;
+  cakeShopName?: string;
   orderDate: string;
   pickupDate: string;
   totalPrice: number;
@@ -117,19 +109,8 @@ export interface shopLogs {
   scrapCount: number;
   operatingHour: {
     dayOfWeek: string;
-    openTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
-    closeTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
-    active: boolean;
+    openTime: string;
+    closeTime: string;
   };
   cakelogs: [
     {
@@ -217,4 +198,25 @@ export interface HomeRecommend {
       sameDay: boolean;
     },
   ];
+}
+
+export type priceObject = {
+  min: number | undefined;
+  max: number | undefined;
+};
+
+export interface MapShops {
+  shopId: number;
+  name: string;
+  address: string;
+  contact: string;
+  thumbnailImage: string;
+  distance: number;
+  cakes: MapShop[];
+}
+export interface MapShop {
+  shopId: number;
+  name: string;
+  price: number;
+  imageUrl: string;
 }

@@ -18,6 +18,7 @@ export default function OrderList() {
     '주문 접수'
   );
   const router = useRouter();
+  const [allowBack, setAllowBack] = useState(false);
 
   const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
     queryKey: ['cakeOrders', userInfo],
@@ -55,6 +56,16 @@ export default function OrderList() {
   if (!userInfo) {
     return null;
   }
+  // 페이지 방문 시 뒤로가기 상태 설정
+  useEffect(() => {
+    const previousPath = document.referrer;
+
+    if (previousPath.includes('/order/')) {
+      setAllowBack(false); // 뒤로가기 비허용
+    } else {
+      setAllowBack(true); // 뒤로가기 허용
+    }
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -63,6 +74,13 @@ export default function OrderList() {
     setActiveTab(tab);
   };
 
+  const handleBackClick = () => {
+    if (!allowBack) {
+      alert('현재 화면에서 뒤로 갈 수 없습니다.');
+    } else {
+      router.back();
+    }
+  };
   const readyCake = cakeOrders?.filter((item) => item.status === '주문 접수');
   const doneCake = cakeOrders?.filter((item) => item.status === '픽업 완료');
   return (
@@ -75,6 +93,7 @@ export default function OrderList() {
           width={24}
           height={24}
           className="absolute justify-start left-5 top-2.5"
+          onClick={handleBackClick}
         />
         <div className="flex gap-[18px]">
           <motion.button

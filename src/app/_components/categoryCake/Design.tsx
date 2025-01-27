@@ -25,7 +25,6 @@ export default function Design() {
     setSelectedDesign((pre: string[]) => [...pre, key]);
   };
 
-  console.log(selectedDesign);
   return (
     <>
       <div className="mb-4 p-4 flex items-center gap-3">

@@ -1,9 +1,9 @@
 export default async function cakeCategorySearchApi(
   categoryName: '생일' | '파티' | string,
-  time?: string,
-  price?: number,
-  region?: string[],
-  design?: string[]
+  time?: string | null,
+  price?: number | null,
+  region?: string[] | null,
+  design?: string[] | null
 ) {
   try {
     const params = new URLSearchParams();
@@ -18,7 +18,7 @@ export default async function cakeCategorySearchApi(
     }
 
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/cake/category/${categoryName}${params.toString() ? `?${params}` : ''}`;
-
+    console.log(URL);
     const response = await fetch(URL);
 
     return await response.json();

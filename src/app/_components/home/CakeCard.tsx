@@ -60,10 +60,10 @@ const CakeCard: React.FC<CakeCardProps> = ({
         }}
       ></div>
       <Image
-        src={`home/cake.svg`}
+        src={image}
         alt={title}
-        width={0}
-        height={0}
+        width={400}
+        height={400}
         className="w-full h-full object-cover"
       />
 

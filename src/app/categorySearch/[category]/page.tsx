@@ -13,14 +13,12 @@ import { useState } from 'react';
 import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
-import useFilteringStore from '@/app/store/filteringStore';
 
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
-import dayjs from 'dayjs';
-import { ICategoryData } from 'types/relatedCake';
+import { ICategoryData, priceObject } from 'types/relatedCake';
 import { days } from 'constants/constants';
 
 //카테고리 없는 ui
@@ -64,7 +62,9 @@ const CategorySearch = () => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterName, setFilterName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const { confirmDesgin, confirmPrice, confirmReigon } = useFilteringStore();
+  const [confirmDesgin, setConfirmDesgin] = useState<string[] | null>(null);
+  const [confirmPrice, setConfirmPrice] = useState<priceObject | null>(null);
+  const [confirmReigon, setConfirmReigon] = useState<string[] | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
@@ -80,16 +80,15 @@ const CategorySearch = () => {
       filteringDate,
     ],
     queryFn: () => {
-      const localISOString = filteringDate
-        ? dayjs(filteringDate).format('YYYY-MM-DDTHH:mm')
-        : undefined;
-      console.log(localISOString);
+      const realConfirmDesigon = confirmDesgin?.map((key) =>
+        key.replace('케이크', '')
+      );
       return cakeCategorySearchApi(
         getCategoryName(category),
-        localISOString,
+        filteringDate?.toISOString(),
         confirmPrice?.max,
         confirmReigon,
-        confirmDesgin
+        realConfirmDesigon
       );
     },
   });
@@ -153,6 +152,9 @@ const CategorySearch = () => {
           setIsOpen={setIsOpen}
           isOpen={isOpen}
           initName={filterName}
+          setConfirmDesgin={setConfirmDesgin}
+          setConfirmReigon={setConfirmReigon}
+          setConfirmPrice={setConfirmPrice}
         />
       )}
       <div className="flex flex-col min-h-screen">
