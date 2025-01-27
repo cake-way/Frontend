@@ -51,7 +51,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
   };
 
   return (
-    <div className="relative overflow-hidden min-w-[48%]">
+    <div className="relative overflow-hidden w-full ">
       <div
         className="absolute bottom-0  w-full h-[50%]"
         style={{
@@ -60,14 +60,15 @@ const CakeCard: React.FC<CakeCardProps> = ({
           backgroundBlendMode: 'multiply',
         }}
       ></div>
-      <Image
-        src={image}
-        alt={title}
-        width={400}
-        height={400}
-        className="w-full h-full object-cover"
-      />
-
+      <div className=" w-full h-full">
+        <Image
+          src={image}
+          alt={title}
+          width={500}
+          height={500}
+          className=" object-cover w-full h-full"
+        />
+      </div>
       {sameDay && (
         <div
           className="absolute top-2 right-2 border-[0.5px] border-solid border-[#fffff]  bg-opacity-60 text-white text-xs px-2.5 py-1 rounded-[21px]"

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { IShopDetail, MapShops } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import shopDetailApi from '@/app/_lib/shopApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { scrapShop } from '@/app/_lib/api/searchResults';
 import { fetchStoreScrapData, StoreScrap } from '@/app/_lib/api/storeScrap';
 
@@ -17,43 +17,51 @@ interface ICakeShopCard {
 
 const CakeShopCard = ({ shop }: ICakeShopCard) => {
   const router = useRouter();
-  const [marked, setMarked] = useState<number | null>(null);
-  const { data: shopDetail } = useQuery<IShopDetail>({
-    queryKey: ['shopDetail', shop.shopId, marked],
-    queryFn: () => shopDetailApi(shop.shopId),
-    enabled: !!shop.shopId,
-  });
-  const { data: shopScrap } = useQuery<StoreScrap[]>({
+  const [marked, setMarked] = useState<number | null>(Date.now());
+  const [runtime, setRuntime] = useState<number | null>(null);
+  const [closeTime, setCloseTime] = useState('');
+
+  const { data: shopDetail, refetch: refetchShopDetail } =
+    useQuery<IShopDetail>({
+      queryKey: ['shopDetail', shop.shopId, marked],
+      queryFn: () => shopDetailApi(shop.shopId),
+      enabled: !!shop.shopId,
+    });
+  const { data: shopScrap, refetch } = useQuery<StoreScrap[]>({
     queryKey: ['shopScrap', marked],
     queryFn: () => fetchStoreScrapData(),
   });
 
-  //영업중, 마감인지
-  const getRunTime = () => {
-    const nowHours = new Date().getHours();
-    const nowMinutes = new Date().getMinutes();
-    const totalNowMinutes = nowHours * 60 + nowMinutes;
+  // 데이터 변경 시 실행
+  useEffect(() => {
+    if (shopDetail?.operatingHour?.closeTime) {
+      const now = new Date();
+      const totalNowMinutes = now.getHours() * 60 + now.getMinutes();
+      const closeTime = getHoursMinutes(shopDetail.operatingHour.closeTime);
 
-    const [hours, minutes] = getHoursMinutes(
-      shopDetail?.operatingHour?.closeTime
-    );
-    const totalMinutes = hours * 60 + minutes;
+      if (closeTime) {
+        const [closeHours, closeMinutes] = closeTime;
+        const totalMinutes = closeHours * 60 + closeMinutes;
+        setRuntime(totalNowMinutes - totalMinutes);
+      }
+      setCloseTime(shopDetail.operatingHour.closeTime);
+    }
+  }, [shopDetail]);
 
-    return totalNowMinutes - totalMinutes;
-  };
   const handleScrapCake = async () => {
     try {
       if (shopScrap?.find((i) => i.shopId === shop.shopId)) {
         const response = await scrapShop(shop.shopId, true);
-        if (response)
-          setMarked((prev) => (prev === shop.shopId ? null : shop.shopId));
-        return console.log(response);
+        if (response) setMarked(Date.now());
       } else {
         const isScraped = await scrapShop(shop.shopId, false);
         if (isScraped) {
-          setMarked((prev) => (prev === shop.shopId ? null : shop.shopId));
+          setMarked(Date.now());
         }
       }
+      // 스크랩 작업 후 데이터 다시 가져오기
+      await refetchShopDetail();
+      await refetch();
     } catch (error) {
       console.error('스크랩 API 호출 중 오류:', error);
     }
@@ -68,15 +76,17 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
           onClick={() => router.push(`/shop/${shop.shopId}`)}
         >
           <h2 className="text-sm font-bold">{shop.name}</h2>
-          <div className="flex items-center gap-[2px]">
-            <RunTimeIcon color={getRunTime() < 0 ? undefined : '#FA2840'} />
-            <span className="text-xs text-grayscale700 flex gap-[5px]">
-              <span className="text-grayscale900">
-                {getRunTime() < 0 ? '영업중' : '마감'}
+          {runtime && (
+            <div className="flex items-center gap-[2px]">
+              <RunTimeIcon color={runtime < 0 ? '#DCDA75' : '#FA2840'} />
+              <span className="text-xs text-grayscale700 flex gap-[5px]">
+                <span className="text-grayscale900">
+                  {runtime < 0 ? '영업중' : '마감'}
+                </span>
+                {closeTime} 에 마감
               </span>
-              {shopDetail?.operatingHour?.closeTime} 에 라스트 오더
-            </span>
-          </div>
+            </div>
+          )}
         </div>
         <button onClick={handleScrapCake}>
           {shopDetail?.scraped ? (
@@ -88,15 +98,17 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
       </div>
 
       <div
-        className=" overflow-x-auto cursor-pointer pt-2 grid gap-[2px] grid-flow-col auto-cols-[25%] "
+        className=" overflow-x-auto cursor-pointer pt-2 grid gap-[2px] grid-flow-col  relative auto-cols-[25%] "
         onClick={() => router.push(`/shop/${shop.shopId}`)}
       >
         {shop?.cakes?.map((i, index) => (
-          <img
+          <Image
             key={index}
             src={i.imageUrl}
             alt={i.name}
-            className="w-full object-cover "
+            width={300}
+            height={300}
+            className="w-full h-full object-cover aspect-square overflow-hidden"
           />
         ))}
       </div>

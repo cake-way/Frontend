@@ -77,7 +77,7 @@ const CategorySearch = () => {
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
 
-  const { data, isLoading } = useQuery<ICategoryData[]>({
+  const { data, isLoading, refetch } = useQuery<ICategoryData[]>({
     queryKey: [
       'categoryCake',
       category,
@@ -105,7 +105,6 @@ const CategorySearch = () => {
     queryFn: () => getCakeDesigns(),
   });
 
-  console.log(cakeScrap);
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
   };
@@ -160,14 +159,14 @@ const CategorySearch = () => {
     try {
       if (cakeScrap?.find((i) => i.id === cakeId)) {
         const response = await toggleMark(cakeId);
-        if (response) setMarked((prev) => (prev === cakeId ? null : cakeId));
-        return console.log(response);
+        if (response) setMarked(Date.now());
       } else {
         const isScraped = await scrapCake(cakeId);
         if (isScraped) {
-          setMarked((prev) => (prev === cakeId ? null : cakeId));
+          setMarked(Date.now());
         }
       }
+      refetch();
     } catch (error) {
       console.error('스크랩 API 호출 중 오류:', error);
     }
