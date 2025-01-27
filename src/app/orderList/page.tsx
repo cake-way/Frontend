@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OrderCard from '../_components/order/OrderCard';
 
 import Image from 'next/image';
@@ -10,22 +10,27 @@ import { orderHistoryApi, orderHistoryGetCakeApi } from '../_lib/orderApi';
 import { cakeSearch, OrderType } from 'types/relatedCake';
 import LoadingSpinner from '../_components/Loading';
 import useUserStore from '../store/userStore';
+import { useRouter } from 'next/navigation';
 
 export default function OrderList() {
   const { userInfo } = useUserStore();
   const [activeTab, setActiveTab] = useState<'주문 접수' | '픽업 완료'>(
     '주문 접수'
   );
+  const router = useRouter();
+
   const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
     queryKey: ['cakeOrders', userInfo],
-    queryFn: () => orderHistoryApi(+userInfo.memberId),
-    enabled: !!userInfo,
+    queryFn: async () => {
+      if (!userInfo?.memberId) return [];
+      return await orderHistoryApi(+userInfo?.memberId);
+    },
+    enabled: !!userInfo?.memberId,
     select: (data) => {
       // NOT_FOUND인 경우 빈 배열 반환
       return 'status' in data && data.status === 'NOT_FOUND' ? [] : data;
     },
   });
-  console.log(cakeOrders);
 
   const { data: cakeSearch } = useQuery<cakeSearch[]>({
     queryKey: ['cakeSearch', cakeOrders],
@@ -40,10 +45,15 @@ export default function OrderList() {
       return results.flat();
     },
   });
-  console.log(cakeSearch);
-  //요거 수정하기
+  useEffect(() => {
+    if (!userInfo) {
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
+    }
+  }, [userInfo, router]);
+
   if (!userInfo) {
-    return <div>로그인해주세요</div>;
+    return null;
   }
 
   if (isLoading) {
@@ -102,14 +112,20 @@ export default function OrderList() {
               </div>
             ) : (
               <>
-                {readyCake?.map((order) => (
-                  <OrderCard
-                    key={order.orderId}
-                    order={order}
-                    orderList={true}
-                    cakeSearch={cakeSearch}
-                  />
-                ))}
+                {readyCake
+                  ?.toSorted(
+                    (a, b) =>
+                      new Date(a.pickupDate).getTime() -
+                      new Date(b.pickupDate).getTime()
+                  )
+                  .map((order) => (
+                    <OrderCard
+                      key={order.orderId}
+                      order={order}
+                      orderList={true}
+                      cakeSearch={cakeSearch}
+                    />
+                  ))}
               </>
             )}
           </div>

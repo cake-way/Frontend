@@ -56,7 +56,7 @@ const OrderCard = ({
               //여기 왜이러지?ㅜ
               alt={order.cakeName}
               fill
-              className="object-cover"
+              className="object-cover object-center"
             />
             {orderList && (
               <div className="absolute top-2 right-1.5 border text-white text-[10px] px-2  rounded-full">

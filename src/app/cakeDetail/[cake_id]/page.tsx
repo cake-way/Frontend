@@ -7,7 +7,6 @@ import { useParams, useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
 import { useQuery } from '@tanstack/react-query';
 import cakeDetailApi from '@/app/_lib/cakeDetail';
-import LoadingSpinner from '@/app/_components/Loading';
 import { ICakeDetail } from 'types/relatedCake';
 import { getShopAdress } from '@/app/_lib/shopApi';
 
@@ -37,16 +36,15 @@ export default function CakeDetail() {
     );
   }
 
-  const { data, isLoading } = useQuery<ICakeDetail>({
+  const { data } = useQuery<ICakeDetail>({
     queryKey: ['cakeDetail', cake_id],
     queryFn: () => cakeDetailApi(+cake_id),
   });
   const { data: shopDetail } = useQuery({
     queryKey: ['shopDetail', data?.shopId],
     queryFn: () => getShopAdress(data?.shopId),
+    enabled: !!data?.shopId, // shopId가 존재할 때만 쿼리 실행
   });
-
-  console.log(data);
 
   if (data) {
     return (
@@ -66,53 +64,49 @@ export default function CakeDetail() {
             className="object-cover aspect-square"
           />
         </div>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            {/* 케이크 상세 정보 */}
-            <div className="p-4">
-              <div className="flex justify-between">
-                <h1 className="text-2xl font-semibold">{data?.cakeName}</h1>
-                <p className="  heading-1 mr-5">
-                  {data?.price.toLocaleString()}원
+
+        {/* 케이크 상세 정보 */}
+        <div className="p-4">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-semibold">{data?.cakeName}</h1>
+            <p className="  heading-1 mr-5">{data?.price.toLocaleString()}원</p>
+          </div>
+          <p className="text-sm font-medium text-grayscale800 ">
+            케이크 로그 {data?.cakeLogCount}개
+          </p>
+          <div className="mt-3.5 ">
+            <div>
+              <div className="flex gap-1">
+                <Image
+                  src="/shop/positionIcon.svg"
+                  alt="position_icon"
+                  width={24}
+                  height={24}
+                />
+                <p
+                  className="text-base font-semibold text-grayscale900 cursor-pointer"
+                  onClick={() => router.push(`/shop/${data.shopId}`)}
+                >
+                  {data?.shopName}
                 </p>
               </div>
-              <p className="text-sm font-medium text-grayscale800 ">
-                케이크 로그 {data?.cakeLogCount}개
-              </p>
-              <div className="mt-3.5 ">
-                <div>
-                  <div className="flex gap-1">
-                    <Image
-                      src="/shop/positionIcon.svg"
-                      alt="position_icon"
-                      width={24}
-                      height={24}
-                    />
-                    <p className="text-base font-semibold text-grayscale900">
-                      {data?.shopName}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <p className="text-sm text-grayscale700 font-medium">
-                      {shopDetail?.address}서울특별시 마포구 독막로15길 17 1층
-                    </p>
-                    <button className="text-sm font-medium text-grayscale600">
-                      지도보기
-                    </button>
-                  </div>
-                </div>
+              <div className="flex gap-2">
+                <p className="text-sm text-grayscale700 font-medium">
+                  {shopDetail?.address}
+                </p>
+                <button className="text-sm font-medium text-grayscale600">
+                  지도보기
+                </button>
               </div>
-              <button
-                className="w-full bg-grayscale900 text-white py-2 rounded-[22px] mt-[26px]"
-                onClick={onClickedOrder}
-              >
-                예약하기
-              </button>
             </div>
-          </>
-        )}
+          </div>
+          <button
+            className="w-full bg-grayscale900 text-white py-2 rounded-[22px] mt-[26px]"
+            onClick={onClickedOrder}
+          >
+            예약하기
+          </button>
+        </div>
 
         {/* 다른 디자인 */}
         <div className="p-4">
@@ -160,7 +154,11 @@ export default function CakeDetail() {
             {data?.cakeLogs && data.cakeLogs.length > 0 ? (
               // 케이크 로그가 존재하는 경우
               data.cakeLogs.map((log) => (
-                <div key={log.cakelogId || log.title} className="relative">
+                <div
+                  key={log.cakelogId || log.title}
+                  className="relative"
+                  onClick={() => router.push(`/log-detail/${log.cakelogId}`)}
+                >
                   <div className=" relative w-auto h-56 aspect-[3/4] ">
                     <div
                       className="z-20 absolute bottom-0  w-full h-[50%]"
