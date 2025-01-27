@@ -18,7 +18,6 @@ import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
-import dayjs from 'dayjs';
 import { ICategoryData, priceObject } from 'types/relatedCake';
 import { days } from 'constants/constants';
 
