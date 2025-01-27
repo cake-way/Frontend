@@ -1,3 +1,4 @@
+import { MapShops } from 'types/relatedCake';
 import { create } from 'zustand';
 
 type mapLocation = {
@@ -10,6 +11,10 @@ interface IHomeLocationStore {
   mapLocation: null | mapLocation;
   currentLocationString: null | string;
   currentLocationLatLng: null | mapLocation;
+  oneShops: MapShops[] | null;
+  setOneShops: (
+    callback: (pre: MapShops[] | null) => MapShops[] | null
+  ) => void;
   setMapLocation: (mapLocation: mapLocation) => void;
   setHomeLocation: (homeLocation: string) => void;
   setCurrentLocationString: (currentLocationString: string) => void;
@@ -21,6 +26,11 @@ const useHomeLocationStore = create<IHomeLocationStore>((set) => ({
   mapLocation: null,
   currentLocationString: null,
   currentLocationLatLng: null,
+  oneShops: null,
+  setOneShops: (callback) =>
+    set((state) => ({
+      oneShops: callback(state.oneShops),
+    })),
   setMapLocation: (mapLocation) => set({ mapLocation }),
   setHomeLocation: (homeLocation) => set({ homeLocation }),
   setCurrentLocationString: (currentLocationString) =>
