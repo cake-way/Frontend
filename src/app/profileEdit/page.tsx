@@ -1,29 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import BackIcon from '../../../public/header-images/back.svg';
-import Header from '../_components/Header';
 import { useRouter } from 'next/navigation';
-import useUserStore from '@/app/store/userStore';
 
+import BackIcon from '../../../public/header-images/back.svg';
 import DefaultProfile from '../../../public/my-log-images/profile-photo.svg';
+
+import Header from '../_components/Header';
+
+import { updateProfile } from '../_lib/api/profileEdit';
+import useUserStore from '@/app/store/userInfoStore';
 
 const ProfileEdit = () => {
   const router = useRouter();
   const { userInfo, setUserInfo } = useUserStore();
 
-  // 상태 초기화
   const [nickname, setNickname] = useState(userInfo?.username || '');
   const [description, setDescription] = useState(userInfo?.description || '');
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null); // 프로필 이미지 상태
-  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
-    userInfo?.profileImage || null
-  ); // 미리보기 이미지 상태
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
-  const handleLeftButtonClick = () => {
-    router.back();
-  };
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
+    userInfo?.profileImage || DefaultProfile
+  );
+
+  // userInfo가 변경될 때마다 상태 동기화
+  useEffect(() => {
+    if (userInfo) {
+      setNickname(userInfo.username);
+      setDescription(userInfo.description);
+      setProfileImagePreview(userInfo.profileImage || DefaultProfile);
+    }
+  }, [userInfo]); // userInfo가 변경되면 실행됨
 
   // 프로필 사진 변경 처리
   const handleProfileImageChange = (
@@ -39,10 +47,10 @@ const ProfileEdit = () => {
     }
   };
 
-  // 기존 프로필 이미지를 파일로 전환할 수 없기 때문에
-  // URL을 그대로 보내는 방법을 유지하려면
+  // 기존 프로필 이미지를 파일로 전환할 수 없기 때문에 URL을 그대로 보내는 방법을 유지하려면
   // URL을 파일로 전송해야 할 경우엔
-  // 서버에서 URL을 받아들이지 않으면 이 방법을 사용해야 함...
+  // 서버에서 URL을 받아들이지 않으면 이 방법을 사용해야 함
+
   const handleSubmit = async () => {
     const formData = new FormData();
 
@@ -69,59 +77,36 @@ const ProfileEdit = () => {
       formData.append('profileImage', blob, 'profileImage.jpg'); // 파일 형식으로 보내기
     }
 
-    // FormData 확인
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/mypage`,
-        {
-          method: 'PUT',
-          body: formData,
-          headers: { Authorization: `Bearer ${token}` }, // 인증 헤더는 유지, Content-Type은 설정하지 않음
-        }
-      );
+      const token = localStorage.getItem('token');
+      await updateProfile(token, formData);
+      setUserInfo({
+        userInfo: {
+          ...userInfo!,
+          username: nickname,
+          description: description,
+          profileImage: profileImageFile
+            ? URL.createObjectURL(profileImageFile)
+            : userInfo?.profileImage || DefaultProfile,
+        },
+        designScrap: [],
+        storeScrap: [],
+        logScrap: [],
+      });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('프로필 수정 완료:', data);
-
-        // 수정된 정보로 userInfo 업데이트
-        setUserInfo({
-          userInfo: {
-            ...userInfo!,
-            username: nickname,
-            description: description,
-            profileImage: profileImageFile
-              ? URL.createObjectURL(profileImageFile)
-              : userInfo?.profileImage || DefaultProfile,
-          },
-          designScrap: [],
-          storeScrap: [],
-          logScrap: [],
-        });
-
-        router.back();
-      } else {
-        console.error('프로필 수정 실패:', await response.text());
-      }
+      router.back();
     } catch (error) {
-      console.error('프로필 수정 중 에러 발생:', error);
+      console.error('프로필 수정 실패:', error);
     }
   };
-
-  // 공통 클래스 정의
-  const commonButtonClass =
-    'w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none';
 
   return (
     <main className="w-full flex flex-col items-center">
       <Header
         leftButtonImage={<Image src={BackIcon} alt="back" />}
-        onLeftButtonClick={handleLeftButtonClick}
+        onLeftButtonClick={() => {
+          router.back();
+        }}
         centerText="프로필 수정"
         borderBottom={true}
       />
@@ -172,14 +157,17 @@ const ProfileEdit = () => {
         ></textarea>
 
         {/* 저장 버튼 */}
-        <footer className="w-full flex justify-between mt-24 mb-11">
+        <footer className="w-full flex justify-between mt-16 mb-11">
           <button
-            className={`${commonButtonClass} text-gray-700 border border-gray-400`}
+            className={`w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none text-gray-700 border border-gray-400`}
+            onClick={() => {
+              router.back();
+            }}
           >
             취소
           </button>
           <button
-            className={`${commonButtonClass} text-white bg-black`}
+            className={`w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none text-white bg-black`}
             onClick={handleSubmit}
           >
             저장

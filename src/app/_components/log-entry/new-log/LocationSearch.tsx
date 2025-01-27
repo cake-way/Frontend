@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
 import MapIcon from '../../../../../public/log-entry/map-icon.svg';
 import SearchIcon from '../../../../../public/header-images/search.svg';
@@ -23,22 +23,25 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
 
   // debounce 적용
-  const debouncedSearch = debounce(async (keyword: string) => {
-    if (keyword.trim()) {
-      try {
-        const results = await fetchShopName(keyword);
-        setSearchResults(results);
-      } catch (error) {
-        console.error('서버 요청 중 오류 발생:', error);
+  const debouncedSearch = useCallback(
+    debounce(async (keyword: string) => {
+      if (keyword.trim()) {
+        try {
+          const results = await fetchShopName(keyword);
+          setSearchResults(results);
+        } catch (error) {
+          console.error('서버 요청 중 오류 발생:', error);
+          setSearchResults([]);
+        } finally {
+          setIsResultsVisible(true);
+        }
+      } else {
         setSearchResults([]);
-      } finally {
-        setIsResultsVisible(true); // 검색 결과 표시
+        setIsResultsVisible(false);
       }
-    } else {
-      setSearchResults([]); // 검색어가 없을 경우 빈 배열 설정
-      setIsResultsVisible(false); // 결과 숨기기
-    }
-  }, 300); // 300ms 대기 후 요청
+    }, 300),
+    []
+  );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value;
@@ -48,12 +51,11 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
 
   const handleSelectResult = (shopId: number, shopName: string) => {
     setSelectedPlace(shopName);
-    onShopSelect(shopId); // 부모 컴포넌트로 shopId 전달
+    onShopSelect(shopId);
     setIsResultsVisible(false);
-    setSearchKeyword(''); // 선택 후 검색어 초기화
-
-    // 선택 후 상태 초기화
-    setSearchResults([]); // 검색 결과 초기화
+    setSearchKeyword('');
+    setSearchResults([]);
+    debouncedSearch.cancel(); // pending 상태의 debounced 함수를 취소
   };
 
   const handleClearSelection = () => {
@@ -101,7 +103,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
         <>
           {searchResults.length > 0 ? (
             <div
-              className="absolute z-10 w-[335px] bg-white border border-gray-300 rounded-b-[4px] shadow-lg h-auto max-h-[200px] overflow-y-auto scrollbar-hidden"
+              className="absolute z-10 left-5 right-5 bg-white border border-gray-300 rounded-b-[4px] shadow-lg h-auto max-h-[200px] overflow-y-auto scrollbar-hidden"
               style={{
                 marginTop: '-3px',
               }}

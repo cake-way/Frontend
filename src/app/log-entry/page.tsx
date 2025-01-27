@@ -53,24 +53,26 @@ const LogEntry = () => {
     router.push('/notice'); // 임시...
   };
 
+  const headerProps = {
+    leftButtonImage: <Image src={BackIcon} alt="Back Icon" />,
+    onLeftButtonClick: handleLeftButtonClick,
+    centerText: '케이크 로그 작성',
+    rightButtonImage: [
+      <Image
+        key="Alarm"
+        width={24}
+        height={24}
+        src={AlarmIcon}
+        alt="Alarm Icon"
+      />,
+    ],
+    onRightButtonClick: [handleRightButtonClick],
+    borderBottom: true,
+  };
+
   return (
     <div>
-      <Header
-        leftButtonImage={<Image src={BackIcon} alt="Back Icon" />}
-        onLeftButtonClick={handleLeftButtonClick}
-        centerText="케이크 로그 작성"
-        rightButtonImage={[
-          <Image
-            key="Alarm"
-            width={24}
-            height={24}
-            src={AlarmIcon}
-            alt="Alarm Icon"
-          />,
-        ]}
-        onRightButtonClick={[handleRightButtonClick]}
-        borderBottom={true}
-      />
+      <Header {...headerProps} />
       <main className="w-full px-5">
         <CreateLog latestOrderShop={latestOrderShop} />
         <MyCakeLog cakelogs={cakelogs} />

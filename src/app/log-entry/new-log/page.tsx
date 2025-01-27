@@ -6,7 +6,8 @@ import AddPhotos from '@/app/_components/log-entry/new-log/AddPhotos';
 import CategorySelector from '@/app/_components/log-entry/new-log/CategorySelector';
 import LocationSearch from '@/app/_components/log-entry/new-log/LocationSearch';
 
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
+import { useRouter } from 'next/navigation';
 
 const NewLog = () => {
   const { userInfo } = useUserStore(); // 현재 사용자 정보 가져오기
@@ -24,6 +25,8 @@ const NewLog = () => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false); // 말풍선 모달 표시 여부
 
   const [selectedShopId, setSelectedShopId] = useState<number | null>(null); // shopId 상태 관리
+
+  const router = useRouter();
 
   const handleTogglePublic = () => {
     const nextPublicState = !isPublic; // 다음 상태 미리 계산
@@ -80,6 +83,7 @@ const NewLog = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('작성 완료:', data);
+        router.back();
       } else {
         console.error('작성 실패:', await response.text());
       }

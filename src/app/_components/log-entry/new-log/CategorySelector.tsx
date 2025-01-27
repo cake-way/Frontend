@@ -66,12 +66,12 @@ const CategorySelector = ({
       </div>
       {isDropdownOpen && (
         <div
-          className="absolute top-full left-5 w-[335px] bg-white border border-gray-300 rounded-b-[4px] z-10 overflow-hidden transition-all duration-300 ease-in-out"
+          className="absolute top-full left-5 right-5 bg-white border border-gray-300 rounded-b-[4px] z-10 overflow-hidden transition-all duration-300 ease-in-out"
           style={{
             marginTop: '-1px',
           }}
         >
-          <ul className="w-full max-h-60 overflow-y-auto">
+          <ul className="max-h-60 overflow-y-auto">
             {categories.map((category, index) => (
               <li
                 key={category.categoryId}

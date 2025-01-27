@@ -11,6 +11,8 @@ import ScrapIconFilled from '../../../../public/my-log-images/mark-fill.svg';
 import BackIcon from '../../../../public/header-images/back.svg';
 import Image from 'next/image';
 import { fetchLogDetail } from '@/app/_lib/api/logDetail';
+import { getAuthHeaders } from '@/app/_lib/api/getAuthHeader';
+import useUserStore from '@/app/store/userInfoStore';
 
 interface LogData {
   cakeLogid: number;
@@ -25,10 +27,8 @@ interface LogData {
   body: string;
   isPublic: boolean;
   imageList: string[];
+  isScraped: boolean;
 }
-
-const currentUser = 'mimizae'; // 현재 로그인된 사용자 ID
-
 // 스크랩 아이콘 버튼 컴포넌트
 const ScrapButton = ({
   isScraped,
@@ -103,6 +103,10 @@ const LogDetail = () => {
   const [log, setLog] = useState<LogData | null>(null);
   const [isScraped, setIsScraped] = useState(false); // 스크랩 여부 상태
 
+  const user = useUserStore((state) => state.userInfo);
+
+  const currentUser = user?.username;
+
   useEffect(() => {
     if (cakeLogid && !isNaN(Number(cakeLogid))) {
       const logId = Number(cakeLogid); // cakeLogid를 number로 변환
@@ -113,6 +117,7 @@ const LogDetail = () => {
 
           if (data) {
             setLog(data); // 데이터를 직접 setLog로 설정
+            setIsScraped(data.isScraped); // 스크랩 상태 설정
           } else {
             console.error('No logs found.');
             setLog(null); // 데이터가 없으면 null로 설정
@@ -126,16 +131,32 @@ const LogDetail = () => {
     }
   }, [cakeLogid]);
 
+  const handleScrapToggle = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/scrap/CAKELOG/${cakeLogid}`,
+        {
+          method: isScraped ? 'DELETE' : 'POST', // 스크랩 상태에 따라 POST 또는 DELETE 요청
+          headers: getAuthHeaders(),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('스크랩 상태를 업데이트하는 데 실패했습니다.');
+      }
+
+      setIsScraped((prev) => !prev); // 로컬 상태 업데이트
+    } catch (error) {
+      console.error('스크랩 상태 업데이트 실패', error);
+    }
+  };
+
   if (!log) {
     return <LoadingSpinner />; // 로딩 중일 때
   }
 
   const isOwner = log.username === currentUser; // 현재 로그인된 사용자가 작성자인지 확인
   const formattedDate = formatDate(log.createAt); // 날짜 포맷팅
-
-  const handleScrapToggle = () => {
-    setIsScraped((prev) => !prev); // 스크랩 상태 토글
-  };
 
   return (
     <div className="max-w-3xl">

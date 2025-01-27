@@ -1,5 +1,5 @@
 import { PersistStorage } from 'zustand/middleware';
-import { UserStoreState } from '@/app/store/userStore';
+import { UserStoreState } from '@/app/store/userInfoStore';
 
 const localStorageWrapper: PersistStorage<UserStoreState> = {
   getItem: (name) => {

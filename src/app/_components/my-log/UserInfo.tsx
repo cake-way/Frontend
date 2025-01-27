@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
 
 import DefaultProfile from '../../../../public/my-log-images/profile-photo.svg';
 

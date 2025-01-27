@@ -4,7 +4,7 @@ import React from 'react';
 
 import Status from '../../../../public/my-log-images/status.svg';
 import Title from './Title';
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
 
 const SavedStore: React.FC = () => {
   const stores = useUserStore((state) => state.storeScrap);
@@ -12,7 +12,7 @@ const SavedStore: React.FC = () => {
   const lastTwoStore = stores.slice(0, 2);
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
-      <Title title="저장한 가게" link="/my-log/stores" length={stores.length} />
+      <Title title="저장한 가게" link="/my-log/stores" />
 
       {/* 조건부 렌더링: 배열이 비었을 때 메시지 표시, 아니면 가게 리스트 렌더링 */}
       {stores.length === 0 ? (

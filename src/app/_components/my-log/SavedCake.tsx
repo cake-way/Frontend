@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 
 import Title from './Title';
-import useUserStore from '@/app/store/userStore';
+import useUserStore from '@/app/store/userInfoStore';
 
 const SavedCake: React.FC = () => {
   const designScrap = useUserStore((state) => state.designScrap);
@@ -13,11 +13,7 @@ const SavedCake: React.FC = () => {
   const latestFourCakes = designScrap.slice(0, 4);
   return (
     <main className="mt-[35px] px-5 flex flex-col items-center">
-      <Title
-        title="저장한 디자인"
-        link="/my-log/designs"
-        length={designScrap.length}
-      />
+      <Title title="저장한 디자인" link="/my-log/designs" />
 
       {designScrap.length === 0 ? (
         <p className="text-gray-700 text-sm my-24">

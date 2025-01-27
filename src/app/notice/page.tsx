@@ -15,23 +15,24 @@ const Notice = () => {
     router.back();
   };
 
+  const headerProps = {
+    leftButtonImage: <Image src={BackIcon} alt="back" />,
+    onLeftButtonClick: handleLeftButtonClick,
+    centerText: '알림',
+    rightButtonImage: [
+      <Image
+        width={24}
+        height={24}
+        key="setting"
+        src={FilledAlarmIcon}
+        alt="setting"
+      />,
+    ],
+  };
+
   return (
     <main className="w-full">
-      <Header
-        leftButtonImage={<Image src={BackIcon} alt="back" />}
-        onLeftButtonClick={handleLeftButtonClick}
-        centerText="알림"
-        rightButtonImage={[
-          <Image
-            width={24}
-            height={24}
-            key="setting"
-            src={FilledAlarmIcon}
-            alt="setting"
-          />,
-        ]}
-      />
-
+      <Header {...headerProps} />
       <div className=" flex flex-col gap-2 items-center justify-center mt-72">
         <Image
           width={56}
