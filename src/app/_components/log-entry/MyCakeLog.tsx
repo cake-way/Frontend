@@ -43,7 +43,10 @@ const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
       ) : (
         <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">
           {cakelogs.map((cake, index) => (
-            <div key={index} className="relative w-full h-[215px]">
+            <div
+              key={index}
+              className="relative cursor-pointer w-full h-[215px]"
+            >
               {/* 이미지 */}
               <Image
                 src={cake.thumbnailImage}

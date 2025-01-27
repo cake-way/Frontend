@@ -24,15 +24,27 @@ const CakeLogs = () => {
   const router = useRouter();
   const [scrapLogs, setScrapLogs] = useState<ScrapLog[]>([]);
 
-  const handleToLogDetail = (cakeLogid: number) => {
-    router.push(`/log-detail/${cakeLogid}`);
-  };
+  useEffect(() => {
+    const fetchLogScrapData = async () => {
+      try {
+        const data = await fetchScrapLogs();
+        const updatedData = data.map((log: ScrapLog) => ({
+          ...log,
+          isMarked: true, // 이미 스크랩된 항목이므로 초기 상태에서 isMarked를 true로 설정
+        }));
+        setScrapLogs(updatedData);
+      } catch (error) {
+        console.error('스크랩 데이터를 가져오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchLogScrapData();
+  }, []);
 
   const toggleMark = async (index: number, cakeLogId: number) => {
     const updatedLogs = [...scrapLogs];
     const log = updatedLogs[index];
 
-    // 상태 변경
     log.isMarked = !log.isMarked;
     setScrapLogs(updatedLogs);
 
@@ -51,23 +63,9 @@ const CakeLogs = () => {
     router.push('/notice');
   };
 
-  // 스크랩 데이터를 가져오는 API 호출
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchScrapLogs();
-        const updatedData = data.map((log: ScrapLog) => ({
-          ...log,
-          isMarked: true, // 이미 스크랩된 항목이므로 초기 상태에서 isMarked를 true로 설정
-        }));
-        setScrapLogs(updatedData);
-      } catch (error) {
-        console.error('스크랩 데이터를 가져오는 데 실패했습니다.', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const handleToLogDetail = (cakeLogid: number) => {
+    router.push(`/log-detail/${cakeLogid}`);
+  };
 
   return (
     <main className="w-full flex flex-col items-center text-white font-sans">
