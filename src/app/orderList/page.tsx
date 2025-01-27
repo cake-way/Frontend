@@ -9,41 +9,52 @@ import { useQuery } from '@tanstack/react-query';
 import { orderHistoryApi, orderHistoryGetCakeApi } from '../_lib/orderApi';
 import { cakeSearch, OrderType } from 'types/relatedCake';
 import LoadingSpinner from '../_components/Loading';
+import useUserStore from '../store/userStore';
 
 export default function OrderList() {
-  const [activeTab, setActiveTab] = useState<'제작 중' | '픽업 완료'>(
-    '제작 중'
+  const { userInfo } = useUserStore();
+  const [activeTab, setActiveTab] = useState<'주문 접수' | '픽업 완료'>(
+    '주문 접수'
   );
   const { data: cakeOrders, isLoading } = useQuery<OrderType[]>({
-    queryKey: ['cakeOrders'],
-    queryFn: () => orderHistoryApi(1),
+    queryKey: ['cakeOrders', userInfo],
+    queryFn: () => orderHistoryApi(+userInfo.memberId),
+    enabled: !!userInfo,
     select: (data) => {
       // NOT_FOUND인 경우 빈 배열 반환
       return 'status' in data && data.status === 'NOT_FOUND' ? [] : data;
     },
   });
+  console.log(cakeOrders);
 
   const { data: cakeSearch } = useQuery<cakeSearch[]>({
     queryKey: ['cakeSearch', cakeOrders],
     queryFn: async () => {
       const cakeNames = cakeOrders?.map((item) => item.cakeName);
-      return cakeNames
-        ? await Promise.all(
-            cakeNames.map((item) => orderHistoryGetCakeApi(item))
-          )
-        : [];
+
+      if (!cakeNames) return [];
+
+      const results = await Promise.all(
+        cakeNames.map((item) => orderHistoryGetCakeApi(item))
+      );
+      return results.flat();
     },
   });
+  console.log(cakeSearch);
+  //요거 수정하기
+  if (!userInfo) {
+    return <div>로그인해주세요</div>;
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  const handleTabChange = (tab: '제작 중' | '픽업 완료') => {
+  const handleTabChange = (tab: '주문 접수' | '픽업 완료') => {
     setActiveTab(tab);
   };
 
-  const readyCake = cakeOrders?.filter((item) => item.status === '준비중');
-  const doneCake = cakeOrders?.filter((item) => item.status === '픽업완료');
+  const readyCake = cakeOrders?.filter((item) => item.status === '주문 접수');
+  const doneCake = cakeOrders?.filter((item) => item.status === '픽업 완료');
   return (
     <>
       {/* Tabs */}
@@ -57,13 +68,13 @@ export default function OrderList() {
         />
         <div className="flex gap-[18px]">
           <motion.button
-            layoutId={activeTab === '제작 중' ? 'active-tab' : undefined}
+            layoutId={activeTab === '주문 접수' ? 'active-tab' : undefined}
             className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
-              activeTab === '제작 중'
+              activeTab === '주문 접수'
                 ? 'border-black text-black'
                 : 'border-transparent text-gray-400'
             }`}
-            onClick={() => handleTabChange('제작 중')}
+            onClick={() => handleTabChange('주문 접수')}
           >
             준비중
           </motion.button>
@@ -83,7 +94,7 @@ export default function OrderList() {
 
       {/* Order List */}
       <div className="p-4">
-        {activeTab === '제작 중' && (
+        {activeTab === '주문 접수' && (
           <div className="space-y-4">
             {readyCake?.length === 0 ? (
               <div className="text-center text-gray-500 text-sm py-10">

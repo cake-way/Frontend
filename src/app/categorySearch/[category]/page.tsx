@@ -26,6 +26,7 @@ import { days } from 'constants/constants';
 //카테고리 없는 ui
 const CategorySearch = () => {
   const { category } = useParams();
+  const router = useRouter();
 
   // 유효한 카테고리인지 확인하는 함수
   const isValidCategory = (cat: string | string[] | undefined) => {
@@ -60,7 +61,6 @@ const CategorySearch = () => {
     );
   }
 
-  const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterName, setFilterName] = useState('');
   const [isOpen, setIsOpen] = useState(false);

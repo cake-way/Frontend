@@ -81,6 +81,7 @@ export interface IShopDetail {
 export interface OrderType {
   orderId: number;
   cakeName: string;
+  cakeShopName: string;
   orderDate: string;
   pickupDate: string;
   totalPrice: number;
@@ -96,12 +97,10 @@ export interface OrderType {
 }
 
 export interface cakeSearch {
-  cakeId: number;
   name: string;
   imageUrl: string;
-  price: number;
-  scrapCount: number;
-  shopName: string;
+
+  cakeShopName: string;
 }
 export interface OrderCardProps {
   order: OrderType;

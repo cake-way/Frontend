@@ -79,7 +79,7 @@ const Order: React.FC = () => {
 
         // const pickupDate = dayjs(newDate).format('YYYY-MM-DDTHH:MM');
         const body = {
-          memberId: 0, //현재 user의 토큰으로 바꾸기
+          memberId: 2, //현재 user의 토큰으로 바꾸기
           cakeId: +cake_id,
           orderDate: new Date().toISOString(),
           pickupDate: newDate.toISOString(),
@@ -87,10 +87,11 @@ const Order: React.FC = () => {
           lettering: letteringText,
           color: selectedBgColor,
           lettercolor: letteringColor,
-          selectedOptionIds: [flavors.indexOf(selectedFlavor)],
+          selectedOptionIds: [flavors.indexOf(selectedFlavor) + 1],
         };
-        console.log(body);
+
         await orderApi(body);
+
         alert('주문이 완료되었습니다.');
         router.push('/orderList');
       } else {
