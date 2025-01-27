@@ -1,21 +1,23 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
+
+import { savedLog } from 'constants/constants';
 
 import BackIcon from '../../../../public/header-images/back.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
 import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
+
 import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
-import { savedLog } from 'constants/constants';
-import { useState } from 'react';
 
 export default function AllCakewayPicks() {
   const router = useRouter();
 
   const [marked, setMarked] = useState<boolean[]>(
-    Array(savedLog.length).fill(false)
+    Array(savedLog.length).fill(true)
   );
 
   const toggleMark = (index: number) => {
@@ -57,6 +59,9 @@ export default function AllCakewayPicks() {
               alt={cake.title}
               layout="fill"
               objectFit="cover"
+              onClick={() => {
+                router.push(`/curationDetail/${cake.cakeLogid}`);
+              }}
               className="cursor-pointer"
             />
 
@@ -80,7 +85,7 @@ export default function AllCakewayPicks() {
             <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
             {/* 이미지 위에 제목 */}
-            <div className="px-4 absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
+            <div className="px-4 text-sm absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
               {cake.title}
             </div>
           </div>

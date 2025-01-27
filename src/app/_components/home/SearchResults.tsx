@@ -8,27 +8,7 @@ import {
 } from '@/app/_lib/api/searchResults';
 import MarkIcon from '../Icons/MarkIcon';
 import FilledMarkIcon from '../Icons/FilledMarkIcon';
-
-interface Cake {
-  cakeId: number;
-  name: string;
-  imageUrl: string;
-  price: number;
-  scrapCount: number;
-  shopName: string;
-  isScrapped: boolean;
-}
-
-interface Shop {
-  shopId: number;
-  name: string;
-  address: string;
-  contact: string;
-  thumbnailImage: string;
-  distance: number;
-  isScrapped: boolean;
-  cakes: Cake[];
-}
+import { Cake, Shop } from 'types/home/searchResult';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);

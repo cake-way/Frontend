@@ -4,11 +4,7 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import AddButtonIcon from '../../../../../public/log-entry/add.svg';
-
-interface AddPhotosProps {
-  photos: File[];
-  setPhotos: (photos: File[]) => void;
-}
+import { AddPhotosProps } from 'types/cake-log/createLog';
 
 const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

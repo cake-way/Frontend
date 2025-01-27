@@ -4,16 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import DropDownIcon from '../../../../../public/log-entry/dropdown.svg';
 import { getCategories } from '@/app/_lib/api/getCategories';
-
-interface Category {
-  categoryId: number;
-  categoryName: string;
-}
-
-interface CategorySelectorProps {
-  selectedShopId: number | null;
-  onSelectCategory: (categoryId: number) => void;
-}
+import { Category, CategorySelectorProps } from 'types/cake-log/createLog';
 
 const CategorySelector = ({
   selectedShopId,
@@ -47,7 +38,7 @@ const CategorySelector = ({
   };
 
   return (
-    <section className="w-full px-5 mt-5 mb-11 relative">
+    <section className="w-full px-5 mt-12 mb-11 relative">
       <p className="font-semibold">케이크 카테고리</p>
       <div
         className={`w-full px-4 py-2 mt-3 text-sm border border-gray-300 cursor-pointer relative transition-all duration-300 ${

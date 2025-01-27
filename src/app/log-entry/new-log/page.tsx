@@ -159,7 +159,7 @@ const NewLog = () => {
       <AddPhotos photos={photos} setPhotos={setPhotos} />
 
       {/* 본문 작성 */}
-      <section className="w-full px-5 mt-5">
+      <section className="w-full px-5 mt-14">
         <p className="font-semibold">본문 작성</p>
         <textarea
           id="body"

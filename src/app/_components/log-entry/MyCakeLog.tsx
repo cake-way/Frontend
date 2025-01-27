@@ -4,20 +4,7 @@ import Image from 'next/image';
 import Title from '@/app/_components/my-log/Title';
 import { useRouter } from 'next/navigation';
 import LogIcon from '../Icons/LogIcon';
-
-interface MyCakeLogProps {
-  cakelogs: Array<{
-    cakeLogid: number;
-    username: string;
-    cakeShopName: string;
-    cakeCategoryName: string;
-    title: string;
-    thumbnailImage: string;
-    body: string;
-    isPublic: true;
-    imageList: [string];
-  }>;
-}
+import { MyCakeLogProps } from 'types/cake-log/myCakeLogs';
 
 const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
   const router = useRouter();

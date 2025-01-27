@@ -1,19 +1,5 @@
 import { getAuthHeaders } from '@/app/_lib/api/getAuthHeader';
-
-export interface StoreScrap {
-  shopId: number;
-  shopImage: string;
-  shopName: string;
-  address: string;
-  operatingHours: {
-    dayOfWeek: string;
-    openTime: string;
-    closeTime: string;
-    active: boolean;
-  };
-  scrap: boolean;
-  sameDay: boolean;
-}
+import { StoreScrap } from 'types/store/store-scrap';
 
 export const fetchStoreScrapData = async (): Promise<StoreScrap[]> => {
   try {

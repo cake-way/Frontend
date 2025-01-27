@@ -2,23 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-import Header from '@/app/_components/Header';
 import { useRouter } from 'next/navigation';
+import { ScrapLog } from 'types/cake-log/scrapLog';
 
 import BackIcon from '../../../../public/header-images/back.svg';
 import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
+
+import Header from '@/app/_components/Header';
 import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
 import { fetchScrapLogs, toggleMarkScrap } from '@/app/_lib/api/logScrap';
-
-interface ScrapLog {
-  id: number;
-  scrapType: string;
-  imageUrl: string;
-  title: string;
-  isMarked: boolean;
-}
+import EmptyState from '@/app/_components/my-log/EmptyState';
 
 const CakeLogs = () => {
   const router = useRouter();
@@ -78,36 +72,40 @@ const CakeLogs = () => {
         borderBottom={true}
       />
 
-      <section className="w-full mt-7 px-[20px] grid grid-cols-2 gap-2 items-center">
-        {scrapLogs.map((cake, index) => (
-          <div key={cake.id} className="relative w-full h-[250px]">
-            <Image
-              src={cake.imageUrl}
-              alt={cake.title}
-              layout="fill"
-              objectFit="cover"
-              className="cursor-pointer"
-              onClick={() => handleToLogDetail(cake.id)}
-            />
-            <button
-              onClick={() => toggleMark(index, cake.id)}
-              className="absolute top-2 right-2 z-10"
-            >
-              {cake.isMarked ? (
-                <FilledMarkIcon />
-              ) : (
-                <Image src={MarkIconDefault} alt="Mark" />
-              )}
-            </button>
+      {scrapLogs.length === 0 ? (
+        <EmptyState item="케이크로그" />
+      ) : (
+        <section className="w-full mt-7 px-[20px] grid grid-cols-2 gap-2 items-center">
+          {scrapLogs.map((cake, index) => (
+            <div key={cake.id} className="relative w-full h-[250px]">
+              <Image
+                src={cake.imageUrl}
+                alt={cake.title}
+                layout="fill"
+                objectFit="cover"
+                className="cursor-pointer"
+                onClick={() => handleToLogDetail(cake.id)}
+              />
+              <button
+                onClick={() => toggleMark(index, cake.id)}
+                className="absolute top-2 right-2 z-10"
+              >
+                {cake.isMarked ? (
+                  <FilledMarkIcon />
+                ) : (
+                  <Image src={MarkIconDefault} alt="Mark" />
+                )}
+              </button>
 
-            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
-            <div className="px-4 absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
-              {cake.title}
+              <div className="px-4 absolute bottom-0 left-0 w-full text-white pb-[12px] whitespace-pre-line z-10">
+                {cake.title}
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
+      )}
     </main>
   );
 };

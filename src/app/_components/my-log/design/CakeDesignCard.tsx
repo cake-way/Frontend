@@ -1,27 +1,10 @@
 import Image from 'next/image';
 import FilledMarkIcon from '../../Icons/FilledMarkIcon';
 import MarkIconDefault from '../../../../../public/my-log-images/mark.svg';
-
-export interface CakeDesign {
-  id: number;
-  scrapType: string;
-  imageUrl: string;
-  title: string;
-}
-
-interface CakeDesignCardProps {
-  design: CakeDesign;
-  isMarked: boolean;
-  onToggleMark: () => void;
-  onClickDetail: () => void;
-}
-
-interface CakeDesignGridProps {
-  designs: CakeDesign[];
-  marked: boolean[];
-  onToggleMark: (index: number, cakeId: number) => void;
-  onClickDetail: (cakeId: number) => void;
-}
+import {
+  CakeDesignCardProps,
+  CakeDesignGridProps,
+} from 'types/cake-design/cakeDesignProps';
 
 export const CakeDesignCard: React.FC<CakeDesignCardProps> = ({
   design,
@@ -56,13 +39,6 @@ export const CakeDesignCard: React.FC<CakeDesignCardProps> = ({
     </button>
   </div>
 );
-
-interface CakeDesignGridProps {
-  designs: CakeDesign[];
-  marked: boolean[];
-  onToggleMark: (index: number, cakeId: number) => void;
-  onClickDetail: (cakeId: number) => void;
-}
 
 export const CakeDesignGrid: React.FC<CakeDesignGridProps> = ({
   designs,
