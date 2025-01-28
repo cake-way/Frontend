@@ -11,13 +11,36 @@ import FilledMarkIcon from '../Icons/FilledMarkIcon';
 import { Cake, Shop } from 'types/home/searchResult';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getCakeDesigns } from '@/app/_lib/api/cakeDesigns';
+import { fetchStoreScrapData } from '@/app/_lib/api/storeScrap';
+import { CakeDesign } from 'types/cake-design/cakeDesignProps';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);
   const [shopResults, setShopResults] = useState<Shop[]>([]);
+  const [scrappedCakes, setScrappedCakes] = useState<number[]>([]);
+  const [scrappedShops, setScrappedShops] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState<'cake' | 'shop'>('cake');
 
   const router = useRouter();
+
+  useEffect(() => {
+    // 스크랩 데이터 불러오기
+    const fetchScrappedData = async () => {
+      try {
+        const [cakeScraps, shopScraps] = await Promise.all([
+          getCakeDesigns(),
+          fetchStoreScrapData(),
+        ]);
+        setScrappedCakes(cakeScraps.map((cake: CakeDesign) => cake.id)); // 스크랩한 케이크 ID 리스트
+        setScrappedShops(shopScraps.map((shop) => shop.shopId)); // 스크랩한 가게 ID 리스트
+      } catch (error) {
+        console.error('스크랩 데이터 로드 중 오류 발생:', error);
+      }
+    };
+
+    fetchScrappedData();
+  }, []);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -29,9 +52,19 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           fetchShopsData(keyword, latitude, longitude),
         ]);
 
-        setCakeResults(cakes);
-        setShopResults(shops);
-        console.log(shops);
+        // 스크랩 상태 동기화
+        setCakeResults(
+          cakes.map((cake: Cake) => ({
+            ...cake,
+            isScrapped: scrappedCakes.includes(cake.cakeId),
+          }))
+        );
+        setShopResults(
+          shops.map((shop: Shop) => ({
+            ...shop,
+            isScrapped: scrappedShops.includes(shop.shopId),
+          }))
+        );
       } catch (error) {
         console.error('검색 중 오류 발생:', error);
       }
@@ -43,54 +76,44 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
     return () => {
       debouncedFetch.cancel();
     };
-  }, [keyword, latitude, longitude]);
+  }, [keyword, latitude, longitude, scrappedCakes, scrappedShops]);
 
-  const handleScrapCake = async (cakeId: number) => {
+  const handleScrapCake = async (cakeId: number, index: number) => {
     try {
-      const success = await scrapCake(cakeId);
+      const cake = cakeResults[index]; // 특정 케이크를 직접 참조
+      const success = await scrapCake(cakeId, cake.isScrapped);
       if (success) {
-        setCakeResults((prevCakes) =>
-          prevCakes.map((cake) =>
-            cake.cakeId === cakeId
-              ? { ...cake, isScrapped: !cake.isScrapped }
-              : cake
-          )
+        cake.isScrapped = !cake.isScrapped; // 배열 요소 직접 수정
+        setCakeResults([...cakeResults]); // 배열 복사로 상태 갱신
+        setScrappedCakes((prev) =>
+          prev.includes(cakeId)
+            ? prev.filter((id) => id !== cakeId)
+            : [...prev, cakeId]
         );
       }
-    } catch (error: unknown) {
-      console.error('에러 디버깅:', error); // 에러 객체 전체 확인
-      if (
-        error instanceof Error &&
-        error.message.includes('스크랩에 실패했습니다')
-      ) {
-        alert('이미 스크랩하셨습니다!');
-      } else {
-        console.error('스크랩 API 호출 중 오류:', error);
-      }
+    } catch (error) {
+      console.error('케이크 스크랩 처리 중 오류:', error);
     }
   };
 
   const handleScrapShop = async (shopId: number, index: number) => {
     try {
       const shop = shopResults[index];
-      const success = await scrapShop(shopId, shop.isScrapped); // 분리된 API 호출
+      const success = await scrapShop(shopId, shop.isScrapped);
       if (success) {
         setShopResults((prevShops) =>
           prevShops.map((s, i) =>
             i === index ? { ...s, isScrapped: !s.isScrapped } : s
           )
         );
+        setScrappedShops((prev) =>
+          prev.includes(shopId)
+            ? prev.filter((id) => id !== shopId)
+            : [...prev, shopId]
+        );
       }
-    } catch (error: unknown) {
-      console.error('에러 디버깅:', error); // 에러 객체 전체 확인
-      if (
-        error instanceof Error &&
-        error.message.includes('가게 스크랩 처리에 실패했습니다')
-      ) {
-        alert('이미 스크랩하셨습니다!');
-      } else {
-        console.error('스크랩 API 호출 중 오류:', error);
-      }
+    } catch (error) {
+      console.error('가게 스크랩 처리 중 오류:', error);
     }
   };
 
@@ -124,7 +147,7 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           <>
             {cakeResults.length > 0 ? (
               <div className="grid grid-cols-2 gap-2 w-full pt-5">
-                {cakeResults.map((cake) => (
+                {cakeResults.map((cake, index) => (
                   <div key={cake.cakeId} className="relative w-full h-auto">
                     <div className="relative w-full h-[226px]">
                       <Image
@@ -145,7 +168,7 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
 
                     <button
                       className="absolute top-2 right-2 z-10"
-                      onClick={() => handleScrapCake(cake.cakeId)}
+                      onClick={() => handleScrapCake(cake.cakeId, index)}
                     >
                       {cake.isScrapped ? (
                         <FilledMarkIcon />
@@ -185,7 +208,10 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                         </h3>
                         <div className="shop-marker text-xl">
                           <button
-                            onClick={() => handleScrapShop(shop.shopId, index)}
+                            onClick={(e) => {
+                              e.stopPropagation(); // 이벤트 전파 중단
+                              handleScrapShop(shop.shopId, index);
+                            }}
                           >
                             {shop.isScrapped ? (
                               <FilledMarkIcon fill="black" />
