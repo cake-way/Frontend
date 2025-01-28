@@ -32,8 +32,8 @@ const CakeCard: React.FC<CakeCardProps> = ({
 }) => {
   const getRunTime = () => {
     const date = new Date();
-    const hours = operatingHours?.openTime.hour * 60;
-    const minutes = operatingHours?.openTime.minute;
+    const hours = operatingHours?.openTime?.hour * 60;
+    const minutes = operatingHours?.openTime?.minute;
 
     const start = hours + minutes;
 
@@ -81,7 +81,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
         <h3 className="font-bold text-sm mb-1">{title}</h3>
         <div className="flex items-center text-xs ">
           <span
-            className={`w-2 h-2 rounded-full mr-1 ${getRunTime() === true ? 'bg-green-500' : 'bg-red-500'}`}
+            className={`w-2 h-2 rounded-full mr-1 ${getRunTime() === true ? 'bg-[#DCDA75]' : 'bg-primaryRed1'}`}
           ></span>
           {getRunTime()} {location}
         </div>

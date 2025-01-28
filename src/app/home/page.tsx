@@ -158,8 +158,8 @@ export default function Home() {
             <Image
               src={'/shop/positionIcon.svg'}
               alt="position_icon"
-              width={16}
-              height={16}
+              width={20}
+              height={20}
             />
             <div className="text-[#4f4f4f] text-sm font-medium">
               {homeLocation ? homeLocation : '위치를 선택해주세요'}

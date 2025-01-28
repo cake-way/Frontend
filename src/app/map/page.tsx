@@ -92,9 +92,9 @@ export default function Map() {
       {/* 상단부분 */}
       <div className="w-full p-4 absolute z-50 flex gap-3  flex-col">
         <div
-          className={`${'bg-[#ffffff] shadow'} flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
+          className={`${'bg-[#ffffff] shadow'} flex items-center gap-[10px] h-[37px] shrink-0 rounded-[20px] w-full`}
         >
-          <div className="flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full bg-[#ffffff] shadow">
+          <div className="flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full ">
             <SearchIcon focus={focus} />
             <input
               id="search-input"

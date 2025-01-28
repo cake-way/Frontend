@@ -50,6 +50,11 @@ export default function Price() {
       <div className="relative w-full h-1 my-8">
         {/* 배경&가격 트랙 */}
         <div className="absolute w-full  right-0 h-[3px] bg-grayscale300 rounded"></div>
+        <div className="absolute left-0 w-[2px] h-[10px] bg-[#D9D9D9] top-0 -translate-y-[calc(50%-2px)]"></div>
+        <div className="absolute left-[25%] w-[2px] h-[10px] bg-[#D9D9D9] top-0 -translate-y-[calc(50%-2px)]"></div>
+        <div className="absolute left-[50%] w-[2px] h-[10px] bg-[#D9D9D9] top-0 -translate-y-[calc(50%-2px)]"></div>
+        <div className="absolute left-[75%] w-[2px] h-[10px] bg-[#D9D9D9] top-0 -translate-y-[calc(50%-2px)]"></div>
+        <div className="absolute left-[100%] w-[2px] h-[10px] bg-[#D9D9D9] top-0 -translate-y-[calc(50%-2px)]"></div>
         <div className="absolute top-5 text-xs font-medium text-grayscale600">
           0원
         </div>
@@ -94,16 +99,16 @@ export default function Price() {
                [&::-webkit-slider-thumb]:h-4
                [&::-webkit-slider-thumb]:rounded-full
                [&::-webkit-slider-thumb]:bg-white
-                  [&::-webkit-slider-thumb]:-translate-y-1
+                  [&::-webkit-slider-thumb]:-translate-y-[6px]
                 
                     [&::-webkit-slider-thumb]:border-solid
-                [&::-webkit-slider-thumb]:border-[1px]
+                [&::-webkit-slider-thumb]:border-[2px]
                [&::-webkit-slider-thumb]:border-primaryRed1
                [&::-webkit-slider-thumb]:shadow
                [&::-moz-range-thumb]:w-4
                [&::-moz-range-thumb]:h-4
                [&::-moz-range-thumb]:rounded-full
-               [&::-moz-range-thumb]:bg-blue-500
+              
                [&::-moz-range-thumb]:border-2
                [&::-moz-range-thumb]:border-white
                [&::-moz-range-thumb]:shadow"
@@ -125,16 +130,15 @@ export default function Price() {
                [&::-webkit-slider-thumb]:rounded-full
            
               [&::-webkit-slider-thumb]:bg-white
-                  [&::-webkit-slider-thumb]:-translate-y-1
+                  [&::-webkit-slider-thumb]:-translate-y-[6px]
             
                     [&::-webkit-slider-thumb]:border-solid
-               [&::-webkit-slider-thumb]:border-[1px]
+               [&::-webkit-slider-thumb]:border-[2px]
                [&::-webkit-slider-thumb]:border-primaryRed1
                [&::-webkit-slider-thumb]:shadow
                [&::-moz-range-thumb]:w-4
                [&::-moz-range-thumb]:h-4
                [&::-moz-range-thumb]:rounded-full
-               [&::-moz-range-thumb]:bg-blue-500
                [&::-moz-range-thumb]:border-2
                [&::-moz-range-thumb]:border-white
                [&::-moz-range-thumb]:shadow"

@@ -4,7 +4,7 @@ import Header from '@/app/_components/Header';
 
 import back from '@/../public/header-images/back.svg';
 import cakeIcon from '@/../public/order/cakeIcon.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { TimeSlotCalendar } from '@/app/_components/order/Calendar';
@@ -21,7 +21,8 @@ const Order: React.FC = () => {
   const { cake_id } = useParams();
   const router = useRouter();
   const [nextPage, setNextPage] = useState(false);
-
+  // 스크롤 위치 관리를 위한 ref
+  const pageRef = useRef<HTMLDivElement>(null);
   const [selectedSize, setSelectedSize] = useState('미니사이즈');
   const [selectedFlavor, setSelectedFlavor] = useState('');
   const [selectedBgColor, setSelectedBgColor] = useState<string | null>(null);
@@ -30,6 +31,8 @@ const Order: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
+  const [aiTopic, setAiTopic] = useState('');
+  const [aiSituate, setAiSituate] = useState('');
   const { data, isLoading } = useQuery<ICakeDetail>({
     queryKey: ['cakeDetail', cake_id],
   });
@@ -70,8 +73,17 @@ const Order: React.FC = () => {
   ];
 
   useEffect(() => {
+    // 확인
     setSelectedFlavor(flavors[0]);
   }, [flavors]);
+
+  useEffect(() => {
+    console.log(nextPage);
+    // nextPage가 변경될 때 스크롤을 맨 위로 이동
+    if (nextPage && pageRef.current) {
+      pageRef.current.scrollTo(0, 10000);
+    }
+  }, [nextPage]);
 
   const onclickedBack = () => {
     router.back();
@@ -151,7 +163,7 @@ const Order: React.FC = () => {
   }
 
   return (
-    <div className="   flex flex-col">
+    <div className="flex flex-col" ref={pageRef}>
       {!nextPage ? (
         <>
           {/* Header */}
@@ -279,8 +291,67 @@ const Order: React.FC = () => {
               className="bg-[#f4f4f4]  resize-none text-sm font-medium text-grayscale900  w-full px-3.5 py-3.5 focus:outline-none rounded-md h-40"
             />
           </div>
+          {/* Suggested Lettering Section */}
+          <div className="p-4">
+            <h2 className="text-lg font-bold mb-1">추천 레터링 문구</h2>
+            <p className="text-gray-600 text-sm mb-4">
+              (입력한 주제와 상황을 바탕으로 AI가 레터링 문구를 추천해드립니다.)
+            </p>
+
+            {/* 주제 입력 */}
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">주제</label>
+              <input
+                type="text"
+                placeholder="예: 생일, 결혼기념일, 졸업"
+                className="bg-[#f4f4f4] w-full px-3 py-2 rounded-md text-sm text-gray-800 focus:outline-none"
+                value={aiTopic ?? ''}
+                onChange={(e) => setAiTopic(e.target.value)}
+              />
+            </div>
+
+            {/* 상황 입력 */}
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">
+                케이크 선물 상황
+              </label>
+              <input
+                type="text"
+                placeholder="예: 가장 친한 친구의 생일파티, 부모님 결혼기념일"
+                className="bg-[#f4f4f4] w-full px-3 py-2 rounded-md text-sm text-gray-800 focus:outline-none"
+                value={aiSituate ?? ''}
+                onChange={(e) => setAiSituate(e.target.value)}
+              />
+            </div>
+
+            {/* 문구 추천 버튼 */}
+            <button
+              className="bg-[#000000] text-white py-2 px-4 rounded-md hover:bg-[#545454] transition"
+              onClick={async () => {
+                try {
+                  const response = await fetch('/api/generateLettering', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      topic: aiTopic,
+                      situation: aiSituate,
+                    }),
+                  });
+
+                  const { suggestion } = await response.json();
+                  setLetteringText(suggestion);
+                } catch (error) {
+                  console.error('문구 추천 실패:', error);
+                  alert('문구를 추천할 수 없습니다. 다시 시도해주세요.');
+                }
+              }}
+            >
+              문구 추천 받기
+            </button>
+          </div>
+
           {/* Refund Policy Section */}
-          <div className="p-4 mt-32">
+          <div className="p-4 ">
             <h2 className="text-lg font-bold mb-2">취소 및 환불 규정</h2>
             <p className="rounded-md text-grayscale900 bg-[#f4f4f4] px-3 py-1.5">
               {shopDetail?.cautions}
@@ -289,7 +360,7 @@ const Order: React.FC = () => {
           {/* Reservation Button */}
           <div className="p-4">
             <button
-              className="w-full bg-black text-white py-2 rounded-md text-lg font-medium"
+              className="w-full bg-black hover:bg-[#545454]  text-white py-2 rounded-md text-lg font-medium"
               onClick={onClickedOrder}
             >
               예약하기
