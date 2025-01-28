@@ -126,7 +126,7 @@ const ProfileEdit = () => {
         {/* 프로필 사진 수정 텍스트 */}
         <label
           htmlFor="profileImage"
-          className="text-sm mx-auto text-gray-500 cursor-pointer"
+          className="text-sm mx-auto text-grayscale600 cursor-pointer"
         >
           프로필 사진 수정
         </label>
@@ -144,7 +144,7 @@ const ProfileEdit = () => {
           type="text"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          className="w-full h-12 px-3 py-2 bg-gray-100 border border-none outline-none rounded-sm text-sm caret-primaryRed1"
+          className="w-full h-12 px-3 py-2 bg-[#F4F4F4] border border-none outline-none rounded-sm text-sm caret-primaryRed1"
         />
 
         {/* 취향 소개 입력 */}
@@ -153,13 +153,13 @@ const ProfileEdit = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="나만의 케이크 취향을 알려주세요! (최대 30자)"
-          className="w-full px-4 py-3 bg-gray-100 border border-none outline-none rounded-sm text-sm h-28 resize-none caret-primaryRed1"
+          className="w-full px-4 py-3 bg-[#F4F4F4]  border border-none outline-none rounded-sm text-sm h-28 resize-none caret-primaryRed1"
         ></textarea>
 
         {/* 저장 버튼 */}
         <footer className="w-full flex justify-between mt-16 mb-11">
           <button
-            className={`w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none text-gray-700 border border-gray-400`}
+            className={`w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none text-grayscale700 border border-grayscale400`}
             onClick={() => {
               router.back();
             }}

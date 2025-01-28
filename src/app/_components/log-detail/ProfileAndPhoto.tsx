@@ -29,7 +29,7 @@ export const ProfileInfo = ({
 
 // 이미지 슬라이더 컴포넌트
 export const ImageSlider = ({ images }: { images: string[] }) => (
-  <Swiper spaceBetween={2} slidesPerView="auto" className="mt-5">
+  <Swiper spaceBetween={2} slidesPerView="auto" className="mt-4">
     {images.map((image, index) => (
       <SwiperSlide key={index} style={{ width: '167px', height: '222px' }}>
         <img

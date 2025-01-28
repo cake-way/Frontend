@@ -56,7 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
           onChange={handleChange} // 입력 변화 핸들러
           onFocus={handleFocus} // 포커스 핸들러
           onBlur={handleBlur} // 블러 핸들러
-          className={`${'placeholder-gray-400'} flex-grow flex-shrink text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1`}
+          className={`${'placeholder-grayscale500'} flex-grow flex-shrink text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1`}
           aria-label="검색어 입력"
         />
       </label>

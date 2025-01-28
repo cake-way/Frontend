@@ -76,7 +76,7 @@ const LogDetail = () => {
       {/* 본문 내용 */}
       <section className="pl-5">
         <p className="text-lg font-[700]">{log.cakeShopName}</p>
-        <p className="flex text-sm font-[500] text-gray-700 gap-2">
+        <p className="flex text-sm font-[500] text-grayscale700 gap-2">
           <span className="font-semibold text-sm text-black">영업 중</span>
           20:30에 라스트 오더
         </p>
@@ -85,7 +85,7 @@ const LogDetail = () => {
         <ImageSlider images={log.imageList} />
 
         {/* 본문 내용 */}
-        <p className="mt-2 text-sm font-[500] pr-5 mb-10">{log.body}</p>
+        <p className="mt-3 text-sm font-[500] pr-5 mb-10">{log.body}</p>
       </section>
     </article>
   );

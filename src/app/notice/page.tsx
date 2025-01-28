@@ -33,7 +33,7 @@ const Notice = () => {
   return (
     <main className="w-full">
       <Header {...headerProps} />
-      <div className=" flex flex-col gap-2 items-center justify-center mt-72">
+      <div className="flex flex-col gap-2 items-center justify-center mt-48">
         <Image
           width={56}
           height={56}
@@ -41,7 +41,7 @@ const Notice = () => {
           src={AlarmIcon}
           alt="setting"
         />
-        <p className="text-center text-[14px] text-gray-400">
+        <p className="text-center text-[14px] text-grayscale500">
           아직 도착한 알림이 없어요
         </p>
       </div>

@@ -12,7 +12,7 @@ export const CakeDesignCard: React.FC<CakeDesignCardProps> = ({
   onToggleMark,
   onClickDetail,
 }) => (
-  <div className="relative w-full h-[226px] overflow-hidden bg-gray-200">
+  <div className="relative w-full h-[226px] overflow-hidden">
     {/* 이미지 */}
     <Image
       src={design.imageUrl}

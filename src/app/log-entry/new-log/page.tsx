@@ -116,10 +116,10 @@ const NewLog = () => {
 
       {/* 전체 공개 토글 */}
       <header className="flex w-full items-center justify-end px-5 gap-2 mt-5 mb-3 relative">
-        <p className="text-sm text-gray-700">전체 공개</p>
+        <p className="text-sm text-grayscale800">전체 공개</p>
         <button
           className={`relative w-11 h-6 rounded-full cursor-pointer transition-all duration-300 ${
-            isPublic ? 'bg-primaryRed1' : 'bg-gray-400'
+            isPublic ? 'bg-primaryRed1' : 'bg-grayscale400'
           }`}
           onClick={handleTogglePublic}
           aria-label={isPublic ? '전체 공개' : '비공개'}
@@ -136,7 +136,7 @@ const NewLog = () => {
             <p>전체 공개 시 홈 화면에 노출될 수 있습니다.</p>
             <button
               onClick={handleCloseTooltip}
-              className="text-gray-300 hover:text-white focus:outline-none"
+              className="text-gray-400 hover:text-white focus:outline-none"
               aria-label="닫기"
             >
               ✕
@@ -166,14 +166,14 @@ const NewLog = () => {
           value={logBody}
           onChange={(e) => setLogBody(e.target.value)}
           placeholder="케이크와 함께한 경험과 정보를 자세하게 담아 다른 분들의 케이크 선택을 도와주세요!"
-          className="w-full px-5 h-40 p-3 mt-3 text-[12px] border border-gray-300 rounded-[4px] resize-none outline-none caret-primaryRed1"
+          className="w-full px-5 h-40 p-3 mt-3 text-[12px] border border-grayscale500 rounded-[4px] resize-none outline-none caret-primaryRed1"
           aria-label="본문 입력란"
         />
       </section>
       {/* 버튼들 */}
       <footer className="w-full flex justify-between px-5 mt-16 mb-11">
         <button
-          className={`${commonButtonClass} text-gray-700 border border-gray-400`}
+          className={`${commonButtonClass} text-grayscale700 border border-grayscale400`}
         >
           임시 저장
         </button>

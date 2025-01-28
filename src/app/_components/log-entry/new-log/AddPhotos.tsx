@@ -42,7 +42,7 @@ const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
         <SwiperSlide style={{ width: 'auto' }}>
           <label
             htmlFor="photo-upload"
-            className="w-[110px] h-[143px] mt-3 border-2 border-gray-300 flex flex-col items-center justify-center cursor-pointer"
+            className="w-[110px] h-[143px] mt-3 border-2 border-grayscale500 flex flex-col items-center justify-center cursor-pointer"
           >
             <Image src={AddButtonIcon} alt="사진 추가" />
             <input
@@ -53,7 +53,7 @@ const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
               className="hidden"
               onChange={handlePhotoUpload}
             />
-            <p className="text-gray-400 text-xs mt-1">{`${photos.length}/10`}</p>
+            <p className="text-grayscale700 text-xs mt-1">{`${photos.length}/10`}</p>
           </label>
         </SwiperSlide>
 
