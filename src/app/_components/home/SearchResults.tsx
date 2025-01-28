@@ -10,6 +10,7 @@ import MarkIcon from '../Icons/MarkIcon';
 import FilledMarkIcon from '../Icons/FilledMarkIcon';
 import { Cake, Shop } from 'types/home/searchResult';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);
@@ -126,7 +127,8 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                 {cakeResults.map((cake) => (
                   <div key={cake.cakeId} className="relative w-full h-auto">
                     <div className="relative w-full h-[226px]">
-                      <img
+                      <Image
+                        fill
                         src={cake.imageUrl}
                         alt={cake.name}
                         onClick={() => {

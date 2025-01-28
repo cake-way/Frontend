@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import ScrapIcon from '../../../../public/my-log-images/mark.svg';
 import ScrapIconFilled from '../../../../public/my-log-images/mark-fill.svg';
-import BackIcon from '../../../../public/header-images/back.svg';
+import BackIcon from '../../../../public/header-images/orderBack.svg';
 import { useRouter } from 'next/navigation';
 import { ProfileInfo } from './ProfileAndPhoto';
 
