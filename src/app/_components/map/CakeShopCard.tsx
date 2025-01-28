@@ -20,6 +20,7 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
   const [marked, setMarked] = useState<number | null>(Date.now());
   const [runtime, setRuntime] = useState<number>(0);
   const [closeTime, setCloseTime] = useState('');
+  const [noneWork, setNoneWork] = useState('');
 
   const { data: shopDetail, refetch: refetchShopDetail } =
     useQuery<IShopDetail>({
@@ -34,16 +35,19 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
 
   // 데이터 변경 시 실행
   useEffect(() => {
-    if (shopDetail?.operatingHour?.closeTime) {
+    if (shopDetail) {
+      if (!shopDetail.operatingHour) {
+        setNoneWork('휴무');
+        return;
+      }
       const now = new Date();
       const totalNowMinutes = now.getHours() * 60 + now.getMinutes();
       const closeTime = getHoursMinutes(shopDetail.operatingHour.closeTime);
 
-      if (closeTime) {
-        const [closeHours, closeMinutes] = closeTime;
-        const totalMinutes = closeHours * 60 + closeMinutes;
-        setRuntime(totalNowMinutes - totalMinutes);
-      }
+      const [closeHours, closeMinutes] = closeTime;
+      const totalMinutes = closeHours * 60 + closeMinutes;
+      setRuntime(totalNowMinutes - totalMinutes);
+
       setCloseTime(shopDetail.operatingHour.closeTime);
     }
   }, [shopDetail]);
@@ -80,8 +84,8 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
             <RunTimeIcon color={runtime > 0 ? '#DCDA75' : '#FA2840'} />
             <span className="text-xs text-grayscale700 flex gap-[5px]">
               <span className="text-grayscale900">
-                {runtime > 0 ? '영업중' : '마감'}
-                {shopDetail?.operatingHour && ` ${closeTime} 에 라스트 오더`}
+                {noneWork ? noneWork : runtime > 0 ? '영업중' : '마감'}&nbsp;
+                {`${closeTime} 에 라스트 오더`}
               </span>
             </span>
           </div>
