@@ -8,10 +8,16 @@ import shopDetailApi, { shopLogApi } from '@/app/_lib/shopApi';
 import { IShopDetail, shopLogs } from 'types/relatedCake';
 import Link from 'next/link';
 import useHomeLocationStore from '@/app/store/homeLocationStore';
+import Header from '@/app/_components/Header';
+import back from '../../../../public/header-images/orderBack.svg';
+import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
+import mark from '@/../public/my-log-images/mark.svg';
+import { scrapShop } from '@/app/_lib/api/searchResults';
 
 const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
+  const [marked, setMarked] = useState<number | null>(null);
   const { setOneShopsLocation } = useHomeLocationStore();
 
   const router = useRouter();
@@ -31,7 +37,7 @@ const Shop = () => {
   }
   const [subTab, setSubTab] = useState<string | null | undefined>(null);
   const { data: shopDetail } = useQuery<IShopDetail>({
-    queryKey: ['shopDetail', shop_id, subTab],
+    queryKey: ['shopDetail', shop_id, marked],
     queryFn: () => shopDetailApi(+shop_id, subTab),
   });
   const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(
@@ -85,9 +91,39 @@ const Shop = () => {
 
     router.push('/map');
   };
+  const onclickedBack = () => {
+    router.back();
+  };
+
+  const handleScrapCake = async () => {
+    try {
+      if (shopDetail?.scraped) {
+        const response = await scrapShop(+shop_id, true);
+        if (response) setMarked(Date.now());
+      } else {
+        const isScraped = await scrapShop(+shop_id, false);
+        if (isScraped) {
+          setMarked(Date.now());
+        }
+      }
+    } catch (error) {
+      console.error('스크랩 API 호출 중 오류:', error);
+    }
+  };
 
   return (
     <div className=" min-h-screen h-full mb-[var(--bottom-nav-height)]">
+      <Header
+        leftButtonImage={<Image src={back} alt="back" />}
+        onLeftButtonClick={onclickedBack}
+        backgroundTransparent={true}
+        onRightButtonClick={[handleScrapCake]}
+        rightButtonImage={
+          shopDetail?.scraped
+            ? [<FilledMarkIcon key={shop_id} />]
+            : [<Image src={mark} alt="mark" key={shop_id} />]
+        }
+      ></Header>
       <div
         className="h-[35%] bg-no-repeat bg-cover"
         style={{ backgroundImage: "url('/home/cake-1.svg')" }}
