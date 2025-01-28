@@ -80,8 +80,14 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
             <RunTimeIcon color={runtime > 0 ? '#DCDA75' : '#FA2840'} />
             <span className="text-xs text-grayscale700 flex gap-[5px]">
               <span className="text-grayscale900">
-                {runtime > 0 ? '영업중' : '마감'}
-                {shopDetail?.operatingHour && ` ${closeTime} 에 라스트 오더`}
+                {!shopDetail?.operatingHour
+                  ? '휴무'
+                  : runtime > 0
+                    ? '영업중'
+                    : '마감'}
+                &nbsp;
+                {closeTime}
+                {shopDetail?.operatingHour && ` 에 라스트 오더`}
               </span>
             </span>
           </div>
