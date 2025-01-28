@@ -35,7 +35,7 @@ const OrderCard = ({
         {/* 이미지 섹션 */}
 
         <div
-          className={`relative flex-1 h-auto inset-0 p-2 ${
+          className={`relative flex-1 min-w-[141px] h-auto  inset-0 p-2 ${
             getDday() <= 3 ? 'bg-[#E7363F]' : 'bg-[#C8C400]'
           }`}
         >
@@ -70,17 +70,16 @@ const OrderCard = ({
         </div>
 
         {/* 텍스트 섹션 */}
-        <div className="flex-1 pt-2.5 border solid flex flex-col">
+        <div className="flex-1 pt-2.5 border solid  aspect-square flex flex-col">
           <div className="border-b  flex-[2] solid  px-2.5">
             <h3 className="font-semibold ">
               {order.cakeShopName || cakeDetail?.cakeShopName}
             </h3>
             <p className="text-grayscale900 text-xs font-medium mb-2">
-              {order.cakeName}
+              {order.cakeName}&nbsp;
+              {order.size}
               <br />
-              {order.size} <br />
-              {order.selectedTastes} <br />
-              {order.color} <br />
+              {order.color}
             </p>
           </div>
 

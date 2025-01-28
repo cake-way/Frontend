@@ -53,9 +53,9 @@ export default function BottomSheet({
         }`}
       >
         {/* Header */}
-        <div className="flex justify-around items-center px-4 pt-3 border-b">
+        <div className="flex items-center px-4 pt-3 border-b">
           <p
-            className={`pb-[11px] cursor-pointer ${
+            className={`pb-[11px] transition px-2 cursor-pointer ${
               filterName === '지역'
                 ? 'border-b-2 font-bold border-[#000000]'
                 : 'font-medium text-grayscale600'
@@ -65,7 +65,7 @@ export default function BottomSheet({
             지역
           </p>
           <p
-            className={`pb-[11px] cursor-pointer ${
+            className={`pb-[11px]  transition px-2 cursor-pointer ${
               filterName === '가격'
                 ? 'border-b-2 font-bold border-[#000000]'
                 : 'font-medium text-grayscale600'
@@ -75,7 +75,7 @@ export default function BottomSheet({
             가격
           </p>
           <p
-            className={`pb-[11px] cursor-pointer ${
+            className={`pb-[11px] transition px-2 cursor-pointer ${
               filterName === '디자인'
                 ? 'border-b-2 font-bold border-[#000000]'
                 : 'font-medium text-grayscale600'
@@ -95,13 +95,13 @@ export default function BottomSheet({
           {/* 하단 버튼 */}
           <div className=" box-border fixed w-full px-4 bottom-3 mt-6 flex space-x-2">
             <button
-              className="flex-1 py-2 text-sm bg-gray-200 rounded-md"
+              className="flex-1 py-3 text-sm bg-gray-200 rounded-[4px]"
               onClick={closeBottomSheet}
             >
               닫기
             </button>
             <button
-              className="flex-1 py-2 text-sm bg-black text-white rounded-md"
+              className="flex-1 py-3 text-sm bg-black text-white rounded-[4px]"
               onClick={onClickedResult}
             >
               결과 보기

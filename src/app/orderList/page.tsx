@@ -99,7 +99,7 @@ export default function OrderList() {
         <div className="flex gap-[18px]">
           <motion.button
             layoutId={activeTab === '주문 접수' ? 'active-tab' : undefined}
-            className={` py-2.5 text-center text-xl font-semibold border-b-2 transition-colors ${
+            className={` py-2.5 px-3.5 text-center text-xl font-semibold border-b-2 transition-colors ${
               activeTab === '주문 접수'
                 ? 'border-black text-black'
                 : 'border-transparent text-gray-400'

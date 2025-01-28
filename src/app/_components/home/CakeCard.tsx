@@ -81,7 +81,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
         <h3 className="font-bold text-sm mb-1">{title}</h3>
         <div className="flex items-center text-xs ">
           <span
-            className={`w-2 h-2 rounded-full mr-1 ${getRunTime() === true ? 'bg-green-500' : 'bg-red-500'}`}
+            className={`w-2 h-2 rounded-full mr-1 ${getRunTime() === true ? 'bg-[#DCDA75]' : 'bg-primaryRed1'}`}
           ></span>
           {getRunTime()} {location}
         </div>
