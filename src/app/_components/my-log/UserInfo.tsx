@@ -9,7 +9,7 @@ const UserInfo: React.FC = () => {
   const user = useUserStore((state) => state.userInfo);
   return (
     <section
-      className="flex px-5 items-start"
+      className="flex mt-[7px] px-5 items-start"
       aria-labelledby="user-info-heading"
     >
       <figure className="flex-shrink-0">

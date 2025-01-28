@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
+import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import Header from '@/app/_components/Header';
 
 import { getCakeDesigns, toggleMark } from '@/app/_lib/api/cakeDesigns';

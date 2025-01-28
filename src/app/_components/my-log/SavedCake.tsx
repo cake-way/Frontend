@@ -16,7 +16,7 @@ const SavedCake: React.FC = () => {
       <Title title="저장한 디자인" link="/my-log/designs" />
 
       {designScrap.length === 0 ? (
-        <p className="text-gray-700 text-sm my-24">
+        <p className="text-grayscale600 text-sm my-24">
           아직 저장한 디자인이 없어요
         </p>
       ) : (

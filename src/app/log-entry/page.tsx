@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { MyCakeLogProps } from 'types/cake-log/myCakeLogs';
 
 import BackIcon from '../../../public/header-images/back.svg';
-import AlarmIcon from '../../../public/header-images/alarm-fill.svg';
+import AlarmIcon from '../../../public/header-images/alarm.svg';
 
 import Header from '../_components/Header';
 import CreateLog from '../_components/log-entry/CreateLog';

@@ -10,6 +10,7 @@ import MarkIcon from '../Icons/MarkIcon';
 import FilledMarkIcon from '../Icons/FilledMarkIcon';
 import { Cake, Shop } from 'types/home/searchResult';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);
@@ -100,7 +101,7 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           className={`py-2.5 text-center w-1/2 text-base font-semibold border-b-2 transition-colors ${
             activeTab === 'cake'
               ? 'border-black text-black'
-              : 'border-transparent text-gray-400'
+              : 'border-transparent text-grayscale600'
           }`}
           onClick={() => setActiveTab('cake')}
         >
@@ -110,7 +111,7 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           className={`py-2.5 text-center w-1/2 text-base font-semibold border-b-2 transition-colors ${
             activeTab === 'shop'
               ? 'border-black text-black'
-              : 'border-transparent text-gray-400'
+              : 'border-transparent text-grayscale600'
           }`}
           onClick={() => setActiveTab('shop')}
         >
@@ -126,7 +127,8 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                 {cakeResults.map((cake) => (
                   <div key={cake.cakeId} className="relative w-full h-auto">
                     <div className="relative w-full h-[226px]">
-                      <img
+                      <Image
+                        fill
                         src={cake.imageUrl}
                         alt={cake.name}
                         onClick={() => {
@@ -175,7 +177,7 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                       <div
                         className="shop-header flex items-center cursor-pointer"
                         onClick={() => {
-                          router.push(`/cakeDetail/${shop.shopId}`);
+                          router.push(`/shop/${shop.shopId}`);
                         }}
                       >
                         <h3 className="shop-name text-lg font-bold mr-3 flex-grow">

@@ -20,7 +20,7 @@ const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
     <>
       {/* 최근 방문 알림 섹션 */}
       <article className="mt-4">
-        <div className="bg-gray-100 rounded-[4px] p-4 flex items-center">
+        <div className="bg-grayscale100 rounded-[4px] p-4 flex items-center">
           <figure className="flex-shrink-0 mr-1">
             <Image src={CakeIcon} alt="베니케이크 아이콘" />
           </figure>
@@ -33,7 +33,7 @@ const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
                 <div className="flex mt-1">
                   <button
                     onClick={handleLogButtonClick}
-                    className="text-gray-700 text-sm flex items-center cursor-pointer"
+                    className="text-grayscale700 text-sm flex items-center cursor-pointer"
                     aria-label="케이크 로그 작성하기"
                   >
                     케이크로그 작성하기
@@ -51,7 +51,7 @@ const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
                 <div className="flex mt-1">
                   <button
                     onClick={handleLogButtonClick}
-                    className="text-gray-700 text-sm flex items-center cursor-pointer"
+                    className="text-grayscale700 text-sm flex items-center cursor-pointer"
                     aria-label="로그 작성"
                   >
                     케이크 로그 작성하기

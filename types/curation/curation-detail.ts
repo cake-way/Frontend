@@ -1,35 +1,30 @@
-interface OperatingHour {
-  dayOfWeek: string;
-  openTime: {
-    hour: number;
-    minute: number;
-  };
-  closeTime: {
-    hour: number;
-    minute: number;
-  };
-  active: boolean;
+export interface Log {
+  curationId: number;
+  title: string;
+  description: string;
+  thumbnailImage: string;
+  curationCakelog: CurationCakelog[];
 }
 
-interface CakeShopDto {
-  shopId: string;
-  shopName: string;
-  operatingHour: OperatingHour;
-}
-
-interface curationCakelog {
+export interface CurationCakelog {
   cakelogId: number;
-  username: string;
+  shopDto: ShopDto;
   userId: number;
-  shopDto: CakeShopDto[];
+  username: string;
   body: string;
   imageUrls: string[];
 }
 
-export interface Log {
-  curationId: number;
-  title: string;
-  thumbnailImage: string;
-  description: string;
-  curationCakelog: curationCakelog[];
+export interface ShopDto {
+  shopId: number;
+  shopName: string;
+  operatingHours: OperatingHours;
+  scrap: boolean;
+}
+
+export interface OperatingHours {
+  dayOfWeek: string;
+  openTime: string;
+  closeTime: string;
+  active: boolean;
 }

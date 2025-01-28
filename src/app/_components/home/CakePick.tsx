@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import Link from 'next/link';
 import Image from 'next/image';
+import ArrowIcon from '../../../../public/my-log-images/arrow-forward.svg';
 
 const CakePick = () => {
   return (
@@ -15,9 +16,9 @@ const CakePick = () => {
         <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link
           href="/home/all-cakeways-picks"
-          className="text-sm  pr-5 text-[#3E3F45]"
+          className="text-sm flex gap-1 pr-5 text-[#3E3F45]"
         >
-          전체보기 &gt;
+          <span>전체보기</span> <Image src={ArrowIcon} alt="화살표 아이콘" />
         </Link>
       </div>
 

@@ -6,6 +6,7 @@ import Photo from '../../../../../public/log-entry/photo.svg';
 import DefaultProfile from '../../../../../public/my-log-images/profile-photo.svg';
 import { useRouter } from 'next/navigation';
 import { ThumbnailProps } from 'types/cake-log/createLog';
+import { useMemo } from 'react';
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnailImage,
@@ -16,7 +17,17 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   username,
 }) => {
   const router = useRouter();
-  const today = new Date().toLocaleDateString();
+
+  // 캐싱된 날짜
+  const today = useMemo(() => new Date().toLocaleDateString(), []);
+
+  // 캐싱된 backgroundImage
+  const backgroundImage = useMemo(() => {
+    if (thumbnailImage && typeof thumbnailImage !== 'string') {
+      return `url(${URL.createObjectURL(thumbnailImage)})`; // File 객체 처리
+    }
+    return `url(${thumbnailImage || ''})`; // string 처리
+  }, [thumbnailImage]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -27,12 +38,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 
   return (
     <article
-      className={`w-full h-[418px] p-5 flex flex-col cursor-pointer bg-gray-100 ${thumbnailImage ? 'bg-cover bg-center' : ''}`}
+      className={`w-full h-[418px] p-5 flex flex-col cursor-pointer bg-grayscale100 ${
+        thumbnailImage ? 'bg-cover bg-center' : ''
+      }`}
       style={{
-        backgroundImage:
-          thumbnailImage && typeof thumbnailImage !== 'string'
-            ? `url(${URL.createObjectURL(thumbnailImage)})` // File 객체일 경우 URL 생성
-            : `url(${thumbnailImage})`, // string일 경우 string을 그대로 사용
+        backgroundImage, // Memoized backgroundImage 사용
       }}
       onClick={() => document.getElementById('imageInput')?.click()}
     >
@@ -51,10 +61,12 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       <div
         className={`${
           thumbnailImage ? 'invisible' : 'visible'
-        }  mx-auto font-semibold h-6 flex flex-col gap-3 items-center justify-center`}
+        }  mx-auto h-6 flex flex-col gap-3 items-center justify-center`}
       >
         <Image src={Photo} alt="사진 아이콘" />
-        <span className="text-gray-400 ">대표 사진 추가하기</span>
+        <span className="text-grayscale500 text-sm font-bold">
+          대표 사진 추가하기
+        </span>
       </div>
 
       <input
@@ -69,8 +81,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       <header>
         <h1>
           <textarea
-            placeholder="케이크 로그 제목을 입력해 주세요."
-            className="w-3/5 font-semibold mt-8 text-[24px] text-white pt-8 bg-transparent border-none outline-none resize-none"
+            placeholder="케이크 로그 제목을 입력해주세요"
+            className="w-48 font-semibold mt-8 text-[24px] text-white pt-8 bg-transparent border-none outline-none resize-none placeholder:text-grayscale500"
             value={logTitle}
             onChange={(e) => setLogTitle(e.target.value)}
             onClick={(e) => e.stopPropagation()}
@@ -92,10 +104,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           />
         </div>
         <div>
-          <p className="font-medium text-sm text-gray-700">
+          <p className="font-medium text-sm text-grayscale700">
             {username || '익명 사용자'}
           </p>
-          <time className="text-gray-500 text-[12px]">{today}</time>
+          <p className="text-grayscale700 font-normal text-[12px]">{today}</p>
         </div>
       </footer>
     </article>

@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header
       className={` text-[#131313] flex gap-2 justify-between px-5 items-center  top-0 z-50 w-full h-[60px] ${
-        borderBottom ? 'border-b border-gray-300' : ''
+        borderBottom ? 'border-b border-[#E9E9E9]' : ''
       }
       ${backgroundTransparent ? 'absolute bg-transparent' : 'sticky  bg-[#FFF]'}
       `}

@@ -49,8 +49,8 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
           setIsResultsVisible(true);
         }
       } else {
-        setSearchResults([]);
-        setIsResultsVisible(false);
+        setSearchResults([]); // 검색어가 비어 있으면 결과를 초기화
+        setIsResultsVisible(false); // 검색 결과 표시 안 함
       }
     }, 300),
     []
@@ -62,13 +62,19 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
     debouncedSearch(keyword); // 디바운스된 함수 호출
   };
 
-  const handleSelectResult = (shopId: number, shopName: string) => {
-    setSelectedPlace(shopName);
-    onShopSelect(shopId);
-    setIsResultsVisible(false);
-    setSearchKeyword('');
-    setSearchResults([]);
-    debouncedSearch.cancel(); // pending 상태의 debounced 함수를 취소
+  const handleSelectResult = (shopId: number | null, shopName: string) => {
+    if (shopId != null) {
+      // shopId가 null이 아니면 호출
+      setSelectedPlace(shopName);
+      onShopSelect(shopId); // 유효한 shopId일 때만 호출
+      setIsResultsVisible(false);
+      setSearchKeyword('');
+      setSearchResults([]);
+      debouncedSearch.cancel();
+    } else {
+      // shopId가 null인 경우 아무 작업도 하지 않음
+      console.log('Invalid shopId: null');
+    }
   };
 
   const handleClearSelection = () => {
@@ -86,12 +92,12 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
         보세요!
       </p>
       {selectedPlace ? (
-        <div className="flex items-center border border-gray-300 p-2 rounded-[4px]">
+        <div className="flex items-center border border-grayscale300 p-2 rounded-[4px]">
           <Image src={MapIcon} alt="Map Icon" className="w-5 h-5 mr-2" />
           <span className="flex-grow text-[14px]">{selectedPlace}</span>
           <button
             onClick={handleClearSelection}
-            className="text-gray-500 hover:text-gray-700 pr-1"
+            className="text-grayscale500 hover:text-gray-700 pr-1"
           >
             ✕
           </button>
@@ -103,7 +109,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
             placeholder="가게 검색하기"
             value={searchKeyword} // 검색어 상태로 연결
             onChange={handleSearch} // 입력 시마다 handleSearch 호출
-            className="w-full text-[14px] p-2 pl-8 pr-10 border border-gray-300 rounded-[4px] caret-primaryRed1 focus:outline-none"
+            className="w-full text-[14px] p-2 pl-8 pr-10 border border-grayscale300 rounded-[4px] caret-primaryRed1 focus:outline-none"
           />
           <Image
             src={SearchIcon}
@@ -120,7 +126,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
             <button
               key={`${order.shopId}-${index}`} // 고유한 key로 shopId와 index 조합
               onClick={() => handleSelectResult(order.shopId, order.shopName)}
-              className="px-3 py-[6px] bg-gray-100 rounded-full text-[12px] hover:bg-gray-200"
+              className="px-3 py-[6px] bg-grayscale200 rounded-full text-[12px] hover:bg-gray-200"
             >
               {order.shopName}
             </button>
@@ -132,7 +138,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
         <>
           {searchResults.length > 0 ? (
             <div
-              className="absolute z-10 left-5 right-5 bg-white border border-gray-300 rounded-b-[4px] shadow-lg h-auto max-h-[200px] overflow-y-auto scrollbar-hidden"
+              className="absolute z-10 left-5 right-5 bg-white border border-grayscale300 rounded-b-[4px] shadow-lg h-auto max-h-[200px] overflow-y-auto scrollbar-hidden"
               style={{
                 marginTop: '-3px',
               }}
@@ -146,7 +152,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
                       handleSelectResult(result.shopId, result.shopName)
                     }
                   >
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-grayscale900">
                       {result.shopName}
                     </div>
                   </li>
@@ -154,7 +160,9 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
               </ul>
             </div>
           ) : (
-            <p className="text-sm text-gray-500 mt-2">검색 결과가 없습니다.</p>
+            <p className="text-sm text-gray-500 mx-2 mt-2">
+              검색 결과가 없습니다.
+            </p>
           )}
         </>
       )}

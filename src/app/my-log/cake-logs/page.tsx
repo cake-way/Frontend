@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ScrapLog } from 'types/cake-log/scrapLog';
 
 import BackIcon from '../../../../public/header-images/back.svg';
-import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
+import AlarmIcon from '../../../../public/header-images/alarm.svg';
 import MarkIconDefault from '../../../../public/my-log-images/mark.svg';
 
 import Header from '@/app/_components/Header';
@@ -44,8 +44,12 @@ const CakeLogs = () => {
 
     // 마크 상태가 변경되었으면 API 호출
     try {
-      const success = await toggleMarkScrap(cakeLogId, log.isMarked);
-      if (!success) {
+      const success = await toggleMarkScrap(cakeLogId);
+      if (success) {
+        // 성공적으로 마크 상태가 변경되었으면 리스트에서 해당 항목 제거
+        const updatedLogs = scrapLogs.filter((_, i) => i !== index);
+        setScrapLogs(updatedLogs);
+      } else {
         console.error('스크랩 마크 변경에 실패했습니다.');
       }
     } catch (error) {
