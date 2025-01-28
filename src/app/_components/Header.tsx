@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      <div className={`flex  ${rightButtonImage.length ? '' : 'w-6'}`}>
+      <div className={`flex gap-1  ${rightButtonImage.length ? '' : 'w-6'}`}>
         {rightButtonImage.map((image, index) => (
           <button
             key={index}

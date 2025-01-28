@@ -38,12 +38,13 @@ export const fetchShopsData = async (
   return response.json();
 };
 
-export const scrapCake = async (cakeId: number) => {
+export const scrapCake = async (cakeId: number, isScrapped: boolean) => {
   try {
+    const method = isScrapped ? 'DELETE' : 'POST';
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/scrap/CAKE/${cakeId}`,
       {
-        method: 'POST',
+        method,
         headers: getAuthHeaders(),
       }
     );

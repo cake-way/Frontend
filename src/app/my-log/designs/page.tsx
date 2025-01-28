@@ -23,6 +23,7 @@ const CakeDesigns = () => {
       try {
         const data = await getCakeDesigns();
         setCakeDesigns(data);
+        console.log(data);
         setMarked(new Array(data.length).fill(true)); // 초기 마크 상태 설정
       } catch (error) {
         console.error('Error fetching cake designs:', error);

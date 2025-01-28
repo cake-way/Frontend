@@ -79,7 +79,7 @@ const curationDetail = () => {
           연초에 친구들과 혹은 가족들과 함께 즐기기 좋은 케이크 맛집을 선정해
           보았습니다~!{' '}
         </span>
-        <span> *스크랩 수가 많은 가게를 위주로 구성되었습니다.</span>
+        <span> *스크랩 수가 많은 가게들 위주로 구성되었습니다.</span>
       </section>
 
       <div className="border-t-4 border-grayscale100 mt-8 mb-6" />
