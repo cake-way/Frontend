@@ -22,10 +22,11 @@ export const toggleScrap = async (
   isScraped: boolean
 ) => {
   try {
+    const method = isScraped ? 'POST' : 'DELETE';
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/scrap/CAKELOG/${cakeLogid}`,
       {
-        method: isScraped ? 'DELETE' : 'POST', // 스크랩 상태에 따라 POST 또는 DELETE 요청
+        method,
         headers: getAuthHeaders(),
       }
     );
