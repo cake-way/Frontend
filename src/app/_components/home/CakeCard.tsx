@@ -66,6 +66,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
           alt={title}
           width={500}
           height={500}
+          priority
           className=" object-cover w-full h-full"
         />
       </div>

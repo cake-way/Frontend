@@ -148,7 +148,8 @@ export default function Home() {
         </div>
       ) : (
         <>
-          <CakePick />
+          {data?.curationList && <CakePick curationList={data.curationList} />}
+
           <CategoryCake />
           <div className="my-7 h-2 bg-[#f4f4f4]"></div>
           <div

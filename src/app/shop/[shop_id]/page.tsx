@@ -37,7 +37,7 @@ const Shop = () => {
   }
   const [subTab, setSubTab] = useState<string | null | undefined>(null);
   const { data: shopDetail } = useQuery<IShopDetail>({
-    queryKey: ['shopDetail', shop_id, marked],
+    queryKey: ['shopDetail', shop_id, marked, subTab],
     queryFn: () => shopDetailApi(+shop_id, subTab),
   });
   const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(

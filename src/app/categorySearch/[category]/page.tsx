@@ -216,10 +216,14 @@ const CategorySearch = () => {
         </div>
         {/* Category Tabs */}
         <div className="flex gap-2 px-5 py-3.5">
-          <button className="flex items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1">
-            추천순
-            <Image src={down} alt="arrow_down" />
-          </button>
+          <select
+            title="정렬 기준 선택"
+            className="flex  outline-none items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1"
+            name="filter"
+          >
+            <option value="">추천순</option>
+          </select>
+          {/* <Image src={down} alt="arrow_down" /> */}
 
           <button
             className={`text-sm  rounded-2xl px-3 py-1 ${confirmReigon && confirmReigon?.length !== 0 ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}

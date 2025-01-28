@@ -150,6 +150,14 @@ export interface OrderhistoryDetail {
 }
 
 export interface HomeRecommend {
+  curationCount: number;
+  curationList: [
+    {
+      curationId: number;
+      title: string;
+      thumbnailImage: string;
+    },
+  ];
   special: [
     {
       shopId: number;
