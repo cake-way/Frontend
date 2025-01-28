@@ -17,9 +17,33 @@ export default function Map() {
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // 맵 현재 위치의 좌표값을 저장할 상태
   const mapRef = useRef<kakao.maps.Map | null>(null);
   const [shops, setShops] = useState<MapShops[] | null>(null);
-  const { mapLocation } = useHomeLocationStore();
+  const { oneShopsLocation, mapLocation } = useHomeLocationStore();
   const [keyword, setKeyword] = useState<string>('');
   const [focus, setFocus] = useState(false);
+  // 좌표 변경 시에도 shops 배열이 업데이트되도록 수정
+  useEffect(() => {
+    if (oneShopsLocation) {
+      const fetchShopsForLocation = async () => {
+        try {
+          const param = new URLSearchParams();
+          param.append('latitude', oneShopsLocation.lat.toString());
+          param.append('longitude', oneShopsLocation.lng.toString());
+          param.append('isSameDay', `${todayPickUp}`);
+
+          const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/search/map/shops?${param}`;
+          const response = await fetch(URL);
+          const data = await response.json();
+
+          setCoordinates(oneShopsLocation);
+          setShops(data);
+        } catch (e) {
+          console.log('searchMapApi error:', e);
+        }
+      };
+
+      fetchShopsForLocation();
+    }
+  }, [oneShopsLocation, todayPickUp]);
 
   useEffect(() => {
     const fetchShops = async () => {
@@ -43,21 +67,18 @@ export default function Map() {
     };
 
     fetchShops();
-  }, [coordinates, todayPickUp, keyword]);
-
-  console.log(shops);
+  }, [coordinates, todayPickUp, keyword, mapLocation]);
 
   //수정하기
   const getCoordinates = () => {
     const map = mapRef.current;
 
     if (map) {
-      kakao.maps.event.addListener(mapRef.current!, 'center_changed', () => {
-        const center = mapRef.current!.getCenter();
-        setCoordinates({
-          lat: center.getLat(),
-          lng: center.getLng(),
-        });
+      // 현재 중심 좌표를 바로 가져와서 설정
+      const center = map.getCenter();
+      setCoordinates({
+        lat: center.getLat(),
+        lng: center.getLng(),
       });
     }
   };

@@ -14,13 +14,18 @@ import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
 
-import MarkIcon from '@/app/_components/Icons/MarkIcon';
 import cakeCategorySearchApi from '@/app/_lib/cakeCategorySearchApi';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
 import { ICategoryData, priceObject } from 'types/relatedCake';
 import { days } from 'constants/constants';
+import { scrapCake } from '@/app/_lib/api/searchResults';
+import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
+import { getCakeDesigns, toggleMark } from '@/app/_lib/api/cakeDesigns';
 
+interface CakeScrap {
+  id: number;
+}
 //카테고리 없는 ui
 const CategorySearch = () => {
   const { category } = useParams();
@@ -68,9 +73,11 @@ const CategorySearch = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
+  const [marked, setMarked] = useState<number | null>(null);
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
-  const { data, isLoading } = useQuery<ICategoryData[]>({
+
+  const { data, isLoading, refetch } = useQuery<ICategoryData[]>({
     queryKey: [
       'categoryCake',
       category,
@@ -78,6 +85,7 @@ const CategorySearch = () => {
       confirmReigon,
       confirmDesgin,
       filteringDate,
+      marked,
     ],
     queryFn: () => {
       const realConfirmDesigon = confirmDesgin?.map((key) =>
@@ -92,8 +100,10 @@ const CategorySearch = () => {
       );
     },
   });
-
-  console.log(data);
+  const { data: cakeScrap } = useQuery<CakeScrap[]>({
+    queryKey: ['cakeScrap', marked],
+    queryFn: () => getCakeDesigns(),
+  });
 
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
@@ -142,6 +152,23 @@ const CategorySearch = () => {
 
     if (setCalendarOpen) {
       setCalendarOpen(false);
+    }
+  };
+
+  const handleScrapCake = async (cakeId: number) => {
+    try {
+      if (cakeScrap?.find((i) => i.id === cakeId)) {
+        const response = await toggleMark(cakeId);
+        if (response) setMarked(Date.now());
+      } else {
+        const isScraped = await scrapCake(cakeId);
+        if (isScraped) {
+          setMarked(Date.now());
+        }
+      }
+      refetch();
+    } catch (error) {
+      console.error('스크랩 API 호출 중 오류:', error);
     }
   };
 
@@ -228,7 +255,6 @@ const CategorySearch = () => {
                       <div
                         key={cake.cakeId}
                         className=" relative cursor-pointer   overflow-hidden mb-2.5"
-                        onClick={() => onOrder(cake.cakeId)}
                       >
                         <Image
                           src={cake.cakeImage}
@@ -236,16 +262,23 @@ const CategorySearch = () => {
                           width={300}
                           height={300}
                           className="w-full  object-cover"
+                          onClick={() => onOrder(cake.cakeId)}
                         />
-                        <div className="absolute top-2 right-2 p-1">
+                        <button
+                          className="absolute top-2 right-2 p-1"
+                          onClick={() => handleScrapCake(cake.cakeId)}
+                        >
                           {cake.isScraped ? (
-                            <MarkIcon />
+                            <FilledMarkIcon />
                           ) : (
                             <Image src={mark} alt="mark" />
                           )}
-                        </div>
+                        </button>
 
-                        <div className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900">
+                        <div
+                          className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900"
+                          onClick={() => onOrder(cake.cakeId)}
+                        >
                           <h3 className="font-bold text-xs text-grayscale900">
                             {cake.cakeName}
                           </h3>

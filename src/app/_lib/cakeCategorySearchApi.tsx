@@ -1,3 +1,5 @@
+import { getAuthHeaders } from './api/getAuthHeader';
+
 export default async function cakeCategorySearchApi(
   categoryName: '생일' | '파티' | string,
   time?: string | null,
@@ -19,7 +21,10 @@ export default async function cakeCategorySearchApi(
 
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/cake/category/${categoryName}${params.toString() ? `?${params}` : ''}`;
     console.log(URL);
-    const response = await fetch(URL);
+    const response = await fetch(URL, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
 
     return await response.json();
   } catch (e) {

@@ -37,7 +37,6 @@ export const getHoursMinutes = (
   selectedTime: string | undefined,
   selectedPeriod?: string | null
 ) => {
-  if (!selectedPeriod && !selectedTime) return [0, 0]; //??????
   // eslint-disable-next-line prefer-const
   let [hours, minutes] = selectedTime!.split(':').map(Number);
   if (selectedPeriod === '오후' && hours !== 12) {

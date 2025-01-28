@@ -1,16 +1,18 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import shopDetailApi, { shopLogApi } from '@/app/_lib/shopApi';
 import { IShopDetail, shopLogs } from 'types/relatedCake';
 import Link from 'next/link';
+import useHomeLocationStore from '@/app/store/homeLocationStore';
 
 const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
+  const { setOneShopsLocation } = useHomeLocationStore();
 
   const router = useRouter();
 
@@ -48,21 +50,10 @@ const Shop = () => {
     }
   }, [shopDetail?.cakes.name]);
 
-  // const { data: shopCategory } = useQuery({
-  //   queryKey: ['shopCategory', shop_id],
-  //   queryFn: () => shopCategoryApi(shop_id),
-  // });
-
-  // const getShopData = () => {
-  //   return cakeShops.find((item) => item.shop_id === Number(shop_id));
-  // };
-
-  // const shop = getShopData();
-
   const hour = shopDetail?.operatingHour?.closeTime.split(':')[0];
   const minutes = shopDetail?.operatingHour?.closeTime.split(':')[1];
 
-  const getRunTime = () => {
+  const runTime = useCallback(() => {
     if (hour && minutes) {
       const nowHours = new Date().getHours();
       const nowMinutes = new Date().getMinutes();
@@ -72,14 +63,27 @@ const Shop = () => {
 
       return totalNowMinutes - totalMinutes;
     }
-    return null;
-  };
+  }, [hour, minutes]);
+
   const onClickedSubTap = (tab: string) => {
     if (tab === subTab) {
       setSubTab('');
       return;
     }
     setSubTab(tab);
+  };
+
+  const runtime = runTime();
+
+  const onClickedMap = () => {
+    if (shopDetail) {
+      setOneShopsLocation({
+        lat: shopDetail?.latitude - 0.0012,
+        lng: shopDetail?.longitude,
+      });
+    }
+
+    router.push('/map');
   };
 
   return (
@@ -124,9 +128,12 @@ const Shop = () => {
                   />
                 </span>
                 {shopDetail?.address}
-                <span className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top">
+                <button
+                  className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top cursor-pointer"
+                  onClick={onClickedMap}
+                >
                   지도보기
-                </span>
+                </button>
               </p>
               <p className="flex items-center text-gray-600">
                 <span className="mr-2">
@@ -139,7 +146,7 @@ const Shop = () => {
                 </span>
                 {shopDetail?.operatingHour ? (
                   <>
-                    {getRunTime() > 0 ? '영업 중' : '마감'}
+                    {runtime && runtime > 0 ? '영업 중' : '마감'}
                     &nbsp;&nbsp;
                     {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
                     {shopDetail?.operatingHour?.openTime !== undefined &&
