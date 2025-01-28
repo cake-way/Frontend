@@ -100,11 +100,10 @@ const curationDetail = () => {
             </div>
             <p className="flex text-sm text-grayscale700 gap-2">
               <span className="font-semibold text-sm text-grayscale900">
-                운영 시간
+                {cakeShop.operatingHours ? `영업 중` : `영업 종료`}{' '}
+                {/* 영업 상태 표시 */}
               </span>
-              {cakeShop.operatingHours.dayOfWeek} -{' '}
-              {formatTime(cakeShop.operatingHours.openTime)} ~{' '}
-              {formatTime(cakeShop.operatingHours.closeTime)}
+              {formatTime(cakeShop.operatingHours.closeTime)} 에 라스트 오더
             </p>
 
             {/* 이미지 슬라이더 */}
