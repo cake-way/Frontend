@@ -2,16 +2,7 @@ import Image from 'next/image';
 import FilledMarkIcon from '../../Icons/FilledMarkIcon';
 import MarkIcon from '../../Icons/MarkIcon';
 import StatusIcon from '../../../../../public/my-log-images/status.svg';
-
-import { StoreScrap } from '@/app/_lib/api/storeScrap';
-
-type StoreItemProps = {
-  store: StoreScrap;
-  index: number;
-  marked: boolean[];
-  onToggleScrap: (index: number, shopId: number) => void;
-  onNavigate: (shopId: number) => void;
-};
+import { StoreItemProps } from 'types/store/storeItemProps';
 
 const StoreItem: React.FC<StoreItemProps> = ({
   store,

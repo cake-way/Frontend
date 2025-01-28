@@ -9,11 +9,9 @@ import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import Header from '@/app/_components/Header';
 
 import { getCakeDesigns, toggleMark } from '@/app/_lib/api/cakeDesigns';
-import EmptyState from '@/app/_components/my-log/store/EmptyState';
-import {
-  CakeDesign,
-  CakeDesignGrid,
-} from '@/app/_components/my-log/design/CakeDesignCard';
+import EmptyState from '@/app/_components/my-log/EmptyState';
+import { CakeDesignGrid } from '@/app/_components/my-log/design/CakeDesignCard';
+import { CakeDesign } from 'types/cake-design/cakeDesignProps';
 
 const CakeDesigns = () => {
   const router = useRouter();
@@ -87,7 +85,7 @@ const CakeDesigns = () => {
       <Header {...headerProps} />
 
       {cakeDesigns.length === 0 ? (
-        <EmptyState />
+        <EmptyState item="디자인" />
       ) : (
         <CakeDesignGrid
           designs={cakeDesigns}

@@ -16,3 +16,25 @@ export const fetchLogDetail = async (cakeLogid: number) => {
     throw error;
   }
 };
+
+export const toggleScrap = async (
+  cakeLogid: string | number,
+  isScraped: boolean
+) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/scrap/CAKELOG/${cakeLogid}`,
+      {
+        method: isScraped ? 'DELETE' : 'POST', // 스크랩 상태에 따라 POST 또는 DELETE 요청
+        headers: getAuthHeaders(),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('스크랩 상태를 업데이트하는 데 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('스크랩 상태 업데이트 실패', error);
+    throw error; // 에러를 다시 던져서 호출한 곳에서 처리하도록 할 수 있습니다.
+  }
+};

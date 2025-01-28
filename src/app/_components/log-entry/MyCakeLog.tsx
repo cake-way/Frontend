@@ -4,20 +4,7 @@ import Image from 'next/image';
 import Title from '@/app/_components/my-log/Title';
 import { useRouter } from 'next/navigation';
 import LogIcon from '../Icons/LogIcon';
-
-interface MyCakeLogProps {
-  cakelogs: Array<{
-    cakeLogid: number;
-    username: string;
-    cakeShopName: string;
-    cakeCategoryName: string;
-    title: string;
-    thumbnailImage: string;
-    body: string;
-    isPublic: true;
-    imageList: [string];
-  }>;
-}
+import { MyCakeLogProps } from 'types/cake-log/myCakeLogs';
 
 const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
   const router = useRouter();
@@ -43,7 +30,10 @@ const MyCakeLog: React.FC<MyCakeLogProps> = ({ cakelogs }) => {
       ) : (
         <section className="w-full mt-4 grid grid-cols-2 gap-2 items-center">
           {cakelogs.map((cake, index) => (
-            <div key={index} className="relative w-full h-[215px]">
+            <div
+              key={index}
+              className="relative cursor-pointer w-full h-[215px]"
+            >
               {/* 이미지 */}
               <Image
                 src={cake.thumbnailImage}
