@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
-import BackIcon from '../../../../public/header-images/orderBack.svg';
+import BackIcon from '../../../../public/header-images/back-white.svg';
 import MarkIcon from '@/app/_components/Icons/MarkIcon';
 
 import { ImageSlider } from '@/app/_components/log-detail/ProfileAndPhoto';

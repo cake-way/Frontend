@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import back from '../../../../public/header-images/orderBack.svg';
+import back from '../../../../public/header-images/back-white.svg';
 
 import { useParams, useRouter } from 'next/navigation';
 import Header from '@/app/_components/Header';
