@@ -67,7 +67,7 @@ const CakeCard: React.FC<CakeCardProps> = ({
           width={500}
           height={500}
           priority
-          className=" object-cover w-full h-full"
+          className=" object-contain w-full h-full"
         />
       </div>
       {sameDay && (
