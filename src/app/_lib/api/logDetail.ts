@@ -35,6 +35,6 @@ export const toggleScrap = async (
     }
   } catch (error) {
     console.error('스크랩 상태 업데이트 실패', error);
-    throw error; // 에러를 다시 던져서 호출한 곳에서 처리하도록 할 수 있습니다.
+    throw error;
   }
 };

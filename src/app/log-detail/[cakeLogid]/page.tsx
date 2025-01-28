@@ -20,40 +20,32 @@ const LogDetail = () => {
 
   useEffect(() => {
     if (cakeLogid && !isNaN(Number(cakeLogid))) {
-      const logId = Number(cakeLogid); // cakeLogid를 number로 변환
+      const logId = Number(cakeLogid);
       const fetchLog = async () => {
         try {
-          const data: LogData = await fetchLogDetail(logId); // API 호출
-          console.log('API Response:', data); // 응답 확인
-
-          if (data) {
-            setLog(data); // 데이터를 직접 setLog로 설정
-            setIsScraped(data.isScraped); // 스크랩 상태 설정
-          } else {
-            console.error('No logs found.');
-            setLog(null); // 데이터가 없으면 null로 설정
-          }
+          const data: LogData = await fetchLogDetail(logId);
+          setLog(data);
         } catch (error) {
           console.error('로그 데이터를 가져오는 데 실패했습니다.', error);
         }
       };
-
       fetchLog();
     }
   }, [cakeLogid]);
 
   const handleScrapToggle = async () => {
     if (cakeLogid && !Array.isArray(cakeLogid)) {
-      const logId = Number(cakeLogid); // cakeLogid를 number로 변환
+      const logId = Number(cakeLogid);
       if (!isNaN(logId)) {
         try {
-          await toggleScrap(logId, isScraped); // 변환된 logId를 전달
-          setIsScraped((prev) => !prev); // 로컬 상태 업데이트
+          console.log('현재 스크랩 상태:', isScraped); // 디버깅
+          await toggleScrap(logId, isScraped); // 반전된 상태 전달
+          setIsScraped((prev) => !prev); // 상태 반전
         } catch (error) {
-          console.error('스크랩 상태 업데이트 실패', error);
+          console.error('스크랩 상태 업데이트 실패:', error);
         }
       } else {
-        console.error('Invalid cakeLogid');
+        console.error('cakeLogid가 유효하지 않습니다.');
       }
     }
   };
@@ -68,8 +60,9 @@ const LogDetail = () => {
     <article className="max-w-3xl">
       <LogHeader
         log={log}
-        isScraped={isScraped}
+        logId={cakeLogid as string}
         isOwner={isOwner}
+        setScrapState={setIsScraped} // 상태 변경 함수 전달
         handleScrapToggle={handleScrapToggle}
       />
 

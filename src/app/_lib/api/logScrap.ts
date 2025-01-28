@@ -21,7 +21,7 @@ export const fetchScrapLogs = async () => {
 
 export const toggleMarkScrap = async (cakeLogId: number) => {
   try {
-    const method = 'DELETE'; // Mark 상태에 따라 DELETE 또는 POST 요청
+    const method = 'DELETE';
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/scrap/CAKELOG/${cakeLogId}`;
     const response = await fetch(url, {
       method,
