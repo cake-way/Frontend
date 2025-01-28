@@ -63,7 +63,7 @@ const DraggableBottomSheet = ({
     // 제한 범위 설정 (화면의 최대/최소 높이)
 
     if (
-      currentY >= window.innerHeight * 0.15 &&
+      currentY >= window.innerHeight * 0.2 &&
       currentY <= window.innerHeight * 0.85
     ) {
       setPosition(newPosition);
@@ -75,13 +75,6 @@ const DraggableBottomSheet = ({
   const handleDragEnd = () => {
     setIsDragging(false);
 
-    // if (startYRef.current === 0) {
-    //   setPosition(0);
-    //   currentYRef.current = 0;
-    //   return;
-    // }
-
-    console.log(dragRef.current);
     //드래그안했을때
     if (!dragRef.current) {
       setPosition(0);
@@ -94,10 +87,10 @@ const DraggableBottomSheet = ({
     }
     //열림
     else if (
-      realCurrentRef.current < window.innerHeight * 0.3 &&
+      realCurrentRef.current < window.innerHeight * 0.4 &&
       realCurrentRef.current !== 0
     ) {
-      setPosition(-window.innerHeight * 0.3);
+      setPosition(-window.innerHeight * 0.2);
       currentYRef.current = -window.innerHeight * 0.2;
     } else {
       setPosition(0);
@@ -114,7 +107,7 @@ const DraggableBottomSheet = ({
       }}
     >
       <div
-        className="cursor-pointer text-nowrap  inline-block  w-[auto] mb-3 mx-auto z-50  gap-2.5 bg-[#ffffff] shadow border border-solid border-primaryRed1 rounded-[50px] px-2.5 py-2"
+        className="cursor-pointer text-nowrap  inline-block  w-[auto] mb-3 mx-auto z-50  gap-2.5 bg-[#ffffff] shadow border border-solid border-primaryRed1 rounded-[50px] px-2.5 py-1.5"
         onClick={getCoordinates}
       >
         <Image
