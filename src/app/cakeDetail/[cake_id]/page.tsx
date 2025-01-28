@@ -9,8 +9,10 @@ import { useQuery } from '@tanstack/react-query';
 import cakeDetailApi from '@/app/_lib/cakeDetail';
 import { ICakeDetail } from 'types/relatedCake';
 import { getShopAdress } from '@/app/_lib/shopApi';
+import useHomeLocationStore from '@/app/store/homeLocationStore';
 
 export default function CakeDetail() {
+  const { setOneShopsLocation } = useHomeLocationStore();
   const router = useRouter();
   const { cake_id } = useParams();
 
@@ -46,6 +48,16 @@ export default function CakeDetail() {
     enabled: !!data?.shopId, // shopId가 존재할 때만 쿼리 실행
   });
 
+  const onClickedMap = () => {
+    if (shopDetail) {
+      setOneShopsLocation({
+        lat: shopDetail?.latitude - 0.0012,
+        lng: shopDetail?.longitude,
+      });
+    }
+
+    router.push('/map');
+  };
   if (data) {
     return (
       <div className="w-full  mx-auto">
@@ -94,7 +106,10 @@ export default function CakeDetail() {
                 <p className="text-sm text-grayscale700 font-medium">
                   {shopDetail?.address}
                 </p>
-                <button className="text-sm font-medium text-grayscale600">
+                <button
+                  className="text-sm font-medium text-grayscale600"
+                  onClick={onClickedMap}
+                >
                   지도보기
                 </button>
               </div>
