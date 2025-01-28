@@ -18,6 +18,7 @@ const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
   const [marked, setMarked] = useState<number | null>(null);
+  const [address, setAddress] = useState('');
   const { setOneShopsLocation } = useHomeLocationStore();
 
   const router = useRouter();
@@ -37,7 +38,7 @@ const Shop = () => {
   }
   const [subTab, setSubTab] = useState<string | null | undefined>(null);
   const { data: shopDetail } = useQuery<IShopDetail>({
-    queryKey: ['shopDetail', shop_id, marked],
+    queryKey: ['shopDetail', shop_id, marked, subTab],
     queryFn: () => shopDetailApi(+shop_id, subTab),
   });
   const tabs = shopDetail?.cakes?.cakeCategoryResponseDtos?.map(
@@ -55,6 +56,12 @@ const Shop = () => {
       setSubTab(shopDetail?.cakes.name);
     }
   }, [shopDetail?.cakes.name]);
+
+  useEffect(() => {
+    if (shopDetail?.address) {
+      setAddress(shopDetail?.address.substring(0, 20) + '...');
+    }
+  }, [shopDetail]);
 
   const hour = shopDetail?.operatingHour?.closeTime.split(':')[0];
   const minutes = shopDetail?.operatingHour?.closeTime.split(':')[1];
@@ -137,7 +144,7 @@ const Shop = () => {
           <h1 className="text-[22px] font-bold">{shopDetail?.name}</h1>
           <div className="mt-2 text-sm flex flex-col items-center">
             <p className="flex items-center text-grayscale700 text-xs font-bold">
-              {`케이크 로그 ${!shopLogs?.cakelogs ? 0 : shopLogs?.cakelogs}개 |`}
+              {`케이크 로그 ${!shopLogs?.cakelogs ? 0 : shopLogs?.cakelogs.length}개 |`}
               <span className="mr-2 flex">
                 <Image
                   src="/shop/bookMark.svg"
@@ -155,7 +162,7 @@ const Shop = () => {
             )}
             <div className="flex flex-col gap-[2px]">
               <p className="flex items-center text-gray-600">
-                <span className="mr-2">
+                <span className="mr-2 ">
                   <Image
                     src="/shop/positionIcon.svg"
                     width={20}
@@ -163,7 +170,10 @@ const Shop = () => {
                     alt="adress_icon"
                   />
                 </span>
-                {shopDetail?.address}
+                <span className="whitespace-nowrap text-ellipsis">
+                  {address}
+                </span>
+
                 <button
                   className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top cursor-pointer"
                   onClick={onClickedMap}
@@ -218,39 +228,42 @@ const Shop = () => {
           </div>
         </div>
         {/* 케이크로그작성, 인스타그램 */}
-        <div className="absolute  flex gap-3 top-[55%] left-[50%] -translate-x-[50%]">
-          <button
-            className="whitespace-nowrap px-10 py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
-            style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
-            onClick={() => router.push('/log-entry/new-log')}
-          >
-            <Image
-              width={28}
-              height={22}
-              src="/shop/cakeLog_write.svg"
-              alt="cakelog_write_icon"
-              className="mx-auto mb-2"
-            />
-            케이크 로그 작성
-          </button>
-          <Link
-            className="whitespace-nowrap px-10 py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
-            style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
-            href={shopDetail?.instagram || ''}
-          >
-            <Image
-              width={24}
-              height={24}
-              src="/shop/instagram.svg"
-              alt="cakelog_write_icon"
-              className="mx-auto mb-2"
-            />
-            인스타그램
-          </Link>
+        <div className="absolute  justify-center  top-[55%] left-[50%] -translate-x-[50%] w-[85%]">
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              className="whitespace-nowrap px-10 text-center py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
+              style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
+              onClick={() => router.push('/log-entry/new-log')}
+            >
+              <Image
+                width={28}
+                height={22}
+                src="/shop/cakeLog_write.svg"
+                alt="cakelog_write_icon"
+                className="mx-auto mb-2"
+              />
+              케이크 로그 작성
+            </button>
+            <Link
+              className="whitespace-nowrap text-center px-10 py-3 text-xs bg-[#ffffff] rounded   text-grayscale800 font-bold"
+              style={{ boxShadow: '2px 2px 13px 0px rgba(0, 0, 0, 0.06)' }}
+              href={shopDetail?.instagram || ''}
+            >
+              <Image
+                width={24}
+                height={24}
+                src="/shop/instagram.svg"
+                alt="cakelog_write_icon"
+                className="mx-auto mb-2"
+              />
+              인스타그램
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* 탭 메뉴 */}
+      <div className="w-full h-[6px] bg-grayscale100 mb-5"></div>
       <div className="border-b">
         <div className="flex space-x-7 px-4 justify-center">
           <button
@@ -272,7 +285,7 @@ const Shop = () => {
       {activeTab === '전체메뉴' && (
         <div className="p-4 pb-[var(--bottom-nav-height)]">
           {/* 카테고리 탭 */}
-          <div className="flex space-x-4 overflow-x-auto mb-4">
+          <div className="flex space-x-[10px] overflow-x-auto mb-4">
             {tabs?.map((tab) => (
               <button
                 key={tab}
@@ -300,10 +313,12 @@ const Shop = () => {
                   height={300}
                   src={item.thumnailUrl}
                   alt={item.cakeName}
-                  className="w-full aspect-square object-cover rounded-lg"
+                  className="w-full aspect-square object-cover rounded-[8px]"
                 />
-                <p className="text-sm">{item.cakeName}</p>
-                <p className="text-xs">{item.price.toLocaleString()}원</p>
+                <p className="text-sm font-medium">{item.cakeName}</p>
+                <p className="text-xs font-medium">
+                  {item.price.toLocaleString()}원
+                </p>
               </div>
             ))}
           </div>
