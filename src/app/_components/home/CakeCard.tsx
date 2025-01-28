@@ -32,13 +32,13 @@ const CakeCard: React.FC<CakeCardProps> = ({
 }) => {
   const getRunTime = () => {
     const date = new Date();
-    const hours = operatingHours.openTime.hour * 60;
-    const minutes = operatingHours.openTime.minute;
+    const hours = operatingHours?.openTime?.hour * 60;
+    const minutes = operatingHours?.openTime?.minute;
 
     const start = hours + minutes;
 
-    const endHours = operatingHours.closeTime.hour * 60;
-    const endMinutes = operatingHours.closeTime.minute;
+    const endHours = operatingHours?.closeTime.hour * 60;
+    const endMinutes = operatingHours?.closeTime.minute;
 
     const end = endHours + endMinutes;
     if (start === 0 && end === 0) {

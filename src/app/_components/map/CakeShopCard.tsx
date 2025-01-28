@@ -18,7 +18,7 @@ interface ICakeShopCard {
 const CakeShopCard = ({ shop }: ICakeShopCard) => {
   const router = useRouter();
   const [marked, setMarked] = useState<number | null>(Date.now());
-  const [runtime, setRuntime] = useState<number | null>(null);
+  const [runtime, setRuntime] = useState<number>(0);
   const [closeTime, setCloseTime] = useState('');
 
   const { data: shopDetail, refetch: refetchShopDetail } =
@@ -76,17 +76,15 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
           onClick={() => router.push(`/shop/${shop.shopId}`)}
         >
           <h2 className="text-sm font-bold">{shop.name}</h2>
-          {runtime && (
-            <div className="flex items-center gap-[2px]">
-              <RunTimeIcon color={runtime < 0 ? '#DCDA75' : '#FA2840'} />
-              <span className="text-xs text-grayscale700 flex gap-[5px]">
-                <span className="text-grayscale900">
-                  {runtime < 0 ? '영업중' : '마감'}
-                </span>
-                {closeTime} 에 마감
+          <div className="flex items-center gap-[2px]">
+            <RunTimeIcon color={runtime > 0 ? '#DCDA75' : '#FA2840'} />
+            <span className="text-xs text-grayscale700 flex gap-[5px]">
+              <span className="text-grayscale900">
+                {runtime > 0 ? '영업중' : '마감'}
+                {shopDetail?.operatingHour && ` ${closeTime} 에 라스트 오더`}
               </span>
-            </div>
-          )}
+            </span>
+          </div>
         </div>
         <button onClick={handleScrapCake}>
           {shopDetail?.scraped ? (

@@ -142,7 +142,6 @@ const DraggableBottomSheet = ({
          overflow-y-auto max-h-[80vh] "
         >
           {/* Example items */}
-
           {shops
             ?.toSorted((a, b) => a.distance - b.distance)
             .map((shop) => <CakeShopCard key={shop.shopId} shop={shop} />)}
