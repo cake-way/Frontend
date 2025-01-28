@@ -3,7 +3,7 @@
 import Header from '@/app/_components/Header';
 import { useParams, useRouter } from 'next/navigation';
 import back from '../../../../public/header-images/back.svg';
-import alarm from '@/../public/header-images/alarm-fill.svg';
+import alarm from '@/../public/header-images/alarm.svg';
 import calendar from '@/../public/order/calendar.svg';
 import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';
@@ -93,7 +93,7 @@ const CategorySearch = () => {
       );
       return cakeCategorySearchApi(
         getCategoryName(category),
-        filteringDate?.toISOString(),
+        filteringDate?.toISOString().slice(0, -1),
         confirmPrice?.max,
         confirmReigon,
         realConfirmDesigon
@@ -217,11 +217,15 @@ const CategorySearch = () => {
           <Image src={down} alt="arrow_down" className="right-1 absolute" />
         </div>
         {/* Category Tabs */}
-        <div className="flex gap-2 px-5 py-3.5">
-          <button className="flex items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1">
-            추천순
-            <Image src={down} alt="arrow_down" />
-          </button>
+        <div className="flex gap-2 px-5 py-3.5 font-medium">
+          <select
+            title="정렬 기준 선택"
+            className="flex  outline-none items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1"
+            name="filter"
+          >
+            <option value="">추천순</option>
+          </select>
+          {/* <Image src={down} alt="arrow_down" /> */}
 
           <button
             className={`text-sm  rounded-2xl px-3 py-1 ${confirmReigon && confirmReigon?.length !== 0 ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}
@@ -248,7 +252,7 @@ const CategorySearch = () => {
         ) : (
           <>
             {/* Cake Grid */}
-            {data && data?.length > 0 ? (
+            {data ? (
               <>
                 <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
                   {data
@@ -273,7 +277,12 @@ const CategorySearch = () => {
                           {cake.isScraped ? (
                             <FilledMarkIcon />
                           ) : (
-                            <Image src={mark} alt="mark" />
+                            <Image
+                              src={mark}
+                              alt="mark"
+                              width={20}
+                              height={20}
+                            />
                           )}
                         </button>
 

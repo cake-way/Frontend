@@ -17,7 +17,7 @@ const CategoryCake = () => {
   ];
 
   return (
-    <div className="grid grid-cols-5 gap-4 mt-8  ">
+    <div className="grid grid-cols-5 gap-y-4 mt-8  px-3">
       {categories.map((item, index) => (
         <Link
           href={`/categorySearch/${getCategoryParam[item.label]}`}
