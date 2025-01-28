@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+import { MyCakeLogProps } from 'types/cake-log/myCakeLogs';
+
 import BackIcon from '../../../public/header-images/back.svg';
 import AlarmIcon from '../../../public/header-images/alarm-fill.svg';
 
@@ -11,20 +13,6 @@ import Header from '../_components/Header';
 import CreateLog from '../_components/log-entry/CreateLog';
 import MyCakeLog from '../_components/log-entry/MyCakeLog';
 import { fetchCakelogData } from '../_lib/api/myCakeLogs';
-
-interface MyCakeLogProps {
-  cakelogs: Array<{
-    cakeLogid: number;
-    username: string;
-    cakeShopName: string;
-    cakeCategoryName: string;
-    title: string;
-    thumbnailImage: string;
-    body: string;
-    isPublic: true;
-    imageList: [string];
-  }>;
-}
 
 const LogEntry = () => {
   const [latestOrderShop, setLatestOrderShop] = useState<string | null>(null);

@@ -2,17 +2,10 @@
 
 import Image from 'next/image';
 import BackIcon from '../../../../../public/header-images/back.svg';
+import Photo from '../../../../../public/log-entry/photo.svg';
 import DefaultProfile from '../../../../../public/my-log-images/profile-photo.svg';
 import { useRouter } from 'next/navigation';
-
-interface ThumbnailProps {
-  thumbnailImage: string | File | null; // File 타입 추가
-  setThumbnailImage: (value: string | File | null) => void; // File 타입 지원
-  logTitle: string;
-  setLogTitle: (value: string) => void;
-  userProfileImage: string; // 프로필 사진 URL
-  username: string; // 사용자 이름
-}
+import { ThumbnailProps } from 'types/cake-log/createLog';
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnailImage,
@@ -58,9 +51,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       <div
         className={`${
           thumbnailImage ? 'invisible' : 'visible'
-        } text-gray-400 mx-auto font-semibold h-6 flex items-center justify-center`}
+        }  mx-auto font-semibold h-6 flex flex-col gap-3 items-center justify-center`}
       >
-        대표 사진 추가하기
+        <Image src={Photo} alt="사진 아이콘" />
+        <span className="text-gray-400 ">대표 사진 추가하기</span>
       </div>
 
       <input
@@ -76,7 +70,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         <h1>
           <textarea
             placeholder="케이크 로그 제목을 입력해 주세요."
-            className="w-3/5 font-semibold mt-8 text-[24px] text-white py-3 bg-transparent border-none outline-none resize-none"
+            className="w-3/5 font-semibold mt-8 text-[24px] text-white pt-8 bg-transparent border-none outline-none resize-none"
             value={logTitle}
             onChange={(e) => setLogTitle(e.target.value)}
             onClick={(e) => e.stopPropagation()}

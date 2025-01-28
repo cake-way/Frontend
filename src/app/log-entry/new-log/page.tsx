@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Thumbnail from '@/app/_components/log-entry/new-log/Thumbnail';
+
+import ThumbnailImage from '@/app/_components/log-entry/new-log/Thumbnail';
 import AddPhotos from '@/app/_components/log-entry/new-log/AddPhotos';
 import CategorySelector from '@/app/_components/log-entry/new-log/CategorySelector';
 import LocationSearch from '@/app/_components/log-entry/new-log/LocationSearch';
@@ -104,7 +105,7 @@ const NewLog = () => {
   return (
     <main className="w-full flex flex-col items-center">
       {/* 상단 대표사진 */}
-      <Thumbnail
+      <ThumbnailImage
         thumbnailImage={thumbnailImage}
         setThumbnailImage={setThumbnailImage}
         logTitle={logTitle}
@@ -158,7 +159,7 @@ const NewLog = () => {
       <AddPhotos photos={photos} setPhotos={setPhotos} />
 
       {/* 본문 작성 */}
-      <section className="w-full px-5 mt-5">
+      <section className="w-full px-5 mt-14">
         <p className="font-semibold">본문 작성</p>
         <textarea
           id="body"

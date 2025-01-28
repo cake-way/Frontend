@@ -2,7 +2,7 @@ import { getAuthHeaders } from './getAuthHeader';
 
 export const fetchRecentOrders = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/preCakeLog`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/preCakelog`,
     {
       method: 'GET',
       headers: getAuthHeaders(),

@@ -1,26 +1,39 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import MapIcon from '../../../../../public/log-entry/map-icon.svg';
 import SearchIcon from '../../../../../public/header-images/search.svg';
+
 import { fetchShopName } from '@/app/_lib/api/searchShopName';
+import { fetchRecentOrders } from '@/app/_lib/api/recentOrders';
 import { debounce } from 'lodash';
-
-interface RecentOrder {
-  shopId: number;
-  shopName: string;
-}
-
-interface LocationSearchProps {
-  onShopSelect: (shopId: number) => void; // 부모에서 전달할 함수 타입
-}
+import { LocationSearchProps, RecentOrder } from 'types/cake-log/createLog';
 
 const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
   const [searchResults, setSearchResults] = useState<RecentOrder[]>([]);
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const [isResultsVisible, setIsResultsVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>('');
+
+  // 최근 주문 데이터 가져오기
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetchRecentOrders();
+        const uniqueOrders = response.recentOrderList.filter(
+          (order: RecentOrder, index: number, self: RecentOrder[]) =>
+            self.findIndex((o) => o.shopId === order.shopId) === index
+        ); // 중복 제거
+        setRecentOrders(uniqueOrders);
+      } catch (error) {
+        console.error('최근 주문 내역을 가져오는 중 오류 발생:', error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   // debounce 적용
   const debouncedSearch = useCallback(
@@ -99,6 +112,22 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
           />
         </div>
       )}
+
+      {/* 최근 주문한 가게 표시 */}
+      {!selectedPlace && recentOrders.length > 0 && (
+        <div className="mt-[10px] flex gap-2 flex-wrap">
+          {recentOrders.map((order, index) => (
+            <button
+              key={`${order.shopId}-${index}`} // 고유한 key로 shopId와 index 조합
+              onClick={() => handleSelectResult(order.shopId, order.shopName)}
+              className="px-3 py-[6px] bg-gray-100 rounded-full text-[12px] hover:bg-gray-200"
+            >
+              {order.shopName}
+            </button>
+          ))}
+        </div>
+      )}
+
       {isResultsVisible && (
         <>
           {searchResults.length > 0 ? (

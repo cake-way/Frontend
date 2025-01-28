@@ -7,10 +7,7 @@ import CakeIcon from '../../../../public/home/icons/cake.svg';
 import ArrowIcon from '../../../../public/my-log-images/arrow-forward.svg';
 
 import LogIcon from '@/app/_components/Icons/LogIcon';
-
-interface CreateLogProps {
-  latestOrderShop: string | null;
-}
+import { CreateLogProps } from 'types/cake-log/createLog';
 
 const CreateLog: React.FC<CreateLogProps> = ({ latestOrderShop }) => {
   const router = useRouter();

@@ -10,11 +10,11 @@ import AlarmIcon from '../../../../public/header-images/alarm-fill.svg';
 import Header from '@/app/_components/Header';
 import {
   fetchStoreScrapData,
-  StoreScrap,
   toggleScrapMark,
 } from '@/app/_lib/api/storeScrap';
+import { StoreScrap } from 'types/store/store-scrap';
 import StoreItem from '@/app/_components/my-log/store/StoreItem';
-import EmptyState from '@/app/_components/my-log/store/EmptyState';
+import EmptyState from '@/app/_components/my-log/EmptyState';
 
 const CakeStores = () => {
   const router = useRouter();
@@ -94,7 +94,7 @@ const CakeStores = () => {
             />
           ))
         ) : (
-          <EmptyState />
+          <EmptyState item="가게" />
         )}
       </section>
     </main>
