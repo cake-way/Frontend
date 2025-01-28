@@ -4,16 +4,16 @@ import { getCategoryParam } from '../../../../constants/constants';
 
 const CategoryCake = () => {
   const categories: { label: keyof typeof getCategoryParam; icon: string }[] = [
-    { label: '생일', icon: 'home/icons/birthday.svg' },
-    { label: '졸업', icon: 'home/icons/graduate.svg' },
-    { label: '데이트', icon: 'home/icons/date.svg' },
-    { label: '파티', icon: 'home/icons/party.svg' },
-    { label: '연말', icon: 'home/icons/yearend.svg' },
-    { label: '기념일', icon: 'home/icons/anniversary.svg' },
-    { label: '감사', icon: 'home/icons/thanks.svg' },
-    { label: '결혼', icon: 'home/icons/marry.svg' },
-    { label: '직장', icon: 'home/icons/work.svg' },
-    { label: '당일', icon: 'home/icons/now.svg' },
+    { label: '생일', icon: '/home/icons/birthday.svg' },
+    { label: '졸업', icon: '/home/icons/graduate.svg' },
+    { label: '데이트', icon: '/home/icons/date.svg' },
+    { label: '파티', icon: '/home/icons/party.svg' },
+    { label: '연말', icon: '/home/icons/yearend.svg' },
+    { label: '기념일', icon: '/home/icons/anniversary.svg' },
+    { label: '감사', icon: '/home/icons/thanks.svg' },
+    { label: '결혼', icon: '/home/icons/marry.svg' },
+    { label: '직장', icon: '/home/icons/work.svg' },
+    { label: '당일', icon: '/home/icons/now.svg' },
   ];
 
   return (
