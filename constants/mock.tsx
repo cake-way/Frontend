@@ -36,7 +36,7 @@ export const mockData = {
       imageUrls: ['/home/cake-2.svg', '/home/cake-3.svg'],
     },
     {
-      cakelogId: 1,
+      cakelogId: 2,
       userId: 0,
       username: 'john_doe',
       shopDto: [

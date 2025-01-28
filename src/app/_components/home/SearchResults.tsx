@@ -9,11 +9,14 @@ import {
 import MarkIcon from '../Icons/MarkIcon';
 import FilledMarkIcon from '../Icons/FilledMarkIcon';
 import { Cake, Shop } from 'types/home/searchResult';
+import { useRouter } from 'next/navigation';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);
   const [shopResults, setShopResults] = useState<Shop[]>([]);
   const [activeTab, setActiveTab] = useState<'cake' | 'shop'>('cake');
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -53,8 +56,16 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           )
         );
       }
-    } catch (error) {
-      console.error('스크랩 API 호출 중 오류:', error);
+    } catch (error: unknown) {
+      console.error('에러 디버깅:', error); // 에러 객체 전체 확인
+      if (
+        error instanceof Error &&
+        error.message.includes('스크랩에 실패했습니다')
+      ) {
+        alert('이미 스크랩하셨습니다!');
+      } else {
+        console.error('스크랩 API 호출 중 오류:', error);
+      }
     }
   };
 
@@ -69,8 +80,16 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
           )
         );
       }
-    } catch (error) {
-      console.error('가게 스크랩 처리 중 오류 발생:', error);
+    } catch (error: unknown) {
+      console.error('에러 디버깅:', error); // 에러 객체 전체 확인
+      if (
+        error instanceof Error &&
+        error.message.includes('가게 스크랩 처리에 실패했습니다')
+      ) {
+        alert('이미 스크랩하셨습니다!');
+      } else {
+        console.error('스크랩 API 호출 중 오류:', error);
+      }
     }
   };
 
@@ -110,6 +129,9 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                       <img
                         src={cake.imageUrl}
                         alt={cake.name}
+                        onClick={() => {
+                          router.push(`/cakeDetail/${cake.cakeId}`);
+                        }}
                         className="w-full h-full object-cover cursor-pointer"
                       />
                     </div>
@@ -150,7 +172,12 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                       key={shop.shopId}
                       className={`shop-item ${index !== shopResults.length - 1 ? 'border-b' : ''} py-6`}
                     >
-                      <div className="shop-header flex items-center">
+                      <div
+                        className="shop-header flex items-center cursor-pointer"
+                        onClick={() => {
+                          router.push(`/cakeDetail/${shop.shopId}`);
+                        }}
+                      >
                         <h3 className="shop-name text-lg font-bold mr-3 flex-grow">
                           {shop.name}
                         </h3>
