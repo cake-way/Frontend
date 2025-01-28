@@ -161,7 +161,7 @@ const CategorySearch = () => {
         const response = await toggleMark(cakeId);
         if (response) setMarked(Date.now());
       } else {
-        const isScraped = await scrapCake(cakeId);
+        const isScraped = await scrapCake(cakeId, false);
         if (isScraped) {
           setMarked(Date.now());
         }
