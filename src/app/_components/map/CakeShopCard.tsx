@@ -9,7 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import shopDetailApi from '@/app/_lib/shopApi';
 import { useEffect, useState } from 'react';
 import { scrapShop } from '@/app/_lib/api/searchResults';
-import { fetchStoreScrapData, StoreScrap } from '@/app/_lib/api/storeScrap';
+import { fetchStoreScrapData } from '@/app/_lib/api/storeScrap';
+import { StoreScrap } from 'types/store/store-scrap';
 
 interface ICakeShopCard {
   shop: MapShops;
