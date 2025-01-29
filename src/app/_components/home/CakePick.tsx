@@ -23,7 +23,7 @@ const CakePick = ({ curationList }: ICakePick) => {
   return (
     <section className="pt-5 pl-5  mb-7 h-auto  flex flex-col object-cover">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
+        <h2 className="text-lg font-semibold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link
           href="/home/all-cakeways-picks"
           className="text-sm flex gap-1 pr-5 text-[#3E3F45]"
@@ -73,7 +73,7 @@ const CakePick = ({ curationList }: ICakePick) => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
-                <p className="text-xl font-semibold">연말 모임에 주문하기</p>
+                <p className="text-xl font-semibold">가족 모임에 함께 하기</p>
                 <p className="text-xl font-semibold">좋은 케이크 가게 10곳</p>
               </div>
             </div>
