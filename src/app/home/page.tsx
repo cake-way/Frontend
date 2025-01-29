@@ -3,7 +3,7 @@ import Header from '../_components/Header';
 import CakeWay from '../../../public/header-images/cake-way.svg';
 import Alarm from '../../../public/header-images/alarm-fill.svg';
 import Image from 'next/image';
-import InputField from '../_components/InputField';
+import InputField from '../_components/home/InputField';
 import CakePick from '../_components/home/CakePick';
 import CategoryCake from '../_components/home/CategoryCake';
 import CakeRecommend from '../_components/home/CakeRecommend';
