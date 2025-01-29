@@ -54,13 +54,11 @@ const ProfileEdit = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    // nickname이 변경되었으면 새로운 값을 추가
     formData.append(
       'username',
       nickname !== userInfo?.username ? nickname : userInfo?.username
     );
 
-    // description이 변경되었으면 새로운 값을 추가
     formData.append(
       'description',
       description !== userInfo?.description
@@ -68,18 +66,26 @@ const ProfileEdit = () => {
         : userInfo?.description
     );
 
-    // 프로필 이미지가 변경되었으면 새로운 이미지를 추가, 아니면 기존 이미지를 파일로 전환하여 추가
-    if (profileImageFile) {
-      formData.append('profileImage', profileImageFile);
-    } else if (userInfo?.profileImage) {
-      const response = await fetch(userInfo?.profileImage);
-      const blob = await response.blob(); // Blob 형태로 변환
-      formData.append('profileImage', blob, 'profileImage.jpg'); // 파일 형식으로 보내기
+    // 프로필 이미지가 변경된 경우에만 추가
+    if (userInfo?.profileImage && userInfo.profileImage !== DefaultProfile) {
+      try {
+        const response = await fetch(userInfo.profileImage);
+        const blob = await response.blob();
+        formData.append('profileImage', blob, 'profileImage.jpg');
+      } catch (error) {
+        console.error('기존 프로필 이미지 불러오기 실패:', error);
+      }
     }
 
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+
       await updateProfile(token, formData);
+
       setUserInfo({
         userInfo: {
           ...userInfo!,
