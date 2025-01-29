@@ -75,3 +75,14 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('/Arita-buriM.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.my-font-class {
+  font-family: 'MyCustomFont';
+}

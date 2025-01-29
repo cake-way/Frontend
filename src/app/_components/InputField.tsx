@@ -40,10 +40,10 @@ const InputField: React.FC<InputFieldProps> = ({
     >
       <label
         htmlFor="search-input"
-        className={`${'bg-[#F4F4F4]'} flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full`}
+        className="bg-[#F4F4F4] flex items-center gap-[10px] h-[37px] p-[8px] px-4 shrink-0 rounded-[20px] w-full"
       >
-        {/* 아이콘 */}
-        <div className="flex-shrink flex items-center">
+        {/* 아이콘 크기 조정 */}
+        <div className="flex-shrink-0 flex items-center w-[20px] sm:w-[24px] md:w-[28px]">
           <SearchIcon focus={focus} />
         </div>
 
@@ -53,10 +53,10 @@ const InputField: React.FC<InputFieldProps> = ({
           type="text"
           placeholder={placeholder}
           value={keyword}
-          onChange={handleChange} // 입력 변화 핸들러
-          onFocus={handleFocus} // 포커스 핸들러
-          onBlur={handleBlur} // 블러 핸들러
-          className={`${'placeholder-grayscale500'} flex-grow flex-shrink text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1`}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className="w-auto sm:w-[80%] md:w-[70%] text-[14px] text-[#131313] outline-none bg-transparent caret-primaryRed1"
           aria-label="검색어 입력"
         />
       </label>
