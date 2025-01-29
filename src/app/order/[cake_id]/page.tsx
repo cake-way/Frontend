@@ -48,12 +48,13 @@ const Order: React.FC = () => {
   const { data: orderOpion } = useQuery<OrderOption[]>({
     queryKey: ['orderOption', shopId],
     queryFn: async () => {
-      if (!shopId) return;
-      return await orderOptionApi(+shopId);
+      if (!cake_id) return;
+      return await orderOptionApi(+cake_id);
     },
-    enabled: !!shopId,
+    enabled: !!cake_id,
   });
   const flavors = orderOpion?.map((i) => i.taste) || [];
+  console.log(flavors);
   const sizes = [
     {
       name: '미니사이즈',
@@ -73,9 +74,8 @@ const Order: React.FC = () => {
   ];
 
   useEffect(() => {
-    // 확인
     setSelectedFlavor(flavors[0]);
-  }, [flavors]);
+  }, [orderOpion]);
 
   useEffect(() => {
     console.log(nextPage);
