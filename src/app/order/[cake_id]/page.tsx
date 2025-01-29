@@ -16,6 +16,7 @@ import { ICakeDetail, IShopDetail, OrderOption } from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
 import shopDetailApi from '@/app/_lib/shopApi';
+import useUserStore from '@/app/store/userInfoStore';
 
 const Order: React.FC = () => {
   const { cake_id } = useParams();
@@ -33,6 +34,7 @@ const Order: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
   const [aiTopic, setAiTopic] = useState('');
   const [aiSituate, setAiSituate] = useState('');
+  const { userInfo } = useUserStore();
   const { data, isLoading } = useQuery<ICakeDetail>({
     queryKey: ['cakeDetail', cake_id],
   });
@@ -48,12 +50,13 @@ const Order: React.FC = () => {
   const { data: orderOpion } = useQuery<OrderOption[]>({
     queryKey: ['orderOption', shopId],
     queryFn: async () => {
-      if (!shopId) return;
-      return await orderOptionApi(+shopId);
+      if (!cake_id) return;
+      return await orderOptionApi(+cake_id);
     },
-    enabled: !!shopId,
+    enabled: !!cake_id,
   });
   const flavors = orderOpion?.map((i) => i.taste) || [];
+  console.log(flavors);
   const sizes = [
     {
       name: '미니사이즈',
@@ -73,9 +76,8 @@ const Order: React.FC = () => {
   ];
 
   useEffect(() => {
-    // 확인
     setSelectedFlavor(flavors[0]);
-  }, [flavors]);
+  }, [orderOpion]);
 
   useEffect(() => {
     console.log(nextPage);
@@ -91,6 +93,10 @@ const Order: React.FC = () => {
 
   const onClickedOrder = async () => {
     try {
+      if (!userInfo?.memberId) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
       if (
         cake_id &&
         selectedDate &&
@@ -111,7 +117,7 @@ const Order: React.FC = () => {
 
         // const pickupDate = dayjs(newDate).format('YYYY-MM-DDTHH:MM');
         const body = {
-          memberId: 2, //현재 user의 토큰으로 바꾸기
+          memberId: userInfo?.memberId, //현재 user의 토큰으로 바꾸기
           cakeId: +cake_id,
           orderDate: new Date().toISOString(),
           pickupDate: newDate.toISOString(),
