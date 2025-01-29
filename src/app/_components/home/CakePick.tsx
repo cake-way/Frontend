@@ -72,7 +72,7 @@ const CakePick = ({ curationList }: ICakePick) => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
-                <p className="text-xl font-semibold">연말 모임에 주문하기</p>
+                <p className="text-xl font-semibold">가족 모임에 함께 하기</p>
                 <p className="text-xl font-semibold">좋은 케이크 가게 10곳</p>
               </div>
             </div>
