@@ -21,7 +21,7 @@ const LandingPage = () => {
   return (
     <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
       <motion.section
-        className="mt-[300px]"
+        className="mt-[20vh] sm:mt-[25vh] md:mt-[10vh]"
         initial={{ rotateX: -90 }}
         animate={{ rotateX: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}

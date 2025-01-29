@@ -13,10 +13,11 @@ import LoadingSpinner from '@/app/_components/Loading';
 import { Log } from 'types/curation/curation-detail';
 import { getAuthHeaders } from '@/app/_lib/api/getAuthHeader';
 
-const curationDetail = () => {
+const CurationDetail = () => {
   const { curation_id } = useParams();
   const router = useRouter();
   const [log, setLog] = useState<Log | null>(null);
+  const [relatedCurations, setRelatedCurations] = useState<Log[]>([]);
 
   useEffect(() => {
     const fetchCurationDetail = async () => {
@@ -32,7 +33,6 @@ const curationDetail = () => {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        console.log(data);
         setLog(data);
       } catch (error) {
         console.error('Failed to fetch curation detail:', error);
@@ -40,7 +40,46 @@ const curationDetail = () => {
     };
 
     fetchCurationDetail();
-  }, [curation_id]); // id가 변경될 때마다 재호출
+  }, [curation_id]);
+
+  useEffect(() => {
+    const fetchRelatedCurations = async () => {
+      try {
+        // curation_id 값들 (1, 2, 3, 4)
+        const allCurationIds = [1, 2, 3, 4];
+
+        // 현재 params에서 curation_id 제외
+        const currentCurationId =
+          typeof curation_id === 'string' ? parseInt(curation_id) : null;
+        if (currentCurationId === null) {
+          throw new Error('Invalid curation_id');
+        }
+
+        const remainingIds = allCurationIds.filter(
+          (id) => id !== currentCurationId
+        );
+        // remainingIds에서 랜덤으로 2개 선택
+        const randomIds = remainingIds
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 2);
+
+        // 랜덤으로 선택된 curation_id로 데이터 가져오기
+        const relatedData = await Promise.all(
+          randomIds.map((id) =>
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/curation/${id}`, {
+              method: 'GET',
+              headers: getAuthHeaders(),
+            }).then((res) => res.json())
+          )
+        );
+        setRelatedCurations(relatedData);
+      } catch (error) {
+        console.error('Failed to fetch related curations:', error);
+      }
+    };
+
+    fetchRelatedCurations();
+  }, [curation_id]);
 
   if (!log) {
     return <LoadingSpinner />;
@@ -49,15 +88,17 @@ const curationDetail = () => {
   return (
     <article className="max-w-3xl mx-auto">
       <section className="relative mb-5">
-        {/* 뒤로 가기 버튼 */}
-        <button
-          onClick={() => {
-            router.back();
-          }}
-          className="absolute top-5 left-5 z-10"
-        >
-          <Image src={BackIcon} alt="뒤로 가기" />
-        </button>
+        {/* 헤더 영역 (뒤로 가기 + 스크랩 버튼) */}
+        <div className="absolute top-5 left-0 w-full flex items-center justify-between px-5 z-10">
+          {/* 뒤로 가기 버튼 */}
+          <button onClick={() => router.back()} className="flex items-center">
+            <Image src={BackIcon} alt="뒤로 가기" />
+          </button>
+
+          {/* 스크랩(마크) 아이콘 */}
+          <MarkIcon fill="white" />
+        </div>
+
         {/* 대표 사진 */}
         <img
           src={log.thumbnailImage}
@@ -68,10 +109,10 @@ const curationDetail = () => {
         {/* 그라데이션 배경 */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
-        {/* 대표 사진 위의 제목 */}
-        <h1 className="absolute w-4/6 bottom-10 left-3 pl-6 text-white text-[24px] font-semibold">
-          {log.title}
-        </h1>
+        {/* 제목 및 설명 표시 */}
+        <div className="absolute w-5/6 bottom-10 left-3 pl-4 text-white">
+          <h1 className="text-[24px] font-semibold">{log.title}</h1>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4 text-sm mt-9 px-5 font-medium">
@@ -82,28 +123,31 @@ const curationDetail = () => {
         <span> *스크랩 수가 많은 가게들 위주로 구성되었습니다.</span>
       </section>
 
-      <div className="border-t-4 border-grayscale100 mt-8 mb-6" />
+      <div className="border-t-[6px] border-grayscale100 mt-8 mb-6" />
 
       {/* 케이크 로그 반복 */}
       {log.curationCakelog.map((cakeLog, index) => {
-        const cakeShop = cakeLog.shopDto; // 객체로 사용
+        const cakeShop = cakeLog.shopDto;
 
         // 시간 문자열에서 ':00' 제거
         const formatTime = (time: string) => time.slice(0, 5);
 
         return (
-          <section key={cakeLog.cakelogId} className="mb-10 px-5">
+          <section
+            key={cakeLog.cakelogId}
+            className={`px-5 ${index === log.curationCakelog.length - 1 ? 'mb-5' : 'mb-16'}`}
+          >
             {/* 가게 이름 및 운영 시간 */}
             <div className="flex justify-between items-end">
               <p className="text-lg font-bold">{cakeShop.shopName}</p>
               <MarkIcon fill="black" />
             </div>
             <p className="flex text-sm text-grayscale700 gap-2">
-              <span className="font-semibold text-sm text-grayscale900">
-                {cakeShop.operatingHours ? `영업 중` : `영업 종료`}{' '}
-                {/* 영업 상태 표시 */}
+              <span className="font-bold text-sm text-grayscale900">
+                영업 시간
               </span>
-              {formatTime(cakeShop.operatingHours.closeTime)} 에 라스트 오더
+              {formatTime(cakeShop.operatingHours.openTime)}am -{' '}
+              {formatTime(cakeShop.operatingHours.closeTime)}pm
             </p>
 
             {/* 이미지 슬라이더 */}
@@ -119,15 +163,64 @@ const curationDetail = () => {
               {cakeLog.body}
             </p>
 
-            {/* 경계선 */}
-            {index < log.curationCakelog.length - 1 && (
-              <div className="border border-grayscale400 mt-10" />
+            {index === 1 && (
+              <p className="my-font-class w-60 my-[68px] py-3 text-[20px] text-center border-t border-b border-grayscale400 mx-auto">
+                이번에는 또 다른 <br /> 케이크를 찾아봤는데요~!
+              </p>
+            )}
+
+            {/* 경계선 (index === 0 다음에는 표시 안 함) */}
+            {index === log.curationCakelog.length - 1 && (
+              <div className="border border-grayscale400 mt-16" />
             )}
           </section>
         );
       })}
+
+      {/* 랜덤으로 선택된 관련 curation들 표시 */}
+      <section className="mt-5 px-5">
+        <p className="text-lg font-bold mb-4">다른 케이크 로그 살피기</p>
+        <div className="flex flex-col gap-5">
+          {relatedCurations.map((relatedCuration) => (
+            <div
+              key={relatedCuration.curationId}
+              onClick={() => {
+                router.push(`/curationDetail/${relatedCuration.curationId}`);
+              }}
+              className="flex gap-[10px] cursor-pointer"
+            >
+              {/* 제목과 설명을 포함하는 div */}
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[16px] font-semibold">
+                    {relatedCuration.title}
+                  </h3>
+                </div>
+                <p className="mt-2 h-10 text-sm overflow-hidden text-grayscale700 line-clamp-2">
+                  {relatedCuration.description}
+                </p>
+                <div className="flex mt-4 gap-[18px]">
+                  <p className="text-[12px] text-primaryRed2 font-medium">
+                    파리크로와상 외 9곳
+                  </p>
+                  <p className="text-[12px] text-grayscale600 font-medium">
+                    2024.12.07
+                  </p>
+                </div>
+              </div>
+
+              {/* 대표 사진 */}
+              <img
+                src={relatedCuration.thumbnailImage}
+                alt={relatedCuration.title}
+                className="w-[105px] h-[105px] object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
     </article>
   );
 };
 
-export default curationDetail;
+export default CurationDetail;
