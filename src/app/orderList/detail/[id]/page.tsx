@@ -12,10 +12,12 @@ import {
 } from '@/app/_lib/orderApi';
 import { useQuery } from '@tanstack/react-query';
 import { cakeSearch, OrderhistoryDetail } from 'types/relatedCake';
+import useUserStore from '@/app/store/userInfoStore';
 
 export default function OrderDetail() {
   const { id } = useParams();
   const router = useRouter();
+  const { userInfo } = useUserStore();
 
   if (!id || Array.isArray(id)) {
     return (
@@ -33,7 +35,10 @@ export default function OrderDetail() {
 
   const { data: orderDetail, isLoading } = useQuery<OrderhistoryDetail>({
     queryKey: ['orderDetail', id],
-    queryFn: () => orderHistoryDetailApi(1, +id),
+    queryFn: async () => {
+      if (!userInfo?.memberId) return;
+      return await orderHistoryDetailApi(userInfo?.memberId, +id);
+    },
   });
   const { data: cakeSearch } = useQuery<cakeSearch[]>({
     queryKey: ['cakeSearch', orderDetail],
