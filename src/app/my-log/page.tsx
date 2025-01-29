@@ -28,13 +28,21 @@ const MyLog = () => {
     router.push('/notice');
   };
 
-  const setUserInfo = useUserStore((state) => state.setUserInfo); // 로그인한 사용자 관리
+  const setUserInfo = useUserStore((state) => state.setUserInfo);
 
   useEffect(() => {
     const fetchAndSetUserInfo = async () => {
       const userData = await fetchUserInfo();
       if (userData) {
-        setUserInfo(userData); // 사용자 정보 전역적으로 관리
+        // 프로필 이미지가 카카오 기본 이미지인 경우 https로 변환
+        if (
+          userData.userInfo?.profileImage?.includes('img1.kakaocdn.net') &&
+          userData.userInfo.profileImage?.startsWith('http://')
+        ) {
+          userData.userInfo.profileImage =
+            userData.userInfo.profileImage.replace('http://', 'https://');
+        }
+        setUserInfo(userData);
       }
     };
 
