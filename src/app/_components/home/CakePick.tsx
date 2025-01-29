@@ -22,7 +22,7 @@ const CakePick = ({ curationList }: ICakePick) => {
   return (
     <section className="pt-5 pl-5  mb-7 h-auto  flex flex-col object-cover">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">CAKEWAY&apos;S PICK</h2>{' '}
+        <h2 className="text-lg font-semibold">CAKEWAY&apos;S PICK</h2>{' '}
         <Link
           href="/home/all-cakeways-picks"
           className="text-sm  pr-5 text-[#3E3F45]"
