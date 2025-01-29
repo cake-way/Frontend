@@ -91,7 +91,9 @@ const CakePick = ({ curationList }: ICakePick) => {
                   priority
                 />
                 <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
-                  <p className="text-xl font-semibold">{i.title}</p>
+                  <p className="text-xl font-semibold max-w-[168px]  line-clamp-2">
+                    {i.title}
+                  </p>
                 </div>
               </div>
             </SwiperSlide>

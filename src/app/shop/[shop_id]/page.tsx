@@ -18,7 +18,7 @@ const Shop = () => {
   const { shop_id } = useParams();
   const [activeTab, setActiveTab] = useState('전체메뉴');
   const [marked, setMarked] = useState<number | null>(null);
-  const [address, setAddress] = useState('');
+
   const { setOneShopsLocation } = useHomeLocationStore();
 
   const router = useRouter();
@@ -56,12 +56,6 @@ const Shop = () => {
       setSubTab(shopDetail?.cakes.name);
     }
   }, [shopDetail?.cakes.name]);
-
-  useEffect(() => {
-    if (shopDetail?.address) {
-      setAddress(shopDetail?.address.substring(0, 20) + '...');
-    }
-  }, [shopDetail]);
 
   const hour = shopDetail?.operatingHour?.closeTime.split(':')[0];
   const minutes = shopDetail?.operatingHour?.closeTime.split(':')[1];
@@ -170,12 +164,12 @@ const Shop = () => {
                     alt="adress_icon"
                   />
                 </span>
-                <span className="whitespace-nowrap text-ellipsis">
-                  {address}
+                <span className=" text-ellipsis  line-clamp-1 ">
+                  {shopDetail?.address}
                 </span>
 
                 <button
-                  className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top cursor-pointer"
+                  className="text-grayscale600 ml-2 text-sm whitespace-nowrap align-text-top cursor-pointer "
                   onClick={onClickedMap}
                 >
                   지도보기
@@ -340,13 +334,14 @@ const Shop = () => {
                       <img
                         src={log.thumbnail_image}
                         alt={log.title}
-                        className="w-full h-full object-cover "
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={() => router.push(`/log-detail/${log.id}`)}
                       />
 
                       <div className="space-y-2 absolute z-50 bottom-0 ">
-                        <div className="flex items-center mb-3.5 ml-4 justify-between flex-col text-grayscale100">
+                        <div className="flex  mb-3.5 ml-4 justify-between flex-col text-grayscale100">
                           <span className="font-medium">{log.title}</span>
-                          <span className="text-xs font-semibold">
+                          <span className="text-xs font-semibold text-start">
                             {log.author}
                           </span>
                         </div>
@@ -359,7 +354,11 @@ const Shop = () => {
               {/* 하단 케이크 로그 상세 */}
               <div className="px-5 gap-1 ">
                 {shopLogs?.cakelogs?.map((log) => (
-                  <div key={log.id} className="border-b pb-[18px]">
+                  <div
+                    key={log.id}
+                    className="border-b pb-[18px] cursor-pointer"
+                    onClick={() => router.push(`/log-detail/${log.id}`)}
+                  >
                     <div className="flex gap-2.5 items-center my-[18px]">
                       <h1 className="text-sm font-medium text-grayscale900">
                         {log.title}
@@ -377,7 +376,11 @@ const Shop = () => {
                       />
                       <div className="text-xs text-grayscale800 flex flex-col justify-between">
                         <span>{log.body}</span>
-                        <span>주문일 {log.createTime}</span>
+                        <span>
+                          주문일 {log.createTime.split('-')[0]}.&nbsp;
+                          {log.createTime.split('-')[1]}.&nbsp;
+                          {log.createTime.slice(8, 10)}
+                        </span>
                       </div>
                     </div>
                   </div>
