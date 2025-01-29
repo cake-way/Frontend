@@ -90,6 +90,15 @@ const ProfileEdit = () => {
 
       console.log(data);
 
+      // 프로필 이미지 URL 처리 (카카오 기본 이미지인 경우 https로 변환)
+      const updatedProfileImage = profileImageFile
+        ? URL.createObjectURL(profileImageFile)
+        : userInfo?.profileImage
+          ? userInfo.profileImage.includes('kakaocdn.net')
+            ? userInfo.profileImage.replace('http://', 'https://')
+            : userInfo.profileImage
+          : DefaultProfile;
+
       // 변경된 필드만 업데이트하여 userInfo 설정
       setUserInfo({
         userInfo: {
@@ -98,9 +107,7 @@ const ProfileEdit = () => {
           ...(description !== userInfo?.description && {
             description: description,
           }),
-          ...(profileImageFile && {
-            profileImage: URL.createObjectURL(profileImageFile),
-          }),
+          profileImage: updatedProfileImage,
         },
         designScrap: [],
         storeScrap: [],
