@@ -134,8 +134,10 @@ export default function AllCakewayPicks() {
             <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
             {/* 이미지 위에 제목 */}
-            <div className="px-4 font-medium text-sm absolute bottom-0 left-0 w-10/12 text-white pb-[12px] whitespace-pre-line z-10">
-              {cake.title}
+            <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
+              <p className="text-sm font-medium max-w-[117px]  line-clamp-2">
+                {cake.title}
+              </p>
             </div>
           </div>
         ))}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import SearchIcon from './Icons/SearchIcon';
+import SearchIcon from '../Icons/SearchIcon';
 
 interface InputFieldProps {
   placeholder?: string;

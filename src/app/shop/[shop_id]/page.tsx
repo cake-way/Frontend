@@ -9,7 +9,7 @@ import { IShopDetail, shopLogs } from 'types/relatedCake';
 import Link from 'next/link';
 import useHomeLocationStore from '@/app/store/homeLocationStore';
 import Header from '@/app/_components/Header';
-import back from '@/../public/header-images/back.svg';
+import back from '@/../public/header-images/back-white.svg';
 import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
 import mark from '@/../public/my-log-images/mark.svg';
 import { scrapShop } from '@/app/_lib/api/searchResults';

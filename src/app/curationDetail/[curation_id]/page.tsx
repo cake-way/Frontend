@@ -45,7 +45,7 @@ const CurationDetail = () => {
   useEffect(() => {
     const fetchRelatedCurations = async () => {
       try {
-        // curation_id 값들 (1, 2, 3, 4)
+        // DB에 있는 curation_id 값 하드코딩 (1, 2, 3, 4)
         const allCurationIds = [1, 2, 3, 4];
 
         // 현재 params에서 curation_id 제외
@@ -87,18 +87,18 @@ const CurationDetail = () => {
 
   return (
     <article className="max-w-3xl mx-auto">
+      {/* 상단 고정된 헤더 영역 (뒤로 가기 버튼 + 스크랩 버튼) */}
+      <div className="fixed top-0 left-0 w-full flex items-center justify-between px-5 py-4 z-50 bg-transparent">
+        {/* 뒤로 가기 버튼 */}
+        <button onClick={() => router.back()} className="flex items-center">
+          <Image src={BackIcon} alt="뒤로 가기" />
+        </button>
+
+        {/* 스크랩(마크) 아이콘 */}
+        <MarkIcon fill="white" />
+      </div>
+
       <section className="relative mb-5">
-        {/* 헤더 영역 (뒤로 가기 + 스크랩 버튼) */}
-        <div className="absolute top-5 left-0 w-full flex items-center justify-between px-5 z-10">
-          {/* 뒤로 가기 버튼 */}
-          <button onClick={() => router.back()} className="flex items-center">
-            <Image src={BackIcon} alt="뒤로 가기" />
-          </button>
-
-          {/* 스크랩(마크) 아이콘 */}
-          <MarkIcon fill="white" />
-        </div>
-
         {/* 대표 사진 */}
         <img
           src={log.thumbnailImage}
@@ -118,9 +118,9 @@ const CurationDetail = () => {
       <section className="flex flex-col gap-4 text-sm mt-9 px-5 font-medium">
         <span>
           연초에 친구들과 혹은 가족들과 함께 즐기기 좋은 케이크 맛집을 선정해
-          보았습니다~!{' '}
+          보았습니다~!
         </span>
-        <span> *스크랩 수가 많은 가게들 위주로 구성되었습니다.</span>
+        <span>*스크랩 수가 많은 가게들 위주로 구성되었습니다.</span>
       </section>
 
       <div className="border-t-[6px] border-grayscale100 mt-8 mb-6" />
@@ -128,9 +128,7 @@ const CurationDetail = () => {
       {/* 케이크 로그 반복 */}
       {log.curationCakelog.map((cakeLog, index) => {
         const cakeShop = cakeLog.shopDto;
-
-        // 시간 문자열에서 ':00' 제거
-        const formatTime = (time: string) => time.slice(0, 5);
+        const formatTime = (time: string) => time.slice(0, 5); // 시간 포맷 정리
 
         return (
           <section
@@ -169,7 +167,7 @@ const CurationDetail = () => {
               </p>
             )}
 
-            {/* 경계선 (index === 0 다음에는 표시 안 함) */}
+            {/* 경계선 (마지막 아이템일 때만) */}
             {index === log.curationCakelog.length - 1 && (
               <div className="border border-grayscale400 mt-16" />
             )}
@@ -177,7 +175,7 @@ const CurationDetail = () => {
         );
       })}
 
-      {/* 랜덤으로 선택된 관련 curation들 표시 */}
+      {/* 랜덤으로 선택된 다른 curation들 표시 */}
       <section className="mt-5 px-5">
         <p className="text-lg font-bold mb-4">다른 케이크 로그 살피기</p>
         <div className="flex flex-col gap-5">

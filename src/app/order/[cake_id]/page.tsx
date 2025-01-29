@@ -243,7 +243,7 @@ const Order: React.FC = () => {
               value={selectedBgColor ?? ''}
               type="text"
               aria-label="background-color"
-              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900  w-full px-3 py-1.5 focus:outline-none rounded-md"
+              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900  w-full px-3 py-1.5 focus:outline-none rounded-md caret-primaryRed1"
               onChange={(e) => setSelectedBgColor(e.target.value)}
             />
           </div>
@@ -254,7 +254,7 @@ const Order: React.FC = () => {
               value={letteringColor ?? ''}
               type="text"
               aria-label="background-color"
-              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900 w-full px-3 py-1.5 focus:outline-none rounded-md"
+              className="bg-[#f4f4f4]  text-sm font-medium text-grayscale900 w-full px-3 py-1.5 focus:outline-none rounded-md caret-primaryRed1"
               onChange={(e) => setLetteringColor(e.target.value)}
             />
           </div>

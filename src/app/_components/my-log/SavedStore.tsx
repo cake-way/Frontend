@@ -24,13 +24,13 @@ const SavedStore: React.FC = () => {
           {lastTwoStore.map((store, index) => (
             <section key={index} className="flex items-center gap-4">
               {/* 왼쪽: 가게 케이크 사진 */}
-              <figure className="flex-shrink-0 w-[110px] h-[110px]">
+              <figure className="flex-shrink-0 w-[110px] h-[110px] overflow-hidden relative">
                 <Image
                   src={store.storeImage}
                   alt={`${store.storeName}의 대표 이미지`}
                   width={110}
                   height={110}
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               </figure>
 
