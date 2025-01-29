@@ -29,9 +29,25 @@ export const ProfileInfo = ({
 
 // 이미지 슬라이더 컴포넌트
 export const ImageSlider = ({ images }: { images: string[] }) => (
-  <Swiper spaceBetween={2} slidesPerView="auto" className="mt-4">
+  <Swiper
+    spaceBetween={2}
+    slidesPerView={images.length === 1 ? 1 : 'auto'} // 이미지 개수가 1일 경우 슬라이드 하나로 고정
+    className="mt-4"
+    style={{
+      overflow: 'hidden', // 이미지가 한 개일 때 고정되도록 설정
+    }}
+  >
     {images.map((image, index) => (
-      <SwiperSlide key={index} style={{ width: '167px', height: '222px' }}>
+      <SwiperSlide
+        key={index}
+        style={{
+          width: images.length === 1 ? '335px' : '167px', // 이미지 개수에 따라 width 설정
+          height: '222px',
+          paddingRight: images.length === 1 ? '20px' : '0',
+          display: 'flex', // 수평 정렬을 위해 flex 사용
+          justifyContent: 'center', // 수평 정렬
+        }}
+      >
         <img
           src={image}
           alt={`추가 이미지 ${index + 1}`}

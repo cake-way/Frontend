@@ -30,7 +30,7 @@ const Login = () => {
       </section>
 
       <button
-        className="fixed bottom-5 flex items-center justify-start gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[70px]
+        className="fixed bottom-5 flex mb-32 items-center justify-start gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[70px]
         w-[280px] sm:w-[300px] md:w-[330px] lg:w-[360px]
         h-[45px] sm:h-[48px] md:h-[50px] lg:h-[55px]
         bg-[#F7E409] text-black rounded-[4px] px-4 sm:px-5 md:px-6"
@@ -41,7 +41,7 @@ const Login = () => {
           alt="카카오 아이콘"
           className="w-6 sm:w-7 md:w-8"
         />
-        <span className="text-[12px] sm:text-[14px] md:text-[16px] font-semibold">
+        <span className="text-[12px] sm:text-[14px] md:text-[16px] font-medium">
           카카오로 시작하기
         </span>
       </button>
