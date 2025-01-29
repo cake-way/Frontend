@@ -204,7 +204,7 @@ const CurationDetail = () => {
                     파리크로와상 외 9곳
                   </p>
                   <p className="text-[12px] text-grayscale600 font-medium">
-                    2024.12.07
+                    2024.12.06
                   </p>
                 </div>
               </div>
