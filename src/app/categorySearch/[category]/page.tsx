@@ -190,7 +190,9 @@ const CategorySearch = () => {
         <Header
           leftButtonImage={<Image src={back} alt="back" />}
           centerText={getCategoryName(category) || '카테고리 없음'}
-          rightButtonImage={[<Image key="Alarm" src={alarm} alt="alrm" />]}
+          rightButtonImage={[
+            <Image key="Alarm" src={alarm} alt="alrm" width={24} height={24} />,
+          ]}
           onLeftButtonClick={onclickedBack}
           onRightButtonClick={[onCickedAlarm]}
         ></Header>
