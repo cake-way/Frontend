@@ -53,35 +53,30 @@ const ProfileEdit = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    let isChanged = false;
 
-    formData.append(
-      'username',
-      nickname !== userInfo?.username ? nickname : userInfo?.username
-    );
+    // 닉네임이 변경된 경우에만 추가
+    if (nickname !== userInfo?.username) {
+      formData.append('username', nickname);
+      isChanged = true;
+    }
 
-    formData.append(
-      'description',
-      description !== userInfo?.description
-        ? description
-        : userInfo?.description
-    );
+    // 취향 소개가 변경된 경우에만 추가
+    if (description !== userInfo?.description) {
+      formData.append('description', description);
+      isChanged = true;
+    }
 
-    // 프로필 이미지가 변경된 경우에만 추가
-    if (userInfo?.profileImage && userInfo.profileImage !== DefaultProfile) {
-      try {
-        // 카카오 기본 프로필 URL인 경우 https로 변환
-        const profileImageUrl = userInfo.profileImage.includes(
-          'img1.kakaocdn.net'
-        )
-          ? userInfo.profileImage.replace('http://', 'https://')
-          : userInfo.profileImage;
+    // 새로운 프로필 이미지가 선택된 경우에만 추가
+    if (profileImageFile) {
+      formData.append('profileImage', profileImageFile);
+      isChanged = true;
+    }
 
-        const response = await fetch(profileImageUrl);
-        const blob = await response.blob();
-        formData.append('profileImage', blob, 'profileImage.jpg');
-      } catch (error) {
-        console.error('기존 프로필 이미지 불러오기 실패:', error);
-      }
+    // 변경사항이 없으면 함수 종료
+    if (!isChanged) {
+      router.back();
+      return;
     }
 
     try {
@@ -91,20 +86,21 @@ const ProfileEdit = () => {
         return;
       }
 
-      await updateProfile(token, formData);
+      const data = await updateProfile(token, formData);
 
+      console.log(data);
+
+      // 변경된 필드만 업데이트하여 userInfo 설정
       setUserInfo({
         userInfo: {
           ...userInfo!,
-          username: nickname,
-          description: description,
-          profileImage: profileImageFile
-            ? URL.createObjectURL(profileImageFile)
-            : userInfo?.profileImage
-              ? userInfo.profileImage.includes('kakaocdn.net')
-                ? userInfo.profileImage.replace('http://', 'https://')
-                : userInfo.profileImage
-              : DefaultProfile,
+          ...(nickname !== userInfo?.username && { username: nickname }),
+          ...(description !== userInfo?.description && {
+            description: description,
+          }),
+          ...(profileImageFile && {
+            profileImage: URL.createObjectURL(profileImageFile),
+          }),
         },
         designScrap: [],
         storeScrap: [],

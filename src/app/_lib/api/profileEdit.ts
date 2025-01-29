@@ -6,7 +6,7 @@ export const updateProfile = async (
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/mypage`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         body: formData,
         headers: {
           Authorization: `Bearer ${token}`, // 인증 토큰 헤더 추가
