@@ -69,7 +69,14 @@ const ProfileEdit = () => {
     // 프로필 이미지가 변경된 경우에만 추가
     if (userInfo?.profileImage && userInfo.profileImage !== DefaultProfile) {
       try {
-        const response = await fetch(userInfo.profileImage);
+        // 카카오 기본 프로필 URL인 경우 https로 변환
+        const profileImageUrl = userInfo.profileImage.includes(
+          'img1.kakaocdn.net'
+        )
+          ? userInfo.profileImage.replace('http://', 'https://')
+          : userInfo.profileImage;
+
+        const response = await fetch(profileImageUrl);
         const blob = await response.blob();
         formData.append('profileImage', blob, 'profileImage.jpg');
       } catch (error) {
@@ -93,7 +100,11 @@ const ProfileEdit = () => {
           description: description,
           profileImage: profileImageFile
             ? URL.createObjectURL(profileImageFile)
-            : userInfo?.profileImage || DefaultProfile,
+            : userInfo?.profileImage
+              ? userInfo.profileImage.includes('kakaocdn.net')
+                ? userInfo.profileImage.replace('http://', 'https://')
+                : userInfo.profileImage
+              : DefaultProfile,
         },
         designScrap: [],
         storeScrap: [],
@@ -105,7 +116,6 @@ const ProfileEdit = () => {
       console.error('프로필 수정 실패:', error);
     }
   };
-
   return (
     <main className="w-full flex flex-col items-center">
       <Header
