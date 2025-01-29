@@ -6,14 +6,16 @@ import {
   scrapCake,
   scrapShop,
 } from '@/app/_lib/api/searchResults';
-import MarkIcon from '../Icons/MarkIcon';
-import FilledMarkIcon from '../Icons/FilledMarkIcon';
+import Markicon from '../../../../public/my-log-images/mark.svg';
+import FilledMarkicon from '../../../../public/my-log-images/mark-fill.svg';
 import { Cake, Shop } from 'types/home/searchResult';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getCakeDesigns } from '@/app/_lib/api/cakeDesigns';
 import { fetchStoreScrapData } from '@/app/_lib/api/storeScrap';
 import { CakeDesign } from 'types/cake-design/cakeDesignProps';
+import FilledMarkIcon from '../Icons/FilledMarkIcon';
+import MarkIcon from '../Icons/MarkIcon';
 
 const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
   const [cakeResults, setCakeResults] = useState<Cake[]>([]);
@@ -171,9 +173,9 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
                       onClick={() => handleScrapCake(cake.cakeId, index)}
                     >
                       {cake.isScrapped ? (
-                        <FilledMarkIcon />
+                        <Image src={FilledMarkicon} alt="채워진 마크" />
                       ) : (
-                        <MarkIcon fill="white" />
+                        <Image src={Markicon} alt="빈 마크" />
                       )}
                     </button>
                   </div>

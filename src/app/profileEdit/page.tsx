@@ -47,10 +47,6 @@ const ProfileEdit = () => {
     }
   };
 
-  // 기존 프로필 이미지를 파일로 전환할 수 없기 때문에 URL을 그대로 보내는 방법을 유지하려면
-  // URL을 파일로 전송해야 할 경우엔
-  // 서버에서 URL을 받아들이지 않으면 이 방법을 사용해야 함
-
   const handleSubmit = async () => {
     const formData = new FormData();
     let isChanged = false;
@@ -86,9 +82,7 @@ const ProfileEdit = () => {
         return;
       }
 
-      const data = await updateProfile(token, formData);
-
-      console.log(data);
+      await updateProfile(token, formData);
 
       // 프로필 이미지 URL 처리 (카카오 기본 이미지인 경우 https로 변환)
       const updatedProfileImage = profileImageFile

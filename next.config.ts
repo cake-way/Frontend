@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     ],
     remotePatterns: [
       {
-        protocol: 'https', // ✅ HTTPS 강제
+        protocol: 'https',
         hostname: 'img1.kakaocdn.net',
       },
     ],

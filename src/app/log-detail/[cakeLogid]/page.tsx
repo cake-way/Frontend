@@ -2,11 +2,13 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+
 import LoadingSpinner from '@/app/_components/Loading';
 import { fetchLogDetail, toggleScrap } from '@/app/_lib/api/logDetail';
 import { fetchScrapLogs } from '@/app/_lib/api/logScrap';
 import useUserStore from '@/app/store/userInfoStore';
 import { ImageSlider } from '@/app/_components/log-detail/ProfileAndPhoto';
+
 import ScrapIcon from '../../../../public/my-log-images/mark.svg';
 import ScrapIconFilled from '../../../../public/my-log-images/mark-fill.svg';
 import BackIcon from '../../../../public/header-images/back-white.svg';
@@ -15,11 +17,12 @@ import { LogData } from 'types/cake-log/log-detail';
 const LogDetail = () => {
   const { cakeLogid } = useParams();
   const [log, setLog] = useState<LogData | null>(null);
-  const [isScraped, setIsScraped] = useState(false); // 스크랩 여부 상태
+  const [isScraped, setIsScraped] = useState(false);
   const user = useUserStore((state) => state.userInfo);
   const currentUser = user?.username;
   const router = useRouter();
 
+  // 로그 상세 데이터 가져오기
   useEffect(() => {
     if (cakeLogid && !isNaN(Number(cakeLogid))) {
       const logId = Number(cakeLogid);
@@ -35,6 +38,7 @@ const LogDetail = () => {
     }
   }, [cakeLogid]);
 
+  // 스크랩한 로그 리스트에 있는지 확인 후 마크 설정
   useEffect(() => {
     const checkIfScraped = async () => {
       try {
@@ -58,9 +62,8 @@ const LogDetail = () => {
       const logId = Number(cakeLogid);
       if (!isNaN(logId)) {
         try {
-          console.log('현재 스크랩 상태:', isScraped); // 디버깅용
           const newScrapState = !isScraped;
-          await toggleScrap(logId, newScrapState); // API 호출
+          await toggleScrap(logId, newScrapState);
           setIsScraped(newScrapState); // 상태 변경
         } catch (error) {
           console.error('스크랩 상태 업데이트 실패:', error);
@@ -74,7 +77,7 @@ const LogDetail = () => {
   const isOwner = log?.username === currentUser; // 현재 로그인된 사용자가 작성자인지 확인
 
   if (!log) {
-    return <LoadingSpinner />; // 로딩 중일 때
+    return <LoadingSpinner />; // 데이터 불러올 때
   }
 
   const formatDate = (dateString: string) => {
@@ -89,34 +92,30 @@ const LogDetail = () => {
 
   return (
     <article className="max-w-3xl">
-      <section className="relative mb-5">
+      <div className="fixed top-0 left-0 w-full flex justify-between p-5 z-50">
         {/* 뒤로 가기 버튼 */}
-        <button
-          onClick={() => router.back()}
-          className="absolute top-5 left-5 z-10"
-        >
+        <button onClick={() => router.back()} className="bg-transparent">
           <Image src={BackIcon} alt="뒤로 가기" />
         </button>
 
-        {/* 대표 사진 */}
-        <img
-          src={log.thumbnailImage}
-          alt={log.title}
-          className="w-full h-[420px] object-cover"
-        />
-
-        {/* 스크랩 마커 */}
+        {/* 스크랩 마커 (isOwner가 아닐 때만 표시) */}
         {!isOwner && (
-          <button
-            onClick={handleScrapToggle}
-            className="absolute top-3 right-3 z-10 p-2"
-          >
+          <button onClick={handleScrapToggle} className="bg-transparent p-2">
             <Image
               src={isScraped ? ScrapIconFilled : ScrapIcon}
               alt="스크랩 아이콘"
             />
           </button>
         )}
+      </div>
+
+      <section className="relative mb-5">
+        {/* 대표 사진 */}
+        <img
+          src={log.thumbnailImage}
+          alt={log.title}
+          className="w-full h-[420px] object-cover"
+        />
 
         {/* 그라데이션 배경 */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>

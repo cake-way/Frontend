@@ -21,7 +21,14 @@ const Login = () => {
 
   return (
     <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans relative px-4">
-      <section className="mt-[20vh] sm:mt-[25vh] md:mt-[10vh]">
+      <section
+        className="mt-[var(--dynamic-mt)]"
+        style={
+          {
+            '--dynamic-mt': 'min(30vh, 274px)', // 화면 높이의 30% 또는 최대 274px
+          } as React.CSSProperties
+        }
+      >
         <Image src={CakeWayLogo} alt="cake-way 로고" className="w-full" />
       </section>
 
@@ -30,10 +37,10 @@ const Login = () => {
       </section>
 
       <button
-        className="fixed bottom-5 flex mb-32 items-center justify-start gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[70px]
-        w-[280px] sm:w-[300px] md:w-[330px] lg:w-[360px]
-        h-[45px] sm:h-[48px] md:h-[50px] lg:h-[55px]
-        bg-[#F7E409] text-black rounded-[4px] px-4 sm:px-5 md:px-6"
+        className="fixed bottom-5 mb-32 flex items-center justify-between
+  w-[280px] sm:w-[300px] md:w-[330px] lg:w-[360px] 
+  h-[45px] sm:h-[48px] md:h-[50px] lg:h-[55px] 
+  bg-[#F7E409] text-black rounded-[4px] px-4 sm:px-5 md:px-6"
         onClick={handleKakaoLogin}
       >
         <Image
@@ -41,7 +48,7 @@ const Login = () => {
           alt="카카오 아이콘"
           className="w-6 sm:w-7 md:w-8"
         />
-        <span className="text-[12px] sm:text-[14px] md:text-[16px] font-medium">
+        <span className="text-[12px] sm:text-[14px] md:text-[16px] font-medium mx-auto">
           카카오로 시작하기
         </span>
       </button>
