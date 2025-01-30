@@ -19,15 +19,19 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans">
+    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans relative px-4">
       <motion.section
-        className="mt-[20vh] sm:mt-[25vh] md:mt-[10vh]"
+        className="mt-[var(--dynamic-mt)]"
+        style={
+          {
+            '--dynamic-mt': 'min(30vh, 274px)', // 화면 높이의 30% 또는 최대 274px
+          } as React.CSSProperties
+        }
         initial={{ rotateX: -90 }}
         animate={{ rotateX: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        style={{ transformOrigin: 'bottom' }}
       >
-        <Image src={CakeWayLogo} alt="cake-way 로고" />
+        <Image src={CakeWayLogo} alt="cake-way 로고" className="w-full" />
       </motion.section>
 
       <motion.section className="mb-[275px] text-center text-md flex ">

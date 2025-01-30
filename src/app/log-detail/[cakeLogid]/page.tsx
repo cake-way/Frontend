@@ -91,8 +91,8 @@ const LogDetail = () => {
   const formattedDate = formatDate(log.createAt); // 날짜 포맷팅
 
   return (
-    <article className="max-w-3xl">
-      <div className="fixed top-0 left-0 w-full flex justify-between p-5 z-50">
+    <article className="w-full">
+      <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] flex justify-between px-5 py-3 z-50">
         {/* 뒤로 가기 버튼 */}
         <button onClick={() => router.back()} className="bg-transparent">
           <Image src={BackIcon} alt="뒤로 가기" />

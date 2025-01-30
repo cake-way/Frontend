@@ -86,9 +86,9 @@ const CurationDetail = () => {
   }
 
   return (
-    <article className="max-w-3xl mx-auto">
+    <article className="w-full">
       {/* 상단 고정된 헤더 영역 (뒤로 가기 버튼 + 스크랩 버튼) */}
-      <div className="fixed top-0 left-0 w-full flex items-center justify-between px-5 py-4 z-50 bg-transparent">
+      <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] flex items-center justify-between px-5 py-4 z-50 bg-transparent">
         {/* 뒤로 가기 버튼 */}
         <button onClick={() => router.back()} className="flex items-center">
           <Image src={BackIcon} alt="뒤로 가기" />
@@ -110,8 +110,10 @@ const CurationDetail = () => {
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
 
         {/* 제목 및 설명 표시 */}
-        <div className="absolute w-5/6 bottom-10 left-3 pl-4 text-white">
-          <h1 className="text-[24px] font-semibold">{log.title}</h1>
+        <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
+          <p className="text-2xl font-semibold max-w-[230px]  line-clamp-2">
+            {log.title}
+          </p>
         </div>
       </section>
 
@@ -133,14 +135,14 @@ const CurationDetail = () => {
         return (
           <section
             key={cakeLog.cakelogId}
-            className={`px-5 ${index === log.curationCakelog.length - 1 ? 'mb-5' : 'mb-16'}`}
+            className={`${index === log.curationCakelog.length - 1 ? 'mb-5' : 'mb-16'}`}
           >
             {/* 가게 이름 및 운영 시간 */}
-            <div className="flex justify-between items-end">
+            <div className="flex px-5 justify-between items-end">
               <p className="text-lg font-bold">{cakeShop.shopName}</p>
               <MarkIcon fill="black" />
             </div>
-            <p className="flex text-sm text-grayscale700 gap-2">
+            <p className="flex px-5 text-sm text-grayscale700 gap-2">
               <span className="font-bold text-sm text-grayscale900">
                 영업 시간
               </span>
@@ -157,7 +159,7 @@ const CurationDetail = () => {
             </p>
 
             {/* 본문 내용 */}
-            <p className="mt-3 text-sm font-medium text-black">
+            <p className="mt-3 px-5 text-sm font-medium text-black">
               {cakeLog.body}
             </p>
 
