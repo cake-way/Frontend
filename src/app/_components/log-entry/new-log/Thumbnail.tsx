@@ -46,7 +46,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       }}
       onClick={() => document.getElementById('imageInput')?.click()}
     >
-      <div className="mb-36">
+      <div className="absolute z-50 top-5 left-5 w-full flex">
         <Image
           src={BackIcon}
           alt="뒤로 가기"
@@ -61,7 +61,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       <div
         className={`${
           thumbnailImage ? 'invisible' : 'visible'
-        }  mx-auto h-6 flex flex-col gap-3 items-center justify-center`}
+        }  mx-auto h-6 flex flex-col gap-3 items-center justify-center mt-[170px]`}
       >
         <Image src={Photo} alt="사진 아이콘" />
         <span className="text-grayscale500 text-sm font-bold">
