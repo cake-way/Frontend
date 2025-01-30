@@ -12,7 +12,12 @@ import OrderCard from '@/app/_components/order/OrderCard';
 import Dropdown from '@/app/_components/order/Dropdwon';
 import orderApi, { orderOptionApi } from '@/app/_lib/orderApi';
 import { getHoursMinutes } from 'utils/utils';
-import { ICakeDetail, IShopDetail, OrderOption } from 'types/relatedCake';
+import {
+  ICakeDetail,
+  IShopDetail,
+  OrderOption,
+  taste,
+} from 'types/relatedCake';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/_components/Loading';
 import shopDetailApi from '@/app/_lib/shopApi';
@@ -24,8 +29,9 @@ const Order: React.FC = () => {
   const [nextPage, setNextPage] = useState(false);
   // 스크롤 위치 관리를 위한 ref
   const pageRef = useRef<HTMLDivElement>(null);
+  const [flavors, setFlavors] = useState<OrderOption[]>([]);
   const [selectedSize, setSelectedSize] = useState('미니사이즈');
-  const [selectedFlavor, setSelectedFlavor] = useState('');
+  const [selectedFlavor, setSelectedFlavor] = useState<taste | ''>('');
   const [selectedBgColor, setSelectedBgColor] = useState<string | null>(null);
   const [letteringColor, setLetteringColor] = useState<string | null>(null);
   const [letteringText, setLetteringText] = useState<string | null>(null);
@@ -55,8 +61,7 @@ const Order: React.FC = () => {
     },
     enabled: !!cake_id,
   });
-  const flavors = orderOpion?.map((i) => i.taste) || [];
-  console.log(flavors);
+
   const sizes = [
     {
       name: '미니사이즈',
@@ -76,8 +81,13 @@ const Order: React.FC = () => {
   ];
 
   useEffect(() => {
-    setSelectedFlavor(flavors[0]);
+    if (orderOpion) {
+      setFlavors(orderOpion);
+    }
   }, [orderOpion]);
+  useEffect(() => {
+    setSelectedFlavor(flavors[0]?.taste);
+  }, [flavors]);
 
   useEffect(() => {
     console.log(nextPage);
@@ -125,9 +135,12 @@ const Order: React.FC = () => {
           lettering: letteringText,
           color: selectedBgColor,
           lettercolor: letteringColor,
-          selectedOptionIds: [flavors.indexOf(selectedFlavor) + 1],
+          selectedOptionIds: [
+            flavors.find((option) => option.taste === selectedFlavor)
+              ?.optionId || 0,
+          ],
         };
-
+        console.log(body);
         await orderApi(body);
 
         alert('주문이 완료되었습니다.');
@@ -230,7 +243,7 @@ const Order: React.FC = () => {
           {/* Flavor Selection */}
           <div className="p-5">
             <Dropdown
-              options={flavors}
+              options={flavors.map((i) => i.taste)}
               selectedValue={selectedFlavor}
               onChange={(option) => setSelectedFlavor(option)}
               label="맛 선택"

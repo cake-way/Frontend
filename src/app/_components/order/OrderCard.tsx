@@ -78,9 +78,9 @@ const OrderCard = ({
             <p className="text-grayscale900 text-xs font-medium mb-2">
               {order.cakeName}
               <br />
-              {order.size} <br />
-              {order.selectedTastes} <br />
-              {order.color} <br />
+              {order.size?.replace('사이즈', '')}
+              <br />
+              {order.selectedTastes}
             </p>
           </div>
 

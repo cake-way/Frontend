@@ -5,18 +5,8 @@ interface CakeCardProps {
   title: string;
   operatingHours: {
     dayOfWeek: string;
-    openTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
-    closeTime: {
-      hour: number;
-      minute: number;
-      second: number;
-      nano: number;
-    };
+    openTime: string;
+    closeTime: string;
     active: boolean;
   };
   location: string;
@@ -32,13 +22,13 @@ const CakeCard: React.FC<CakeCardProps> = ({
 }) => {
   const getRunTime = () => {
     const date = new Date();
-    const hours = operatingHours?.openTime?.hour * 60;
-    const minutes = operatingHours?.openTime?.minute;
+    const hours = +operatingHours?.openTime.slice(0, 2) * 60;
+    const minutes = +operatingHours?.openTime?.slice(3, 5);
 
     const start = hours + minutes;
 
-    const endHours = operatingHours?.closeTime.hour * 60;
-    const endMinutes = operatingHours?.closeTime.minute;
+    const endHours = +operatingHours?.closeTime.slice(0, 2) * 60;
+    const endMinutes = +operatingHours?.closeTime.slice(3, 5);
 
     const end = endHours + endMinutes;
     if (start === 0 && end === 0) {
@@ -49,6 +39,8 @@ const CakeCard: React.FC<CakeCardProps> = ({
 
     return start < now && now < end;
   };
+
+  console.log(getRunTime());
 
   return (
     <div className="relative overflow-hidden w-full ">

@@ -9,7 +9,7 @@ import down from '@/../public/order/arrow_down.svg';
 import Image from 'next/image';
 import mark from '@/../public/my-log-images/mark.svg';
 import { getCategoryName, getHoursMinutes } from '../../../../utils/utils';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Calendar from '@/app/_components/order/Calendar';
 import useCalenderStore from '@/app/store/calendarStore';
 import BottomSheet from '@/app/_components/categoryCake/BottomSheet';
@@ -30,6 +30,9 @@ interface CakeScrap {
 const CategorySearch = () => {
   const { category } = useParams();
   const router = useRouter();
+  const [sortedCakeData, setSortedCakeData] = useState<ICategoryData[] | null>(
+    null
+  );
 
   // 유효한 카테고리인지 확인하는 함수
   const isValidCategory = (cat: string | string[] | undefined) => {
@@ -63,7 +66,7 @@ const CategorySearch = () => {
       </div>
     );
   }
-
+  const filter = ['추천순'];
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterName, setFilterName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -74,6 +77,9 @@ const CategorySearch = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('오후');
   const [marked, setMarked] = useState<number | null>(null);
+  const [selectOption, setSelectOption] = useState(filter[0]);
+  const [optionOpen, setOptionOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { setFilteringDate, setTime, setPeriod, filteringDate, Period } =
     useCalenderStore();
 
@@ -108,6 +114,29 @@ const CategorySearch = () => {
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
   };
+
+  // 새로운 데이터가 로드될 때만 정렬
+  useEffect(() => {
+    // 새 데이터가 로드될 때만 정렬하여 저장
+    if (data && !sortedCakeData) {
+      const sortedData = data.toSorted((a, b) => b.scrapCount - a.scrapCount);
+      setSortedCakeData(sortedData); // 정렬된 데이터를 상태에 저장
+    }
+  }, [data, sortedCakeData]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOptionOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const isSameDay = (date1: Date, date2: Date) => {
     if (date1) {
@@ -217,15 +246,37 @@ const CategorySearch = () => {
           <Image src={down} alt="arrow_down" className="right-1 absolute" />
         </div>
         {/* Category Tabs */}
-        <div className="flex gap-2 px-5 py-3.5 font-medium">
-          <select
-            title="정렬 기준 선택"
-            className="flex  outline-none items-center gap-2 text-sm  bg-grayscale100 rounded-2xl px-3 py-1"
-            name="filter"
-          >
-            <option value="">추천순</option>
-          </select>
-          {/* <Image src={down} alt="arrow_down" /> */}
+        <div className="flex  relative gap-2 px-5 py-3.5 font-medium">
+          <div className="relative" ref={dropdownRef}>
+            <button
+              className={`flex  outline-none items-center gap-2 text-sm  bg-grayscale100  px-3 py-1
+                ${optionOpen ? 'rounded-t-2xl ' : 'rounded-2xl '}
+                `}
+              onClick={() => setOptionOpen(!optionOpen)}
+            >
+              {selectOption}
+              <Image src={down} alt="arrow_down" />
+            </button>
+            {optionOpen && (
+              <div className="absolute z-10">
+                {filter.map((i) => (
+                  <button
+                    key={i}
+                    className={`flex   items-center gap-2 text-sm  bg-grayscale100  px-3 py-1
+                      ${i === filter[filter.length - 1] ? 'rounded-b-md ' : ''}
+                      `}
+                    onClick={() => {
+                      setSelectOption(i);
+                      setOptionOpen(false);
+                    }}
+                  >
+                    {i}
+                    <span className="w-4"></span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <button
             className={`text-sm  rounded-2xl px-3 py-1 ${confirmReigon && confirmReigon?.length !== 0 ? 'bg-grayscale800 text-white' : 'bg-grayscale100'}`}
@@ -255,50 +306,43 @@ const CategorySearch = () => {
             {data ? (
               <>
                 <div className="grid grid-cols-2 gap-1.5 px-5 py-2.5 ">
-                  {data
-                    .toSorted((a, b) => b.scrapCount - a.scrapCount)
-                    .map((cake: ICategoryData) => (
-                      <div
-                        key={cake.cakeId}
-                        className=" relative cursor-pointer   overflow-hidden mb-2.5"
+                  {sortedCakeData?.map((cake: ICategoryData) => (
+                    <div
+                      key={cake.cakeId}
+                      className=" relative cursor-pointer   overflow-hidden mb-2.5"
+                    >
+                      <Image
+                        src={cake.cakeImage}
+                        alt={cake.cakeName}
+                        width={300}
+                        height={300}
+                        className="w-full  object-cover"
+                        onClick={() => onOrder(cake.cakeId)}
+                      />
+                      <button
+                        className="absolute top-2 right-2 p-1"
+                        onClick={() => handleScrapCake(cake.cakeId)}
                       >
-                        <Image
-                          src={cake.cakeImage}
-                          alt={cake.cakeName}
-                          width={300}
-                          height={300}
-                          className="w-full  object-cover"
-                          onClick={() => onOrder(cake.cakeId)}
-                        />
-                        <button
-                          className="absolute top-2 right-2 p-1"
-                          onClick={() => handleScrapCake(cake.cakeId)}
-                        >
-                          {cake.isScraped ? (
-                            <FilledMarkIcon />
-                          ) : (
-                            <Image
-                              src={mark}
-                              alt="mark"
-                              width={20}
-                              height={20}
-                            />
-                          )}
-                        </button>
+                        {cake.isScraped ? (
+                          <FilledMarkIcon />
+                        ) : (
+                          <Image src={mark} alt="mark" width={20} height={20} />
+                        )}
+                      </button>
 
-                        <div
-                          className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900"
-                          onClick={() => onOrder(cake.cakeId)}
-                        >
-                          <h3 className="font-bold text-xs text-grayscale900">
-                            {cake.cakeName}
-                          </h3>
-                          <p className=" text-xs text-grayscale900 font-semibold">
-                            {cake.cakePrice?.toLocaleString()}원
-                          </p>
-                        </div>
+                      <div
+                        className="pt-1.5 bottom-0 z-10 font-bold text-xs text-grayscale900"
+                        onClick={() => onOrder(cake.cakeId)}
+                      >
+                        <h3 className="font-bold text-xs text-grayscale900">
+                          {cake.cakeName}
+                        </h3>
+                        <p className=" text-xs text-grayscale900 font-semibold">
+                          {cake.cakePrice?.toLocaleString()}원
+                        </p>
                       </div>
-                    ))}
+                    </div>
+                  ))}
                 </div>
               </>
             ) : (

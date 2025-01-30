@@ -66,7 +66,7 @@ const Dropdown = ({
                 className={`w-full px-4 py-2.5 text-left hover:bg-gray-100
                   ${selectedValue === option ? 'bg-red-50 text-gray-900' : 'text-gray-700'}
                   ${options[0] === option ? 'rounded-t-md' : ''}
-                  ${options[options.length - 1] === option ? 'rounded-b-md' : ''}
+                  ${options[options.length - 1] === option ? 'rounded-b-full' : ''}
                 `}
                 onClick={() => {
                   onChange(option);
