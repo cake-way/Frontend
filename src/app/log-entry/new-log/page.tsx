@@ -36,6 +36,9 @@ const NewLog = () => {
     if (nextPublicState) {
       // 전체 공개로 변경될 때만 말풍선 모달 표시
       setIsTooltipVisible(true);
+    } else {
+      // 비공개로 변경될 때 말풍선 모달 숨기기
+      setIsTooltipVisible(false);
     }
   };
 
