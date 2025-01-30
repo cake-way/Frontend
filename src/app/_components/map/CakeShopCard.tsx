@@ -47,9 +47,9 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
 
       const [closeHours, closeMinutes] = closeTime;
       const totalMinutes = closeHours * 60 + closeMinutes;
-      setRuntime(totalNowMinutes - totalMinutes);
+      setRuntime(totalMinutes - totalNowMinutes);
 
-      setCloseTime(shopDetail.operatingHour.closeTime);
+      setCloseTime(shopDetail.operatingHour.closeTime.slice(0, -3));
     }
   }, [shopDetail]);
 
@@ -86,7 +86,7 @@ const CakeShopCard = ({ shop }: ICakeShopCard) => {
             <span className="text-xs text-grayscale700 flex gap-[5px]">
               <span className="text-grayscale900">
                 {noneWork ? noneWork : runtime > 0 ? '영업중' : '마감'}&nbsp;
-                {`${closeTime} 에 라스트 오더`}
+                {closeTime && `${closeTime} 에 라스트 오더`}
               </span>
             </span>
           </div>

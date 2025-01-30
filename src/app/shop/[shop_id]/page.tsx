@@ -57,20 +57,22 @@ const Shop = () => {
     }
   }, [shopDetail?.cakes.name]);
 
-  const hour = shopDetail?.operatingHour?.closeTime.split(':')[0];
-  const minutes = shopDetail?.operatingHour?.closeTime.split(':')[1];
-
   const runTime = useCallback(() => {
-    if (hour && minutes) {
+    if (shopDetail?.operatingHour) {
+      const closHour = shopDetail.operatingHour.closeTime.split(':')[0];
+      const closeMinutes = shopDetail.operatingHour.closeTime.split(':')[1];
+      const end = Number(closHour) * 60 + Number(closeMinutes); //
+
       const nowHours = new Date().getHours();
       const nowMinutes = new Date().getMinutes();
-      const totalNowMinutes = nowHours * 60 + nowMinutes;
+      const now = nowHours * 60 + nowMinutes;
 
-      const totalMinutes = Number(hour) * 60 + Number(minutes); //
-
-      return totalNowMinutes - totalMinutes;
+      const startHour = shopDetail?.operatingHour?.openTime.split(':')[0];
+      const startMinutes = shopDetail?.operatingHour?.closeTime.split(':')[0];
+      const start = Number(startHour) * 60 + Number(startMinutes); //
+      return start < now && now < end;
     }
-  }, [hour, minutes]);
+  }, [shopDetail?.operatingHour]);
 
   const onClickedSubTap = (tab: string) => {
     if (tab === subTab) {
@@ -186,7 +188,7 @@ const Shop = () => {
                 </span>
                 {shopDetail?.operatingHour ? (
                   <>
-                    {runtime && runtime > 0 ? '영업 중' : '마감'}
+                    {runtime && runtime ? '영업 중' : '마감'}
                     &nbsp;&nbsp;
                     {shopDetail?.operatingHour?.dayOfWeek}&nbsp;
                     {shopDetail?.operatingHour?.openTime !== undefined &&
@@ -196,7 +198,8 @@ const Shop = () => {
                     &nbsp;
                     {shopDetail?.operatingHour.openTime.split(':')[0]}:
                     {shopDetail?.operatingHour?.openTime?.split(':')[1]} -&nbsp;
-                    {hour}:{minutes}
+                    {shopDetail?.operatingHour?.closeTime.split(':')[0]}:
+                    {shopDetail?.operatingHour?.closeTime.split(':')[1]}
                   </>
                 ) : (
                   '휴무'
