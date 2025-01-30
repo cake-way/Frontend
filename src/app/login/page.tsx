@@ -20,7 +20,7 @@ const Login = () => {
   };
 
   return (
-    <main className="w-full h-screen bg-black flex flex-col items-center text-white font-sans relative px-4">
+    <main className="w-full h-screen bg-[#000] flex flex-col items-center text-white font-sans relative px-4">
       <section
         className="mt-[var(--dynamic-mt)]"
         style={
