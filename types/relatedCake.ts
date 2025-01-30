@@ -165,18 +165,8 @@ export interface HomeRecommend {
       shopImg: string;
       operatingHours: {
         dayOfWeek: string;
-        openTime: {
-          hour: number;
-          minute: number;
-          second: number;
-          nano: number;
-        };
-        closeTime: {
-          hour: number;
-          minute: number;
-          second: number;
-          nano: number;
-        };
+        openTime: string;
+        closeTime: string;
         active: boolean;
       };
       region: string;
@@ -190,18 +180,9 @@ export interface HomeRecommend {
       shopImg: string;
       operatingHours: {
         dayOfWeek: string;
-        openTime: {
-          hour: number;
-          minute: number;
-          second: number;
-          nano: number;
-        };
-        closeTime: {
-          hour: number;
-          minute: number;
-          second: number;
-          nano: number;
-        };
+        openTime: string;
+        closeTime: string;
+
         active: boolean;
       };
       region: string;
@@ -233,7 +214,8 @@ export interface MapShop {
   imageUrl: string;
 }
 
+export type taste = string;
 export interface OrderOption {
   optionId: number;
-  taste: string;
+  taste: taste;
 }
