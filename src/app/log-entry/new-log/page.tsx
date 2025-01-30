@@ -82,8 +82,7 @@ const NewLog = () => {
       );
 
       if (response.ok) {
-        const data = await response.json();
-        console.log('작성 완료:', data);
+        await response.json();
         router.back();
       } else {
         console.error('작성 실패:', await response.text());
