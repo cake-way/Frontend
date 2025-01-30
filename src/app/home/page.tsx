@@ -15,10 +15,12 @@ import SearchResults from '../_components/home/SearchResults';
 import { useQuery } from '@tanstack/react-query';
 import { homeRecommendApi } from '../_lib/homeApi';
 import { HomeRecommend } from 'types/relatedCake';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const router = useRouter();
 
   const { data } = useQuery<HomeRecommend>({
     queryKey: ['recommend'],
@@ -134,6 +136,11 @@ export default function Home() {
         }
         rightButtonImage={[
           <Image key="Alarm" src={Alarm} width={24} height={24} alt="Alarm" />,
+        ]}
+        onRightButtonClick={[
+          () => {
+            router.push('/notice');
+          },
         ]}
       />
       {searchKeyword ? (
