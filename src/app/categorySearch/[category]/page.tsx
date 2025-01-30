@@ -234,11 +234,11 @@ const CategorySearch = () => {
             <Image src={calendar} alt="calendar"></Image>
           </div>
           <div className="mr-2.5 px-2 border-r-[1px] border-[#E9E9E9]">
-            {isSameDay(filteredDate, new Date()) ? '오늘' : ''}&nbsp;
+            {isSameDay(filteredDate, new Date()) ? '오늘 ' : ''}
             {`(${days[filteredDate.getDay()]})`}
           </div>
           <div>
-            {Period}
+            {Period}&nbsp;
             {filteredDate.toLocaleString() === new Date().toLocaleString()
               ? ''
               : `${filteredDate.getHours()}:${filteredDate.getMinutes() === 0 ? '00' : filteredDate.getMinutes()}`}

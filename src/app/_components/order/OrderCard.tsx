@@ -35,8 +35,8 @@ const OrderCard = ({
         {/* 이미지 섹션 */}
 
         <div
-          className={`relative flex-1 h-auto inset-0 p-2 ${
-            getDday() <= 3 ? 'bg-[#E7363F]' : 'bg-[#C8C400]'
+          className={`relative  flex-[141] aspect-square inset-0 p-2   ${
+            getDday() <= 3 ? 'bg-[#FA2840]' : 'bg-[#C8C400]'
           }`}
         >
           <div className="relative w-full h-full">
@@ -70,7 +70,7 @@ const OrderCard = ({
         </div>
 
         {/* 텍스트 섹션 */}
-        <div className="flex-1 pt-2.5 border solid flex flex-col">
+        <div className="flex-[166] pt-2.5 border solid flex flex-col">
           <div className="border-b  flex-[2] solid  px-2.5">
             <h3 className="font-semibold ">
               {order.cakeShopName || cakeDetail?.cakeShopName}
@@ -79,26 +79,34 @@ const OrderCard = ({
               {order.cakeName}
               <br />
               {order.size?.replace('사이즈', '')}
-              <br />
+              &nbsp;&middot;&nbsp;
               {order.selectedTastes}
             </p>
           </div>
 
           <div className="flex  flex-1 items-center gap-2 px-2.5 py-1.5">
-            <Image
-              src={'/order/calendar.svg'}
-              alt="calendar-icon"
-              width={17}
-              height={17}
-            />
-            <span className=" text-grayscale900 text-xs font-medium">
-              {pickupDate.getMonth() + 1}.{pickupDate.getDate()}
-              &nbsp;({days[new Date().getDay()]})&nbsp;&nbsp;
-              {pickupDate.getHours() <= 11 ? '오전' : '오후'}
-              &nbsp;
-              {pickupDate.getHours() - 9}:
-              {pickupDate.getMinutes().toString().padStart(2, '0')}
-            </span>
+            {detail ? (
+              <span className=" text-grayscale900 text-xs font-medium">
+                배경 {order.color} &nbsp; 레터링 {order.lettercolor}
+              </span>
+            ) : (
+              <>
+                <Image
+                  src={'/order/calendar.svg'}
+                  alt="calendar-icon"
+                  width={17}
+                  height={17}
+                />
+                <span className=" text-grayscale900 text-xs font-medium">
+                  {pickupDate.getMonth() + 1}.{pickupDate.getDate()}
+                  &nbsp;({days[new Date().getDay()]})&nbsp;&nbsp;
+                  {pickupDate.getHours() <= 11 ? '오전' : '오후'}
+                  &nbsp;
+                  {pickupDate.getHours() - 9}:
+                  {pickupDate.getMinutes().toString().padStart(2, '0')}
+                </span>
+              </>
+            )}
           </div>
           <div className="py-1.5 flex-[2] flex justify-between  border-t px-2.5">
             <p className=" flex items-center  text-sm font-bold">
