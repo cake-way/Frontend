@@ -22,7 +22,7 @@ const SavedStore: React.FC = () => {
       ) : (
         <div className="flex w-full mt-[15px] flex-col gap-[23px]">
           {lastTwoStore.map((store, index) => (
-            <section key={index} className="flex items-center gap-4">
+            <section key={index} className="flex items-center gap-4 h-[110px]">
               {/* 왼쪽: 가게 케이크 사진 */}
               <figure className="flex-shrink-0 w-[110px] h-[110px] overflow-hidden relative">
                 <Image
@@ -35,7 +35,7 @@ const SavedStore: React.FC = () => {
               </figure>
 
               {/* 오른쪽: 가게 정보 */}
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 {/* 당일 예약 여부 */}
                 {store.sameDay && (
                   <span
@@ -62,7 +62,11 @@ const SavedStore: React.FC = () => {
                     <span>오늘 휴무</span>
                   )}
                 </section>
-                <p className="text-sm text-black"> {store.address}</p>
+
+                {/* 주소: 한 줄만 표시 + 너무 길면 '...' 처리 */}
+                <p className="text-sm text-black whitespace-nowrap overflow-hidden text-ellipsis">
+                  {store.address}
+                </p>
               </div>
             </section>
           ))}

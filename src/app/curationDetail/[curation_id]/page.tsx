@@ -111,7 +111,7 @@ const CurationDetail = () => {
 
         {/* 제목 및 설명 표시 */}
         <div className="absolute bottom-2 left-2 text-[#ffffff]  p-2 rounded-md z-50">
-          <p className="text-2xl font-semibold max-w-[230px]  line-clamp-2">
+          <p className="text-2xl font-semibold max-w-[240px]  line-clamp-2">
             {log.title}
           </p>
         </div>
