@@ -117,12 +117,11 @@ const CategorySearch = () => {
 
   // 새로운 데이터가 로드될 때만 정렬
   useEffect(() => {
-    // 새 데이터가 로드될 때만 정렬하여 저장
-    if (data && !sortedCakeData) {
+    if (data) {
       const sortedData = data.toSorted((a, b) => b.scrapCount - a.scrapCount);
-      setSortedCakeData(sortedData); // 정렬된 데이터를 상태에 저장
+      setSortedCakeData(sortedData);
     }
-  }, [data, sortedCakeData]);
+  }, [data]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -188,11 +187,27 @@ const CategorySearch = () => {
     try {
       if (cakeScrap?.find((i) => i.id === cakeId)) {
         const response = await toggleMark(cakeId);
-        if (response) setMarked(Date.now());
+        if (response) {
+          setMarked(Date.now());
+          // 즉시 UI 업데이트 추가
+          setSortedCakeData(
+            (prev) =>
+              prev?.map((cake) =>
+                cake.cakeId === cakeId ? { ...cake, isScraped: false } : cake
+              ) ?? null
+          );
+        }
       } else {
         const isScraped = await scrapCake(cakeId);
         if (isScraped) {
           setMarked(Date.now());
+          // 즉시 UI 업데이트 추가
+          setSortedCakeData(
+            (prev) =>
+              prev?.map((cake) =>
+                cake.cakeId === cakeId ? { ...cake, isScraped: true } : cake
+              ) ?? null
+          );
         }
       }
       refetch();
