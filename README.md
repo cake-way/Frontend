@@ -106,16 +106,18 @@ CAKEWAY는 복잡한 주문제작 케이크의 주문 과정을 간편하게 만
 ```
 FRONTEND/
 ├── .next/                      # Next.js 빌드 파일
+├── constants/                  # 전역적으로 사용하는 상수 및 ENUM 모음
 ├── node_modules/               # 패키지 의존성
-├── public/                     # 정적 파일 저장소
+├── public/                     # img 등 정적 파일 저장소
 ├── src/
 │   └── app/                    # 메인 애플리케이션 코드
 │       ├── _components/        # 공통 컴포넌트
-│       ├── api/                # API 관련 코드
-│       │   └── auth/          # 인증 관련 API
+│       ├── api/                # Next.js 서버 액션 및 API 핸들러
+│       ├── _lib/               # API 호출 및 데이터 가공 로직 분리
 │       ├── cakeDetail/        # 케이크 상세 페이지
 │       ├── categorySearch/    # 카테고리 검색 페이지
 │       ├── home/             # 메인 홈 페이지
+│       ├── curationDetail/   # 큐레이션 상세 페이지
 │       ├── log-detail/       # 로그 상세 페이지
 │       ├── log-entry/        # 로그 입력 페이지
 │       ├── login/            # 로그인 페이지
@@ -134,8 +136,8 @@ FRONTEND/
 
 ### 📂 주요 디렉토리 설명
 
-- `_components/`: 여러 페이지에서 재사용되는 공통 컴포넌트
-- `api/`: 백엔드와의 통신을 담당하는 API 관련 코드
+- `_components/`: 여러 곳에서 재사용되는 UI 컴포넌트를 저장하는 폴더
+- `api/`: Next.js의 서버 액션이나 API 라우트를 위한 폴더, 서버 측에서 실행되는 API 로직을 처리.
 - `[page_name]/`: 각 페이지별 컴포넌트와 로직
 - `types/`: TypeScript 인터페이스, 타입 정의
 - `utils/`: 유틸리티 함수 및 헬퍼 함수
