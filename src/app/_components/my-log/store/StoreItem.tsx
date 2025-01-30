@@ -27,13 +27,13 @@ const StoreItem: React.FC<StoreItemProps> = ({
       className="flex items-center gap-4 relative cursor-pointer"
       onClick={handleItemClick} // 상세페이지 이동은 일반 클릭만 처리
     >
-      <figure className="flex-shrink-0 w-[110px] h-[110px]">
+      <figure className="flex-shrink-0 w-[110px] h-[110px]  overflow-hidden">
         <Image
           src={store.shopImage}
           alt={`${store.shopImage}의 대표 이미지`}
           width={110}
           height={110}
-          className="object-cover"
+          className="w-full h-full object-cover"
         />
       </figure>
 
