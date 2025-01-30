@@ -11,8 +11,6 @@ export default function Reigon() {
     서울: ['신촌/이대', '상수/합정/망원'],
   };
 
-  console.log(selectedSub);
-
   const handleRegionClick = (region: string) => {
     if (selectedRegions == region) {
       setSelectedRegions('');

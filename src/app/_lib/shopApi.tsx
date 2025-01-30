@@ -55,7 +55,7 @@ export async function orderTimeSlotApi(
     param.append('startDate', startDate);
     param.append('endDate', endDate);
     const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/${shopId}/timeslot?${param}`;
-    console.log(URL);
+
     const response = await fetch(URL);
     return await response.json();
   } catch (e) {

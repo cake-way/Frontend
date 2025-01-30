@@ -36,7 +36,6 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
 ) => {
   return function WithTimeSlotsComponent(props: P) {
     const { cakeShopId } = props;
-    console.log('cakeShopId:', cakeShopId);
     const [currentViewDate, setCurrentViewDate] = useState(new Date());
     const { data: timeSlots } = useQuery<TimeSlotResponse>({
       queryKey: ['timeSlots', cakeShopId, currentViewDate],
@@ -53,16 +52,7 @@ export const withTimeSlots = <P extends WithTimeSlotsProps>(
           currentViewDate.getMonth() + 1,
           0
         );
-        console.log('Start Date:', monthStart.toISOString());
-        console.log('End Date:', monthEnd.toISOString());
-        console.log('Calling API with shopId:', cakeShopId);
 
-        const response = await orderTimeSlotApi(
-          cakeShopId,
-          monthStart.toISOString().replace('Z', ''),
-          monthEnd.toISOString().replace('Z', '')
-        );
-        console.log('API Response:', response);
         return await orderTimeSlotApi(
           cakeShopId,
           monthStart.toISOString().replace('Z', ''),
