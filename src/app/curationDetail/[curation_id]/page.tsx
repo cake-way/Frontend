@@ -128,7 +128,7 @@ const CurationDetail = () => {
       <div className="border-t-[6px] border-grayscale100 mt-8 mb-6" />
 
       {/* 케이크 로그 반복 */}
-      {log.curationCakelog.map((cakeLog, index) => {
+      {log?.curationCakelog?.map((cakeLog, index) => {
         const cakeShop = cakeLog.shopDto;
         const formatTime = (time: string) => time.slice(0, 5); // 시간 포맷 정리
 
@@ -146,8 +146,9 @@ const CurationDetail = () => {
               <span className="font-bold text-sm text-grayscale900">
                 영업 시간
               </span>
-              {formatTime(cakeShop.operatingHours.openTime)}am -{' '}
-              {formatTime(cakeShop.operatingHours.closeTime)}pm
+              {cakeShop.operatingHours
+                ? `${formatTime(cakeShop.operatingHours.openTime)}am - ${formatTime(cakeShop.operatingHours.closeTime)}pm`
+                : '정보 없음'}
             </p>
 
             {/* 이미지 슬라이더 */}
