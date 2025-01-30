@@ -140,7 +140,7 @@ const Order: React.FC = () => {
               ?.optionId || 0,
           ],
         };
-        console.log(body);
+
         await orderApi(body);
 
         alert('주문이 완료되었습니다.');

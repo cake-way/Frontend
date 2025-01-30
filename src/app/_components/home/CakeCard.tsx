@@ -40,8 +40,6 @@ const CakeCard: React.FC<CakeCardProps> = ({
     return start < now && now < end;
   };
 
-  console.log(getRunTime());
-
   return (
     <div className="relative overflow-hidden w-full ">
       <div

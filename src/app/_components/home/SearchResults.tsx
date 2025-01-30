@@ -47,7 +47,6 @@ const SearchResults = ({ keyword = '', latitude = 0, longitude = 0 }) => {
 
         setCakeResults(cakes);
         setShopResults(shops);
-        console.log(shops);
       } catch (error) {
         console.error('검색 중 오류 발생:', error);
       }
