@@ -314,12 +314,12 @@ const Order: React.FC = () => {
           <div className="p-4">
             <h2 className="text-lg font-bold mb-1">추천 레터링 문구</h2>
             <p className="text-gray-600 text-sm mb-4">
-              (입력한 주제와 상황을 바탕으로 AI가 레터링 문구를 추천해드립니다.)
+              입력한 주제와 상황을 바탕으로 AI가 레터링 문구를 추천해드립니다.
             </p>
 
             {/* 주제 입력 */}
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2">주제</label>
+              <label className="block text-grayscale900 mb-2">주제</label>
               <input
                 type="text"
                 placeholder="예: 생일, 결혼기념일, 졸업"
@@ -331,7 +331,7 @@ const Order: React.FC = () => {
 
             {/* 상황 입력 */}
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2">
+              <label className="block text-grayscale900 mb-2">
                 케이크 선물 상황
               </label>
               <input

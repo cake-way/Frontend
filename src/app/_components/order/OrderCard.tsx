@@ -35,7 +35,7 @@ const OrderCard = ({
         {/* 이미지 섹션 */}
 
         <div
-          className={`relative  flex-[141] aspect-square inset-0 p-2   ${
+          className={`relative  flex-[141] max-w-[141px] aspect-square inset-0 p-2   ${
             getDday() <= 3 ? 'bg-[#FA2840]' : 'bg-[#C8C400]'
           }`}
         >
@@ -77,7 +77,6 @@ const OrderCard = ({
             </h3>
             <p className="text-grayscale900 text-xs font-medium mb-2">
               {order.cakeName}&nbsp;
-              {order.size}
               <br />
               {order.size?.replace('사이즈', '')}
               &nbsp;&middot;&nbsp;
