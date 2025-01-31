@@ -17,7 +17,7 @@ export interface RecentOrder {
 }
 
 export interface LocationSearchProps {
-  onShopSelect: (shopId: number) => void; // 부모에서 전달할 함수 타입
+  onShopSelect: (shopId: number | null) => void; // 부모에서 전달할 함수 타입
 }
 
 export interface AddPhotosProps {

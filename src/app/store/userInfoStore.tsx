@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import localStorageWrapper from 'utils/customStorage';
 
-// 사용자 정보 타입 정의
 interface UserInfo {
   memberId: number;
   username: string;
@@ -40,6 +39,7 @@ export interface UserStoreState {
   designScrap: ScrapItem[];
   storeScrap: StoreScrap[];
   logScrap: LogScrap[];
+  isHydrated: boolean; // Hydration 여부
   setUserInfo: (data: {
     userInfo: UserInfo;
     designScrap: ScrapItem[];
@@ -47,6 +47,7 @@ export interface UserStoreState {
     logScrap: LogScrap[];
   }) => void;
   clearUserInfo: () => void;
+  setHydrated: () => void; // Hydration 완료 상태 설정
 }
 
 const useUserStore = create<UserStoreState>()(
@@ -56,6 +57,7 @@ const useUserStore = create<UserStoreState>()(
       designScrap: [],
       storeScrap: [],
       logScrap: [],
+      isHydrated: false, // 기본값 false
       setUserInfo: (data) =>
         set({
           userInfo: data.userInfo,
@@ -70,10 +72,14 @@ const useUserStore = create<UserStoreState>()(
           storeScrap: [],
           logScrap: [],
         }),
+      setHydrated: () => set({ isHydrated: true }), // Hydration 완료
     }),
     {
       name: 'user-storage', // 로컬 스토리지 키
       storage: localStorageWrapper,
+      onRehydrateStorage: () => (state) => {
+        if (state) state.setHydrated(); // Hydration 완료 상태 설정
+      },
     }
   )
 );

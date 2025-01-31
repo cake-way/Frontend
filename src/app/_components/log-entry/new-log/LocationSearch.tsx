@@ -82,6 +82,7 @@ const LocationSearch = ({ onShopSelect }: LocationSearchProps) => {
     setSearchResults([]);
     setIsResultsVisible(false);
     setSearchKeyword(''); // 선택 해제 후 검색어 초기화
+    onShopSelect(null); // selectedShopId 초기화
   };
 
   return (

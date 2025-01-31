@@ -42,7 +42,7 @@ const CategorySelector = ({
   };
 
   return (
-    <section className="w-full px-5 mt-12 mb-11 relative">
+    <section className="w-full px-5 mt-12 relative">
       <p className="font-semibold">케이크 카테고리</p>
       <div
         className={`w-full px-4 py-2 mt-3 text-sm border border-grayscale300 cursor-pointer relative transition-all duration-300 ${

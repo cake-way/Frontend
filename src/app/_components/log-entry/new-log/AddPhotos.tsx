@@ -25,7 +25,7 @@ const AddPhotos: React.FC<AddPhotosProps> = ({ photos, setPhotos }) => {
   };
 
   return (
-    <section className="w-full px-5 mt-5">
+    <section className="w-full px-5 mt-16">
       <header>
         <h2 className="font-semibold">사진 첨부</h2>
         <p className="text-[12px]">

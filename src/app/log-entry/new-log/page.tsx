@@ -9,9 +9,10 @@ import LocationSearch from '@/app/_components/log-entry/new-log/LocationSearch';
 
 import useUserStore from '@/app/store/userInfoStore';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/_components/Loading';
 
 const NewLog = () => {
-  const { userInfo } = useUserStore(); // 현재 사용자 정보 가져오기
+  const { userInfo, isHydrated } = useUserStore(); // 현재 사용자 정보 가져오기
 
   const [thumbnailImage, setThumbnailImage] = useState<string | File | null>(
     null
@@ -104,13 +105,18 @@ const NewLog = () => {
   };
 
   // LocationSearch에서 shopId가 선택되면 호출되는 함수
-  const handleShopSelect = (shopId: number) => {
+  const handleShopSelect = (shopId: number | null) => {
     setSelectedShopId(shopId); // 선택된 shopId를 상태로 저장
   };
 
   // 공통 클래스 정의
   const commonButtonClass =
     'w-[48%] py-2 rounded-[4px] transition-all duration-300 focus:outline-none';
+
+  // hydration과 userInfo 체크
+  if (!isHydrated || !userInfo) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <main className="w-full flex flex-col items-center">
