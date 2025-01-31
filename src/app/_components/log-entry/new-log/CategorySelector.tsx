@@ -16,17 +16,19 @@ const CategorySelector = ({
     null
   );
 
+  // 상위 컴포넌트에서 selectedShopId가 없을 때는 아예 렌더링하지 않도록 처리
+  if (selectedShopId === null) {
+    return null;
+  }
+
   useEffect(() => {
     const fetchCategories = async () => {
-      if (selectedShopId !== null) {
-        try {
-          const response = await getCategories(selectedShopId);
-          setCategories(response); // 카테고리 데이터 저장
-        } catch (error) {
-          console.error('카테고리 불러오기 실패:', error);
-        }
-      } else {
-        setCategories([]); // shopId가 없을 경우 카테고리를 초기화
+      try {
+        const response = await getCategories(selectedShopId);
+        setCategories(response);
+      } catch (error) {
+        console.error('카테고리 불러오기 실패:', error);
+        setCategories([]);
       }
     };
 
@@ -34,9 +36,9 @@ const CategorySelector = ({
   }, [selectedShopId]);
 
   const handleSelectCategory = (categoryId: number) => {
-    setSelectedCategoryId(categoryId); // 선택된 카테고리 ID 저장
-    onSelectCategory(categoryId); // 부모 컴포넌트로 선택된 ID 전달
-    setIsDropdownOpen(false); // 드롭다운 닫기
+    setSelectedCategoryId(categoryId);
+    onSelectCategory(categoryId);
+    setIsDropdownOpen(false);
   };
 
   return (
