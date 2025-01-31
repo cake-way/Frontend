@@ -160,10 +160,12 @@ const NewLog = () => {
       <LocationSearch onShopSelect={handleShopSelect} />
 
       {/* 카테고리 선택 */}
-      <CategorySelector
-        selectedShopId={selectedShopId}
-        onSelectCategory={setSelectedCategoryId}
-      />
+      {selectedShopId && (
+        <CategorySelector
+          selectedShopId={selectedShopId}
+          onSelectCategory={setSelectedCategoryId}
+        />
+      )}
 
       {/* 사진 첨부 */}
       <AddPhotos photos={photos} setPhotos={setPhotos} />
