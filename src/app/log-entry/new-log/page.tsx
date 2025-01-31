@@ -12,14 +12,7 @@ import { useRouter } from 'next/navigation';
 import LoadingSpinner from '@/app/_components/Loading';
 
 const NewLog = () => {
-  const { userInfo } = useUserStore(); // 현재 사용자 정보 가져오기
-
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  // Wait for Zustand store to hydrate
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  const { userInfo, isHydrated } = useUserStore(); // 현재 사용자 정보 가져오기
 
   const [thumbnailImage, setThumbnailImage] = useState<string | File | null>(
     null
@@ -124,6 +117,7 @@ const NewLog = () => {
   if (!isHydrated || !userInfo) {
     return <LoadingSpinner />;
   }
+
   return (
     <main className="w-full flex flex-col items-center">
       {/* 상단 대표사진 */}
