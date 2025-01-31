@@ -118,6 +118,7 @@ const CategorySearch = () => {
   // 새로운 데이터가 로드될 때만 정렬
   useEffect(() => {
     if (data) {
+      if (sortedCakeData) return;
       const sortedData = data.toSorted((a, b) => b.scrapCount - a.scrapCount);
       setSortedCakeData(sortedData);
     }
