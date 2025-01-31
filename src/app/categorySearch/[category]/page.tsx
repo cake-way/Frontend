@@ -21,11 +21,11 @@ import { ICategoryData, priceObject } from 'types/relatedCake';
 import { days } from 'constants/constants';
 import { scrapCake } from '@/app/_lib/api/searchResults';
 import FilledMarkIcon from '@/app/_components/Icons/FilledMarkIcon';
-import { getCakeDesigns, toggleMark } from '@/app/_lib/api/cakeDesigns';
+import { toggleMark } from '@/app/_lib/api/cakeDesigns';
 
-interface CakeScrap {
-  id: number;
-}
+// interface CakeScrap {
+//   id: number;
+// }
 //카테고리 없는 ui
 const CategorySearch = () => {
   const { category } = useParams();
@@ -106,10 +106,10 @@ const CategorySearch = () => {
       );
     },
   });
-  const { data: cakeScrap } = useQuery<CakeScrap[]>({
-    queryKey: ['cakeScrap', marked],
-    queryFn: () => getCakeDesigns(),
-  });
+  // const { data: cakeScrap } = useQuery<CakeScrap[]>({
+  //   queryKey: ['cakeScrap', marked],
+  //   queryFn: () => getCakeDesigns(),
+  // });
 
   const onOrder = (cake_id: number) => {
     router.push(`/cakeDetail/${cake_id}`);
