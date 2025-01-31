@@ -186,7 +186,7 @@ const CategorySearch = () => {
 
   const handleScrapCake = async (cakeId: number) => {
     try {
-      if (!data?.find((i) => i.cakeId === cakeId)?.isScraped) {
+      if (data?.find((i) => i.cakeId === cakeId)?.isScraped) {
         const response = await toggleMark(cakeId);
         if (response) {
           setMarked(Date.now());
