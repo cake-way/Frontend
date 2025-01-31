@@ -135,14 +135,14 @@ const CurationDetail = () => {
         return (
           <section
             key={cakeLog.cakelogId}
-            className={`${index === log.curationCakelog.length - 1 ? 'mb-5' : 'mb-16'}`}
+            className={`pl-5 ${index === log.curationCakelog.length - 1 ? 'mb-5' : 'mb-16'}`}
           >
             {/* 가게 이름 및 운영 시간 */}
-            <div className="flex px-5 justify-between items-end">
+            <div className="flex pr-5 justify-between items-end">
               <p className="text-lg font-bold">{cakeShop.shopName}</p>
               <MarkIcon fill="black" />
             </div>
-            <p className="flex px-5 text-sm text-grayscale700 gap-2">
+            <p className="flex pr-5 text-sm text-grayscale700 gap-2">
               <span className="font-bold text-sm text-grayscale900">
                 영업 시간
               </span>
@@ -160,7 +160,7 @@ const CurationDetail = () => {
             </p>
 
             {/* 본문 내용 */}
-            <p className="mt-3 px-5 text-sm font-medium text-black">
+            <p className="mt-3 pr-5 text-sm font-medium text-black">
               {cakeLog.body}
             </p>
 

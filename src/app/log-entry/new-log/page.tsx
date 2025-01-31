@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ThumbnailImage from '@/app/_components/log-entry/new-log/Thumbnail';
 import AddPhotos from '@/app/_components/log-entry/new-log/AddPhotos';
@@ -29,17 +29,18 @@ const NewLog = () => {
 
   const router = useRouter();
 
-  const handleTogglePublic = () => {
-    const nextPublicState = !isPublic; // 다음 상태 미리 계산
-    setIsPublic(nextPublicState);
-
-    if (nextPublicState) {
-      // 전체 공개로 변경될 때만 말풍선 모달 표시
-      setIsTooltipVisible(true);
-    } else {
-      // 비공개로 변경될 때 말풍선 모달 숨기기
+  useEffect(() => {
+    if (!isPublic && isTooltipVisible) {
       setIsTooltipVisible(false);
     }
+  }, [isPublic, isTooltipVisible]);
+
+  const handleTogglePublic = () => {
+    setIsPublic((prev) => {
+      const nextPublicState = !prev;
+      setIsTooltipVisible(nextPublicState);
+      return nextPublicState;
+    });
   };
 
   const handleCloseTooltip = () => {
@@ -74,7 +75,14 @@ const NewLog = () => {
 
     // FormData 전송
     try {
-      const token = localStorage.getItem('token');
+      const token =
+        typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/cakelog`,
         {
