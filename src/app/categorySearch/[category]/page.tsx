@@ -186,7 +186,7 @@ const CategorySearch = () => {
 
   const handleScrapCake = async (cakeId: number) => {
     try {
-      if (cakeScrap?.find((i) => i.id === cakeId)) {
+      if (!data?.find((i) => i.cakeId === cakeId)?.isScraped) {
         const response = await toggleMark(cakeId);
         if (response) {
           setMarked(Date.now());
@@ -342,7 +342,7 @@ const CategorySearch = () => {
                         {cake.isScraped ? (
                           <FilledMarkIcon />
                         ) : (
-                          <Image src={mark} alt="mark" width={20} height={20} />
+                          <Image src={mark} alt="mark" width={24} height={24} />
                         )}
                       </button>
 
