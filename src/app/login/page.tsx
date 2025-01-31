@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import KakaoIcon from '../../../public/login-images/kakao.svg';
-import CakeWayLogo from '../../../public/login-images/cake-way.svg';
+import KakaoIcon from '../../../public/login-images/kakao1.svg';
+import CakeWayLogo from '../../../public/login-images/cakeway-logo.svg';
 
 const Login = () => {
   const handleKakaoLogin = async () => {
@@ -40,7 +40,7 @@ const Login = () => {
         className="fixed bottom-5 mb-32 flex items-center justify-between
   w-[280px] sm:w-[300px] md:w-[330px] lg:w-[360px] 
   h-[45px] sm:h-[48px] md:h-[50px] lg:h-[55px] 
-  bg-[#F7E409] text-black rounded-[4px] px-4 sm:px-5 md:px-6"
+  bg-[#FEE102] text-black rounded-[4px] px-4 sm:px-5 md:px-6"
         onClick={handleKakaoLogin}
       >
         <Image
