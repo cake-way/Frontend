@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import CakeWayLogo from '../../public/login-images/cake-way.svg';
+import CakeWayLogo from '../../public/login-images/cakeway-logo.svg';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
